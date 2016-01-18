@@ -2,12 +2,10 @@
 <addons>
 <addon id="plugin.video.siasat-pk"
        name="siasat-pk"
-       version="0.2"
+       version="0.3"
        provider-name="Yasir">
   <requires>
-    <import addon="xbmc.python" version="2.1.0"/>
-	<import addon="script.module.urlresolver" version="1.0.0"/>
-	<import addon="plugin.video.youtube" version="2.9.2"/>
+    	<import addon="xbmc.python" version="2.1.0"/>
   </requires>
   <extension point="xbmc.python.pluginsource"
             library="addon.py">
