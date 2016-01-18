@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="repository.yasir" name="Yasirs Addon Repository" version="0.3" provider-name="Yasir">
+<addon id="repository.yasir" name="Yasirs Addon Repository" version="0.5" provider-name="Yasir">
 	<extension point="xbmc.addon.repository" name="Yasirs Addon Repository">
     <dir>
             <info compressed="false">https://raw.github.com/compyy/Kodiaddons/master/addons.xml</info>
