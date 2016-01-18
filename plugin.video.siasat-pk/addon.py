@@ -1,5 +1,5 @@
 import xbmc, xbmcgui, xbmcplugin, xbmcaddon
-import urllib2,urllib, re, urlresolver, os, traceback, cgi
+import urllib2,urllib, re, os, traceback, cgi
 import requests
 
 pluginhandle = int(sys.argv[1])
