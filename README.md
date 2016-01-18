@@ -1,2 +1,2 @@
 # Kodiaddons
-Kodi Plugins forPakistani Videos Site
+Kodi Plugins for Pakistani Videos Site
