@@ -2,7 +2,7 @@
 <addons>
 <addon id="plugin.video.siasat-pk"
        name="siasat-pk"
-       version="0.3"
+       version="0.4"
        provider-name="Yasir">
   <requires>
     	<import addon="xbmc.python" version="2.1.0"/>

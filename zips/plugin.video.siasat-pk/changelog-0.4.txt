@@ -1,0 +1,2 @@
+[B]Version 0.4[/B]
+- Fixed quality issues 0.4
