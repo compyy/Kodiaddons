@@ -1,7 +1,7 @@
 import xbmc, xbmcgui, xbmcplugin, xbmcaddon
 import urllib2,urllib, re, os, traceback, cgi
 import requests
-import HTMLParser
+
 
 
 Posturl="http://www.siasat.pk/forum/showthread.php?"
@@ -74,9 +74,15 @@ def AddShows(Fromurl):
 	
 	URL = re.compile('[<]a style.*id[=]["]thread_title_(.*)["][>]', re.IGNORECASE).findall(link)
 	Desc = re.compile('[<]a style.*["]\sid[=]["]thread.*["]>(.*)[<]').findall(link)
+	IMG_list = re.compile('[<]img src[=]["](.*)["]\sstyle.*[>]').findall(link)
+	IMG = []
+	
+	for i in IMG_list:
+		IMG.append(re.sub("amp;", "",i))
 
-	for urls, desc in zip(URL,Desc):
-		addDir(desc, urls, 3, '', isItFolder=True)
+
+	for urls, desc, img in zip(URL,Desc,IMG):
+		addDir(desc, urls, 3, img, isItFolder=True)
 
 	match =re.findall('<span class="prev_next"><a rel="next" href="(.*)["]\stitle="Next Page', link, re.IGNORECASE)
 
@@ -108,8 +114,6 @@ def AddZem(Fromurl):
 				match=matchbanner+match
 
 		except: pass
-
-	h = HTMLParser.HTMLParser()
 
 	for cname in match:
 		tname=cname[2]
