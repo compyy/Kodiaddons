@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.khansa" name="Khansa" version="0.1" provider-name="Baba">
+  <requires>
+		<import addon="xbmc.python" version="2.14.0"/>
+		<import addon="plugin.video.youtube"/>
+		<import addon="plugin.video.dailymotion"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="addon.py">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">Khansa's Personal Plugin</summary>
+    <description lang="en">Plays Favourite Poems</description>
+    <disclaimer lang="en">The author does not host or distribute any of the content displayed by this addon. The author does not have any affiliation with the content provider.</disclaimer>
+    <language>English</language>
+    <source>https://github.com/compyy/Kodiaddons</source>
+    <website>https://github.com/compyy/Kodiaddons</website>
+    <platform>all</platform>
+  </extension>
+</addon>

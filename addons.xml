@@ -17,6 +17,23 @@
     <platform>all</platform>
   </extension>
 </addon>
+<addon id="plugin.video.khansa"
+       name="Khansa"
+       version="0.1"
+       provider-name="Yasir">
+  <requires>
+    	<import addon="xbmc.python" version="2.1.0"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource"
+            library="addon.py">
+        <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">Khansa Peoms</summary>
+    <description lang="en">Poems</description>
+    <platform>all</platform>
+  </extension>
+</addon>
 <addon id="repository.yasir" name="Yasirs Addon Repository" version="0.3" provider-name="Yasir">
 	<extension point="xbmc.addon.repository" name="Yasirs Addon Repository">
     <dir>
