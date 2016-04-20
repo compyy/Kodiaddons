@@ -1,30 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
-<addon id="plugin.video.siasat-pk"
-       name="siasat-pk"
-       version="0.7"
-       provider-name="Yasir">
+<addon id="plugin.video.siasat-pk" name="Siasat-pk" version="0.7" provider-name="Yasir">
   <requires>
-    	<import addon="xbmc.python" version="2.1.0"/>
+		<import addon="xbmc.python" version="2.14.0"/>
+		<import addon="script.module.addon.common"/>
+		<import addon="plugin.video.youtube"/>
+		<import addon="script.module.requests"/>
+		<import addon="plugin.video.dailymotion"/>
   </requires>
-  <extension point="xbmc.python.pluginsource"
-            library="addon.py">
-        <provides>video</provides>
+  <extension point="xbmc.python.pluginsource" library="addon.py">
+    <provides>video</provides>
   </extension>
   <extension point="xbmc.addon.metadata">
     <summary lang="en">www.siasat.pk</summary>
     <description lang="en">Watch Vidoes uploaded to siasat.pk</description>
+    <disclaimer lang="en">The author does not host or distribute any of the content displayed by this addon. The author does not have any affiliation with the content provider.</disclaimer>
+    <language>English</language>
+    <source>https://github.com/compyy/Kodisiasat</source>
+    <website>https://github.com/compyy/Kodisiasat</website>
     <platform>all</platform>
   </extension>
 </addon>
-<addon id="repository.yasir" name="Yasirs Addon Repository" version="0.3" provider-name="Yasir">
+
+<addon id="repository.yasir" name="Yasirs Addon Repository" version="0.5" provider-name="Yasir">
 	<extension point="xbmc.addon.repository" name="Yasirs Addon Repository">
     <dir>
             <info compressed="false">https://raw.github.com/compyy/Kodiaddons/master/addons.xml</info>
             <checksum>https://raw.github.com/compyy/Kodiaddons/master/addons.xml.md5</checksum>
             <datadir zip="true">https://raw.github.com/compyy/Kodiaddons/master/zips</datadir>
     </dir>
-    
+
     <info compressed="false">https://raw.github.com/compyy/Kodiaddons/master/addons.xml</info>
     <checksum>https://raw.github.com/compyy/Kodiaddons/master/addons.xml.md5</checksum>
     <datadir zip="true">https://raw.github.com/compyy/Kodiaddons/master/zips</datadir>
