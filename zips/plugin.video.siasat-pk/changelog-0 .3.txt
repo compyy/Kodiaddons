@@ -1,0 +1,2 @@
+[B]Version 0.3[/B]
+- Fixed some issues 0.3
