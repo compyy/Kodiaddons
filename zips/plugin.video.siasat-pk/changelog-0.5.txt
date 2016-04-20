@@ -1,2 +1,0 @@
-[B]Version 0.5[/B]
-- Finally stable release

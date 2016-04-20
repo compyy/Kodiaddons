@@ -1,2 +1,0 @@
-[B]Version 0.2[/B]
-- Init 0.2
