@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="plugin.video.siasat-pk" name="Siasat-pk" version="1.0" provider-name="Yasir">
   <requires>
-		<import addon="xbmc.python"/>
+		<import addon="xbmc.python" version="2.1.0"/>
 		<import addon="script.module.addon.common"/>
 		<import addon="plugin.video.youtube"/>
 		<import addon="script.module.requests"/>
