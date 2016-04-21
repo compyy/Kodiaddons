@@ -143,7 +143,7 @@ def GetShowLink(url):
 	did=re.findall('<iframe.*src=["]http.*dailymotion.com.*video[/](.*)[?].*["]',link)
 	yid=re.findall('<iframe.*YouTube.*src=["].*youtube[.]com.*[/](.*)[?].*["].*iframe>',link)
 
-	if Auto_Play==true:
+	if Auto_Play==True:
 		if did:
 			xbmc.executebuiltin('PlayMedia(plugin://plugin.video.dailymotion/?url='+did[0]+'&mode=playVideo)')
 		elif yid:

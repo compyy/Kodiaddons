@@ -29,6 +29,11 @@ import re
 import time
 import shutil
 import xml.etree.ElementTree as ET
+from shutil import copyfile
+
+
+#Copy files from kodi directory to github.
+copyfile('/home/beta/.kodi/addons/plugin.video.siasat-pk/addon.py','/home/beta/Kodiaddons/plugin.video.siasat-pk/addon.py' )
  
 # Compatibility with 3.0, 3.1 and 3.2 not supporting u"" literals
 if sys.version < '3':
