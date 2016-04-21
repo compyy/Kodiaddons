@@ -10,7 +10,7 @@ DTSurl="http://www.siasat.pk/forum/forumdisplay.php?29-Daily-Talk-Shows/"
 DVurl="http://www.siasat.pk/forum/forumdisplay.php?21-Siasi-Videos/"
 SCurl="http://www.siasat.pk/forum/forumdisplay.php?37-Sports-Corner/"
 Zemurl="http://www.zemtv.com"
-
+Auto_Play=True
 
 def get_params():
 	param=[]
@@ -143,6 +143,14 @@ def GetShowLink(url):
 	did=re.findall('<iframe.*src=["]http.*dailymotion.com.*video[/](.*)[?].*["]',link)
 	yid=re.findall('<iframe.*YouTube.*src=["].*youtube[.]com.*[/](.*)[?].*["].*iframe>',link)
 
+	if Auto_Play==true:
+		if did:
+			xbmc.executebuiltin('PlayMedia(plugin://plugin.video.dailymotion/?url='+did[0]+'&mode=playVideo)')
+		else if yid:
+			xbmc.executebuiltin('PlayMedia(plugin://plugin.video.dailymotion/?url='+did[0]+'&mode=playVideo)')
+		
+		return
+		
 	if did:
 		addDir("DailyMotion", did[0], 4, '', isItFolder=False)
 	
@@ -156,7 +164,7 @@ def PlayShowLink(name,url):
 		xbmc.executebuiltin('PlayMedia(plugin://plugin.video.dailymotion/?url='+url+'&mode=playVideo)')
 
 	if name=="Youtube":
-		xbmc.executebuiltin('PlayMedia(plugin://plugin.video.youtube/play/?video_id='+url+')')
+		xbmc.executebuiltin('PlayMedia(plugin://plugin.video.dailymotion/?url='+url+'&mode=playVideo)')
 
 	return
 
