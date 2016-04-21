@@ -146,7 +146,7 @@ def GetShowLink(url):
 	if Auto_Play==true:
 		if did:
 			xbmc.executebuiltin('PlayMedia(plugin://plugin.video.dailymotion/?url='+did[0]+'&mode=playVideo)')
-		else if yid:
+		elif yid:
 			xbmc.executebuiltin('PlayMedia(plugin://plugin.video.dailymotion/?url='+did[0]+'&mode=playVideo)')
 		
 		return
