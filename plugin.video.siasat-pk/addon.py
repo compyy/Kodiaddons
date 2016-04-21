@@ -9,7 +9,6 @@ Nexturl="http://www.siasat.pk/forum/"
 DTSurl="http://www.siasat.pk/forum/forumdisplay.php?29-Daily-Talk-Shows/"
 DVurl="http://www.siasat.pk/forum/forumdisplay.php?21-Siasi-Videos/"
 SCurl="http://www.siasat.pk/forum/forumdisplay.php?37-Sports-Corner/"
-Zemurl="http://www.zemtv.com"
 Auto_Play=True
 
 def get_params():
@@ -36,16 +35,25 @@ def Addtypes():
 	addDir('Daily Talk Shows' ,'DTShows' ,2,'')
 	addDir('Daily Vidoes' ,'DVidoes' ,2,'')
 	addDir('Sports Corner' ,'SCorner' ,2,'')
-	addDir('ZemTV Shows' ,'ZShows' ,2,'')
 
 	return
 
 
-def addDir(name,url,mode,iconimage,isItFolder=True):
+def addDir(name,url,mode,iconimage,isItFolder=True,Context=False):
 	u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)
 	ok=True
+
 	liz=xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=iconimage)
 	liz.setInfo( type="Video", infoLabels={ "Title": name } )
+	
+	if Context==True:
+		cmd1="DailyMotion Link not Available"
+		cmd2="Youtube Link not Available"
+		cmd1 = "PlayShowLink(%s,%s)" % ("DailyMotion",url)
+		cmd2 = "PlayShowLink(%s,%s)" % ("Youtube",url)
+		liz.addContextMenuItems([("Play DailyMotion",cmd1),("Play Youtube",cmd2)])
+		
+
 	ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=isItFolder)
 	return ok
 
@@ -57,12 +65,8 @@ def AddEnteries(name, type=None):
 		AddShows(DVurl)
 	elif type=='SCorner':
 		AddShows(SCurl)
-	elif type=='ZShows':
-		AddZem(Zemurl)
 	elif name=='Next Page':
 		AddShows((Nexturl+url))
-	elif name=='Zem Next Page':
-		AddZem(url)
 
 	return
 
@@ -82,51 +86,13 @@ def AddShows(Fromurl):
 
 
 	for urls, desc, img in zip(URL,Desc,IMG):
-		addDir(desc, urls, 3, img, isItFolder=True)
+		addDir(desc, urls, 3, img, True)
 
 	match =re.findall('<span class="prev_next"><a rel="next" href="(.*)["]\stitle="Next Page', link, re.IGNORECASE)
 
 	if len(match)==2:
-		addDir('Next Page' ,match[0] ,2,'', isItFolder=True)
+		addDir('Next Page' ,match[0] ,2,'', True)
 
-	return
-
-def AddZem(Fromurl):
-	headers = {'User-Agent' : 'Mozilla 5.10'}
-	request=urllib2.Request(Fromurl, None, headers)
-	response=urllib2.urlopen(request)
-	linkfull=response.read()
-
-	link=linkfull
-	
-	if '<div id="top-articles">' in linkfull:
-		link=linkfull.split('<div id="top-articles">')[0]
-
-	match=re.findall('<div class="thumbnail">\\s*<a href="(.*?)".*\s*<img class="thumb".*?src="(.*?)" alt="(.*?)"', link, re.UNICODE)
-	if len(match)==0:
-		match =re.findall('<div class="thumbnail">\s*<a href="(.*?)".*\s*<img.*?.*?src="(.*?)".* alt="(.*?)"', link, re.UNICODE)
-
-	if not '/page/' in Fromurl:
-		try:
-			pat='\\<a href="(.*?)".*>\\s*<img.*?src="(.*?)".*\\s?.*?\\s*?<h1.*?>(.*?)<'
-			matchbanner=re.findall(pat, linkfull, re.UNICODE)
-			if len(matchbanner)>0:
-				match=matchbanner+match
-
-		except: pass
-
-	for cname in match:
-		tname=cname[2]
-		tname=re.sub(r'[\x80-\xFF]+', convert,tname )
-		addDir(tname,cname[0] ,3,cname[1], isItFolder=True)
-        
-
-	match=re.findall('<a class="nextpostslink" rel="next" href="(.*?)">', link, re.IGNORECASE)
-	
-	if len(match)==1:
-		addDir('Zem Next Page' ,match[0] ,2,'',isItFolder=True)
-
-	
 	return
 
 def convert(s):
@@ -143,19 +109,14 @@ def GetShowLink(url):
 	did=re.findall('<iframe.*src=["]http.*dailymotion.com.*video[/](.*)[?].*["]',link)
 	yid=re.findall('<iframe.*YouTube.*src=["].*youtube[.]com.*[/](.*)[?].*["].*iframe>',link)
 
-	if Auto_Play==True:
-		if did:
-			xbmc.executebuiltin('PlayMedia(plugin://plugin.video.dailymotion/?url='+did[0]+'&mode=playVideo)')
-		elif yid:
-			xbmc.executebuiltin('PlayMedia(plugin://plugin.video.dailymotion/?url='+did[0]+'&mode=playVideo)')
-		
-		return
-		
 	if did:
-		addDir("DailyMotion", did[0], 4, '', isItFolder=False)
+		#addDir("DailyMotion", did[0], 4, '', isItFolder=False)
+		PlayShowLink("DailyMotion", did[0])
+		
 	
-	if yid:
-		addDir("Youtube", yid[0], 4, '', isItFolder=False)
+	elif yid:
+		#addDir("Youtube", yid[0], 4, '', isItFolder=False)
+		PlayShowLink("Youtube", yid[0])
 
 	return
 
@@ -164,8 +125,8 @@ def PlayShowLink(name,url):
 		xbmc.executebuiltin('PlayMedia(plugin://plugin.video.dailymotion/?url='+url+'&mode=playVideo)')
 
 	if name=="Youtube":
-		xbmc.executebuiltin('PlayMedia(plugin://plugin.video.dailymotion/?url='+url+'&mode=playVideo)')
-
+		xbmc.executebuiltin('PlayMedia(plugin://plugin.video.youtube/play/?video_id='+url+')')
+	
 	return
 
 
@@ -200,18 +161,14 @@ try:
 		AddEnteries(name, url)
 
 	elif mode==3:
-		match=re.findall('zemtv', url, re.IGNORECASE)	
-		if len(match)==1:
-			GetShowLink(url)
-		else:
-			GetShowLink(Posturl+url)
+		GetShowLink(Posturl+url)
 
-	elif mode==4:
-		PlayShowLink(name,url)
+	#elif mode==4:
+		#PlayShowLink(name,url)
 
 except:
 	print 'Something dint work'
 	traceback.print_exc(file=sys.stdout)
 
-if not (mode==4):
+if not (mode==3):
 	xbmcplugin.endOfDirectory(int(sys.argv[1]))
