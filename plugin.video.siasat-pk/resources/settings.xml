@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
     <category label="32001">
-        <setting label="32010" type="enum" id="DefaultVideoType" default="Dailymotion" values="Dailymotion Video|Youtube Video"/>
+        <setting label="32010" type="enum" id="DefaultVideoType" default="DailyMotion" values="DailyMotion|Youtube"/>
 		<setting label="32011" type="bool" id="APlay" default="true"/>
      </category>
 </settings>

@@ -118,31 +118,47 @@ def GetShowLink(url):
 	request=urllib2.Request(url, None, headers)
 	response=urllib2.urlopen(request)
 	link=response.read()
+	available_source=[0,0]
+	available_link=[0,0]
+	Auto_Play=selfAddon.getSetting("APlay")
+	defaultLinkType=0 #0 DailyMotion, #1 Youtube
+	defaultLinkType=selfAddon.getSetting("DefaultVideoType")
+	
 	did=re.findall('<iframe.*src=["]http.*dailymotion.com.*video[/](.*)[?].*["]',link)
+	if did:
+		available_source[0]="DailyMotion"
+		available_link[0]=did[0]
+		
 	yid=re.findall('<iframe.*YouTube.*src=["].*youtube[.]com.*[/](.*)[?].*["].*iframe>',link)
-	APlay=selfAddon.getSetting("APlay")
+	if did:
+		available_source[1]="Youtube"
+		available_link[1]=yid[0]
 	
-	if APlay=="true":
-		if did:
-			PlayShowLink("DailyMotion", did[0])
-		
-		elif yid:
-			PlayShowLink("Youtube", yid[0])
-		
-		return
-	
-	if linkType:
-			if linkType=="DailyMotion":
-				if did:
+	if len(available_source)>0:
+		if Auto_Play=="true":
+			for i in available_source:
+				if	i=="DailyMotion" and defaultLinkType=="0":
 					PlayShowLink("DailyMotion", did[0])
+					return
+				
 				else:
-					xbmcgui.Dialog().ok(__addonname__,"No DailyMotion link found")
-
-			if linkType=="Youtube":
-				if yid:
 					PlayShowLink("Youtube", yid[0])
-				else:
-					xbmcgui.Dialog().ok(__addonname__,"YouTube link found")
+					return
+				
+		dialog = xbmcgui.Dialog()
+		index = dialog.select('Choose your stream', available_source)
+		
+		if index > -1:
+			linkType=available_source[index]
+			linkurl=available_link[index]
+		
+		
+		if linkType:
+				PlayShowLink(linkType, linkurl)
+				
+			
+	else:
+		xbmcgui.Dialog().ok(__addonname__,"No Valid link found in the post")
 	
 	return
 

@@ -1,4 +1,6 @@
 [B]Version 1.5[/B]
+Fixed auto Play and default video settings.
+[B]Version 1.5[/B]
 Added context/auto play feature.
 [B]Version 1.0[/B]
 First Public Release
