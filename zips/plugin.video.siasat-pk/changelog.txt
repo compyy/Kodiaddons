@@ -1,4 +1,6 @@
-[B]Version 1.5[/B]
+[B]Version 1.7[/B]
+fixed the default video issue.
+[B]Version 1.6[/B]
 Fixed auto Play and default video settings.
 [B]Version 1.5[/B]
 Added context/auto play feature.
