@@ -1,3 +1,5 @@
+V 1.2
+fixed login bug
 V 1.1
 fixed Trakt
 V 1.0
