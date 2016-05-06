@@ -7,6 +7,10 @@ Nexturl="http://www.siasat.pk/forum/"
 DTSurl="http://www.siasat.pk/forum/forumdisplay.php?29-Daily-Talk-Shows/"
 DVurl="http://www.siasat.pk/forum/forumdisplay.php?21-Siasi-Videos/"
 SCurl="http://www.siasat.pk/forum/forumdisplay.php?37-Sports-Corner/"
+Islurl="http://www.siasat.pk/forum/forumdisplay.php?30-Islamic-Corner"
+STurl="http://www.siasat.pk/forum/forumdisplay.php?39-Science-and-Technology"
+Hlurl="http://www.siasat.pk/forum/forumdisplay.php?42-Health-amp-Medical"
+
 
 
 __addon__       = xbmcaddon.Addon()
@@ -49,6 +53,9 @@ def Addtypes():
 	addDir('Daily Talk Shows' ,'DTShows' ,2,'')
 	addDir('Daily Vidoes' ,'DVidoes' ,2,'')
 	addDir('Sports Corner' ,'SCorner' ,2,'')
+	addDir('Science and Technology' ,'SCTC' ,2,'')
+	addDir('Islamic Videos' ,'Isl' ,2,'')
+	addDir('Health and Medical' ,'Hlmd' ,2,'')
 	addDir('Settings' ,'Settings' ,99,'',isItFolder=False)
 
 	return
@@ -76,7 +83,13 @@ def AddEnteries(name, type=None):
 	elif type=='DVidoes':
 		AddShows(DVurl)
 	elif type=='SCorner':
-		AddShows(SCurl)
+		AddShows(Surl)
+	elif type=='SCTC':
+		AddShows(STurl)
+	elif type=='Isl':
+		AddShows(Islurl)
+	elif type=='Hlmd':
+		AddShows(Hlurl)
 	elif name=='Next Page':
 		AddShows((Nexturl+url))
 

@@ -1,3 +1,5 @@
+[B]Version 1.8[/B]
+Added Extra video sections.
 [B]Version 1.7[/B]
 fixed the default video issue.
 [B]Version 1.6[/B]
