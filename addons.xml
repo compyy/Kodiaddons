@@ -41,4 +41,27 @@
 		<platform>all</platform>
 	</extension>
 </addon>
+
+    <addon id="plugin.video.documentaries" version="1.0" name="HD Documenteries" provider-name="Yasir">
+    <requires>
+        <import addon="xbmc.python" version="2.1.0"/>
+        <import addon="script.module.urlresolver"  version="2.1.2"/>
+        <import addon="script.module.t0mm0.common" version="2.0.0"/>
+
+
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary>Plays Documentaries and Movies</summary>
+        <description>Play Best documentaries with HD quality</description>
+        <disclaimer>The author does not host or distribute any of the content displayed by this addon. The author does not have any affiliation with the content providers.</disclaimer>
+        <language>en</language>
+        <platform>all</platform>
+        <source>https://github.com/compyy/Kodisiasat</source>
+		<website>https://github.com/compyy/Kodisiasat</website>
+        <email></email>
+    </extension>
+</addon>
 </addons>
