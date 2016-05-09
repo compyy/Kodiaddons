@@ -83,7 +83,7 @@ def AddEnteries(name, type=None):
 	elif type=='DVidoes':
 		AddShows(DVurl)
 	elif type=='SCorner':
-		AddShows(Surl)
+		AddShows(SCurl)
 	elif type=='SCTC':
 		AddShows(STurl)
 	elif type=='Isl':
