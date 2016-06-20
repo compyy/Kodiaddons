@@ -1,3 +1,5 @@
+[B]Version 1.9.1[/B]
+fixed thumbnails
 [B]Version 1.8[/B]
 Added Extra video sections.
 [B]Version 1.7[/B]

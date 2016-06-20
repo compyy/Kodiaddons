@@ -106,6 +106,7 @@ def AddShows(Fromurl):
 	IMG_list = re.compile('[<]img src[=]["](.*)["]\sstyle.*[>]').findall(link)
 	IMG = []
 	
+	print IMG_list
 	for i in IMG_list:
 		IMG.append(re.sub("amp;", "",i))
 		
