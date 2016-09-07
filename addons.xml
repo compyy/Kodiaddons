@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
-<addon id="plugin.video.siasat-pk" name="Siasat-pk" version="2.1b" provider-name="Yasir">
+<addon id="plugin.video.PakMedia" name="PakMedia" version="2.1b" provider-name="Yasir">
   <requires>
 		<import addon="xbmc.python" version="2.1.0"/>
 		<import addon="script.module.addon.common"/>
@@ -10,8 +10,8 @@
     <provides>video</provides>
   </extension>
   <extension point="xbmc.addon.metadata">
-    <summary lang="en">www.siasat.pk</summary>
-    <description lang="en">Watch Vidoes uploaded to siasat.pk</description>
+    <summary lang="en">www.something.com</summary>
+    <description lang="en">Watch Vidoes uploaded to different sources.</description>
     <disclaimer lang="en">The author does not host or distribute any of the content displayed by this addon. The author does not have any affiliation with the content provider.</disclaimer>
     <language>English</language>
     <source>https://github.com/compyy/Kodisiasat</source>
