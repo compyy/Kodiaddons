@@ -7,7 +7,7 @@ import xbmcplugin
 # noinspection PyUnresolvedReferences
 import xbmcaddon
 import sys
-import siasatpk
+import os
 import urllib
 import urlparse
 import traceback
@@ -25,6 +25,9 @@ profile_path = xbmc.translatePath(selfAddon.getAddonInfo('profile'))
 
 addonPath = xbmcaddon.Addon().getAddonInfo("path")
 addonversion = xbmcaddon.Addon().getAddonInfo("version")
+
+sys.path.append(os.path.join(addonPath, 'resources/siasatpk'))
+import siasatpk
 
 # Initializing the settings ###
 if not selfAddon.getSetting("dummy") == "true":

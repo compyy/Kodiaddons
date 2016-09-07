@@ -34,7 +34,7 @@ from shutil import copyfile
 
 #Copy files from kodi directory to github.
 copyfile('/home/beta/.kodi/addons/plugin.video.PakMedia/addon.py','/home/beta/Kodiaddons/plugin.video.PakMedia/addon.py' )
-copyfile('/home/beta/.kodi/addons/plugin.video.PakMedia/siasatpk.py','/home/beta/Kodiaddons/plugin.video.PakMedia/siasatpk.py' )
+copyfile('/home/beta/.kodi/addons/plugin.video.PakMedia/resources/siasatpk/siasatpk.py','/home/beta/Kodiaddons/plugin.video.PakMedia/resources/siasatpk/siasatpk.py' )
 
  
 # Compatibility with 3.0, 3.1 and 3.2 not supporting u"" literals

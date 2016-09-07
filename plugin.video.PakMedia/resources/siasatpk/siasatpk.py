@@ -55,15 +55,17 @@ class Siasat:
         self.profile_path = profile_path
         self.addonPath = addonPath
         self.addonversion = addonversion
+        self.icon=self.addonPath + "/resources/siasatpk/siasatpk.png"
 
 
     def add_types(self):
-        self.add_directory('Daily Talk Shows', 'DTShows', 2, '')
-        self.add_directory('Daily Vidoes', 'DVidoes', 2, '')
-        self.add_directory('Sports Corner', 'SCorner', 2, '')
-        self.add_directory('Science and Technology', 'SCTC', 2, '')
-        self.add_directory('Islamic Videos', 'Isl', 2, '')
-        self.add_directory('Health and Medical', 'Hlmd', 2, '')
+        print self.icon
+        self.add_directory('Daily Talk Shows', 'DTShows', 2, self.icon)
+        self.add_directory('Daily Vidoes', 'DVidoes', 2, self.icon)
+        self.add_directory('Sports Corner', 'SCorner', 2, self.icon)
+        self.add_directory('Science and Technology', 'SCTC', 2, self.icon)
+        self.add_directory('Islamic Videos', 'Isl', 2, self.icon)
+        self.add_directory('Health and Medical', 'Hlmd', 2, self.icon)
         self.add_directory('Settings', 'Settings', 99, 'OverlayZIP.png', isItFolder=False)
 
         return
