@@ -10,8 +10,6 @@ import xbmcgui
 import xbmcplugin
 # noinspection PyUnresolvedReferences
 import xbmcaddon
-# noinspection PyUnresolvedReferences
-import urlresolver
 import urllib2
 import urllib
 import re
@@ -21,35 +19,8 @@ import sys
 from Crypto.Cipher import AES
 import base64
 
-#
-# End of Imports
-#
-# Setting up basic Variables for XBMC ####
-__addon__ = xbmcaddon.Addon()
-__addonname__ = __addon__.getAddonInfo('name')
-__icon__ = __addon__.getAddonInfo('icon')
-addon_id = 'plugin.video.siasat-pk'
-selfAddon = xbmcaddon.Addon(id=addon_id)
-profile_path = xbmc.translatePath(selfAddon.getAddonInfo('profile'))
-
-addonPath = xbmcaddon.Addon().getAddonInfo("path")
-addonversion = xbmcaddon.Addon().getAddonInfo("version")
-
-# Initializing the settings ###
-if not selfAddon.getSetting("dummy") == "true":
-    selfAddon.setSetting("dummy", "true")
-
-
-# Define settting function ###
-def show_settings():
-    # type: () -> object
-    selfAddon.openSettings()
-
-
-# End of Addon Class info and setting ####
-
-class Video:
-    def __init__(self):
+class Siasat:
+    def __init__(self, __addon__,__addonname__,__icon__,addon_id,selfAddon,profile_path,addonPath,addonversion):
         key = selfAddon.getSetting("url_key")
         cipher = AES.new(key, AES.MODE_ECB)
         self.post_url = cipher.decrypt(base64.b64decode(
@@ -76,6 +47,15 @@ class Video:
         self.hm_url = cipher.decrypt(base64.b64decode(
             "gUhd9TxpnQppnZVAf7cv9oFIXfU8aZ0KaZ2VQH+3L/aBSF31PGmdCmmdlUB/ty/2CQd68kAxB14rfpsCAfmCIhTyLCCYq6Yomt0sY2USTc+F7X2pz6iwdyf0pDwigbeadoy6whtYBaL8op6Swshw3klxcH8ukbqp0vKJqlrudHI=")).strip(
             " ")
+        self.__addon__ = __addon__
+        self.__addonname__ = __addonname__
+        self.__icon__ = __icon__
+        self.addon_id = addon_id
+        self.selfAddon = selfAddon
+        self.profile_path = profile_path
+        self.addonPath = addonPath
+        self.addonversion = addonversion
+
 
     def add_types(self):
         self.add_directory('Daily Talk Shows', 'DTShows', 2, '')
@@ -151,15 +131,14 @@ class Video:
 
         return
 
-    def get_showLink(self, url):
-        global linkType
+    def get_showLink(self, url, linkType):
         headers = {'User-Agent': 'Mozilla 5.10'}
         request = urllib2.Request(url, None, headers)
         response = urllib2.urlopen(request)
         link = response.read()
         available_source = []
         available_link = []
-        default_play = selfAddon.getSetting("DefaultVideoType")
+        default_play = self.selfAddon.getSetting("DefaultVideoType")
 
         did = re.findall('<iframe.*src=["]http.*dailymotion.com.*video[/](.*)[?].*["]', link)
         if did:
@@ -183,7 +162,7 @@ class Video:
                     return
                 else:
                     if default_play == "":
-                        xbmcgui.Dialog().ok(__addonname__, "Default Player has been initialized to DailyMotion")
+                        xbmcgui.Dialog().ok(self.__addonname__, "Default Player has been initialized to DailyMotion")
                         default_play = "DailyMotion"
 
                     dialog = xbmcgui.Dialog()
@@ -204,7 +183,7 @@ class Video:
                 else:
                     if linkType == "Checksrc":
                         if available_source is None:
-                            xbmcgui.Dialog().ok(__addonname__, "No video link found in the post")
+                            xbmcgui.Dialog().ok(self.__addonname__, "No video link found in the post")
                             return
                         else:
                             dialog = xbmcgui.Dialog()
@@ -212,18 +191,21 @@ class Video:
                             if index > -1:
                                 self.play_showLink(available_source[index], available_link[index])
                                 return
+                            return
 
-                    xbmcgui.Dialog().ok(__addonname__, "No valid link found for " + linkType + " in the post")
+                    xbmcgui.Dialog().ok(self.__addonname__, "No valid link found for " + linkType + " in the post")
                     return
 
-        xbmcgui.Dialog().ok(__addonname__, "No video link found in the post")
+        xbmcgui.Dialog().ok(self.__addonname__, "No video link found in the post")
         return
 
     def play_showLink(self, name, video_id):
+        # noinspection PyUnresolvedReferences
+        import urlresolver
         if name == "DailyMotion":
             media_url = urlresolver.HostedMediaFile(host='dailymotion.com', media_id=video_id).resolve()
             xbmc.Player().play(media_url)
-            
+
         if name == "Youtube":
             media_url = urlresolver.HostedMediaFile(host='youtube.com', media_id=video_id).resolve()
             xbmc.Player().play(media_url)
@@ -232,85 +214,4 @@ class Video:
             media_url = urlresolver.HostedMediaFile(host='facebook.com', media_id=video_id).resolve()
             xbmc.Player().play(media_url)
 
-
         return
-
-
-# Define function to monitor real time parameters ###
-def get_params():
-    param = []
-    paramstring = sys.argv[2]
-    print sys.argv[2]
-    if len(paramstring) >= 2:
-        params = sys.argv[2]
-        cleanedparams = params.replace('?', '')
-        if params[len(params) - 1] == '/':
-            params = params[0:len(params) - 2]
-        pairsofparams = cleanedparams.split('&')
-        param = {}
-        for i in range(len(pairsofparams)):
-            splitparams = {}
-            splitparams = pairsofparams[i].split('=')
-            if (len(splitparams)) == 2:
-                param[splitparams[0]] = splitparams[1]
-
-    return param
-
-
-params = get_params()
-url = None
-name = None
-mode = None
-linkType = None
-
-# Initializing Video Instance
-v = Video()
-
-# noinspection PyBroadException
-try:
-    url = urllib.unquote_plus(params["url"])
-except:
-    pass
-# noinspection PyBroadException
-try:
-    name = urllib.unquote_plus(params["name"])
-except:
-    pass
-# noinspection PyBroadException
-try:
-    mode = int(params["mode"])
-except:
-    pass
-
-args = urlparse.parse_qs(sys.argv[2][1:])
-# noinspection PyRedeclaration
-linkType = ''
-
-# noinspection PyBroadException
-try:
-    linkType = args.get('linkType', '')[0]
-except:
-    pass
-
-print mode, url, name, linkType
-
-# noinspection PyBroadException
-try:
-    if mode is None or url is None or len(url) < 1:
-        v.add_types()
-
-    elif mode == 2:
-        v.add_enteries(name, url)
-
-    elif mode == 3:
-        v.get_showLink(v.post_url + url)
-
-    elif mode == 99:
-        show_settings()
-
-except:
-    print 'Something dint work'
-    traceback.print_exc(file=sys.stdout)
-
-if not (mode == 3):
-    xbmcplugin.endOfDirectory(int(sys.argv[1]))
