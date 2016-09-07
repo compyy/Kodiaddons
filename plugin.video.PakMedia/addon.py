@@ -67,7 +67,7 @@ name = None
 mode = None
 linkType = None
 
-# Initializing Video Instance
+# Initializing siasatpk Instance
 v = siasatpk.Siasat(__addon__,__addonname__,__icon__,addon_id,selfAddon,profile_path,addonPath,addonversion)
 
 # noinspection PyBroadException
