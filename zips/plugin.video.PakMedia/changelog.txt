@@ -1,4 +1,4 @@
-[B]Version 2.2b[/B]
+[B]Version 2.2.1b[/B]
 small bug fixes
 [B]Version 2.1b[/B]
 - changed the name from siasat-pk to PakMedia
