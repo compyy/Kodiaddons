@@ -1,0 +1,23 @@
+[B]Version 2.2b[/B]
+small bug fixes
+[B]Version 2.1b[/B]
+- changed the name from siasat-pk to PakMedia
+- moved the siasatpk to module
+[B]Version 2.0b[/B]
+Major code cleanup and optimization.
+[B]Version 1.9.1[/B]
+fixed thumbnails
+[B]Version 1.8[/B]
+Added Extra video sections.
+[B]Version 1.7[/B]
+fixed the default video issue.
+[B]Version 1.6[/B]
+Fixed auto Play and default video settings.
+[B]Version 1.5[/B]
+Added context/auto play feature.
+[B]Version 1.0[/B]
+First Public Release
+[B]Version 0.3[/B]
+- fixed updates
+[B]Version 0.2[/B]
+- First commit

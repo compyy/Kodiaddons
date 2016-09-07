@@ -1,2 +1,2 @@
 # Kodisiasat
-Siasatpk plugin for Kodi
+Kodi Plugin for Video sites of Pakistan
