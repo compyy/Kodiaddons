@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
     <category label="32001">
-        <setting label="32010" type="enum" id="DefaultVideoType" default="DailyMotion" values="DailyMotion|Youtube"/>
-		<setting label="32011" type="bool" id="APlay" default="true"/>
+        <setting label="32010" type="labelenum" id="DefaultVideoType" default="DailyMotion" values="DailyMotion|Youtube|Facebook"/>
+		<setting label="32012" type="text" id="url_key" value="URL_KEY"  default="1234567890123456"/>
      </category>
 </settings>

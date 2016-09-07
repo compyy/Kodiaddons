@@ -1,3 +1,5 @@
+[B]Version 2.0b[/B]
+Major code cleanup and optimization.
 [B]Version 1.9.1[/B]
 fixed thumbnails
 [B]Version 1.8[/B]

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.siasat-pk" name="Siasat-pk" version="1.9.2" provider-name="Yasir">
+<addon id="plugin.video.siasat-pk" name="Siasat-pk" version="2.0b" provider-name="Yasir">
   <requires>
 		<import addon="xbmc.python" version="2.1.0"/>
 		<import addon="script.module.addon.common"/>
-		<import addon="plugin.video.youtube"/>
-		<import addon="script.module.requests"/>
-		<import addon="plugin.video.dailymotion"/>
+	  	<import addon="script.module.urlresolver"/>
   </requires>
   <extension point="xbmc.python.pluginsource" library="addon.py">
     <provides>video</provides>
