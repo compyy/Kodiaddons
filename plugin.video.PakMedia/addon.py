@@ -19,7 +19,7 @@ import traceback
 __addon__ = xbmcaddon.Addon()
 __addonname__ = __addon__.getAddonInfo('name')
 __icon__ = __addon__.getAddonInfo('icon')
-addon_id = 'plugin.video.siasat-pk'
+addon_id = 'plugin.video.PakMedia'
 selfAddon = xbmcaddon.Addon(id=addon_id)
 profile_path = xbmc.translatePath(selfAddon.getAddonInfo('profile'))
 
