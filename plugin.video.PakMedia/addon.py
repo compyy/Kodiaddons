@@ -26,7 +26,8 @@ profile_path = xbmc.translatePath(selfAddon.getAddonInfo('profile'))
 addonPath = xbmcaddon.Addon().getAddonInfo("path")
 addonversion = xbmcaddon.Addon().getAddonInfo("version")
 
-sys.path.append(os.path.join(addonPath, 'resources/siasatpk'))
+sys.path.append(os.path.join(addonPath, 'resources', 'siasatpk'))
+sys.path.append(os.path.join(addonPath, 'resources', 'lib'))
 import siasatpk
 
 # Initializing the settings ###

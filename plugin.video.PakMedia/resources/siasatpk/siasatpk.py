@@ -16,7 +16,7 @@ import re
 import traceback
 import urlparse
 import sys
-from Crypto.Cipher import AES
+import AES
 import base64
 
 class Siasat:
@@ -59,7 +59,6 @@ class Siasat:
 
 
     def add_types(self):
-        print self.icon
         self.add_directory('Daily Talk Shows', 'DTShows', 2, self.icon)
         self.add_directory('Daily Vidoes', 'DVidoes', 2, self.icon)
         self.add_directory('Sports Corner', 'SCorner', 2, self.icon)

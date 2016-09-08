@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.PakMedia" name="PakMedia" version="2.2.2b" provider-name="Yasir">
+<addon id="plugin.video.PakMedia" name="PakMedia" version="2.2.3b" provider-name="Yasir">
   <requires>
 		<import addon="xbmc.python" version="2.1.0"/>
 		<import addon="script.module.addon.common"/>
