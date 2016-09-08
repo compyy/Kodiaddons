@@ -209,6 +209,14 @@ class Siasat:
         return
 
     def play_showLink(self, name, video_id):
+
+        if name == "Playwire":
+            import playwire
+            media_url = playwire.resolve(video_id)
+            #media_url = urlresolver.HostedMediaFile(host='facebook.com', media_id=video_id).resolve()
+            xbmc.Player().play(media_url)
+            return
+
         # noinspection PyUnresolvedReferences
         import urlresolver
         if name == "DailyMotion":
@@ -223,10 +231,5 @@ class Siasat:
             media_url = urlresolver.HostedMediaFile(host='facebook.com', media_id=video_id).resolve()
             xbmc.Player().play(media_url)
 
-        if name == "Playwire":
-            import playwire
-            media_url = playwire.resolve(video_id)
-            #media_url = urlresolver.HostedMediaFile(host='facebook.com', media_id=video_id).resolve()
-            xbmc.Player().play(media_url)
 
         return
