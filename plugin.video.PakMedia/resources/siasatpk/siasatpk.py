@@ -13,14 +13,14 @@ import xbmcaddon
 import urllib2
 import urllib
 import re
-import traceback
 import urlparse
 import sys
 import AES
 import base64
 
+
 class Siasat:
-    def __init__(self, __addon__,__addonname__,__icon__,addon_id,selfAddon,profile_path,addonPath,addonversion):
+    def __init__(self, __addon__, __addonname__, __icon__, addon_id, selfAddon, profile_path, addonPath, addonversion):
         key = selfAddon.getSetting("url_key")
         cipher = AES.new(key, AES.MODE_ECB)
         self.post_url = cipher.decrypt(base64.b64decode(
@@ -55,8 +55,7 @@ class Siasat:
         self.profile_path = profile_path
         self.addonPath = addonPath
         self.addonversion = addonversion
-        self.icon=self.addonPath + "/resources/siasatpk/siasatpk.png"
-
+        self.icon = self.addonPath + "/resources/siasatpk/siasatpk.png"
 
     def add_types(self):
         self.add_directory('Daily Talk Shows', 'DTShows', 2, self.icon)
@@ -77,10 +76,11 @@ class Siasat:
             cmd1 = "XBMC.RunPlugin(%s&linkType=%s)" % (u, "DailyMotion")
             cmd2 = "XBMC.RunPlugin(%s&linkType=%s)" % (u, "Youtube")
             cmd3 = "XBMC.RunPlugin(%s&linkType=%s)" % (u, "Facebook")
-            cmd4 = "XBMC.RunPlugin(%s&linkType=%s)" % (u, "Checksrc")
+            cmd4 = "XBMC.RunPlugin(%s&linkType=%s)" % (u, "Playwire")
+            cmd5 = "XBMC.RunPlugin(%s&linkType=%s)" % (u, "Checksrc")
             liz.addContextMenuItems(
                 [('Play DailyMotion video', cmd1), ('Play Youtube video', cmd2), ('Play Facebook video', cmd3),
-                 ('Check Available Sources', cmd4)],
+                 ('Play Playwire video', cmd4), ('Check Available Sources', cmd5)],
                 replaceItems=True)
 
         if linkType:
@@ -156,6 +156,14 @@ class Siasat:
             available_source.append("Facebook")
             available_link.append(fid[0])
 
+        pid = re.findall('src=".*?(playwire).*?data-publisher-id="(.*?)"\s*data-video-id="(.*?)"', link)
+        if len(pid) == 0:
+            pid = re.findall('data-config="(.*?config.playwire.com.*?)"', link)
+
+        if pid:
+            available_source.append("Playwire")
+            available_link.append(pid[0])
+
         if len(available_source) > 0:
             if linkType == "":
                 if default_play in available_source:
@@ -213,6 +221,12 @@ class Siasat:
 
         if name == "Facebook":
             media_url = urlresolver.HostedMediaFile(host='facebook.com', media_id=video_id).resolve()
+            xbmc.Player().play(media_url)
+
+        if name == "Playwire":
+            import playwire
+            media_url = playwire.resolve(video_id)
+            #media_url = urlresolver.HostedMediaFile(host='facebook.com', media_id=video_id).resolve()
             xbmc.Player().play(media_url)
 
         return
