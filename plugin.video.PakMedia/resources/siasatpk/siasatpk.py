@@ -13,9 +13,8 @@ import xbmcaddon
 import urllib2
 import urllib
 import re
-import urlparse
 import sys
-import AES
+import pyaes as AES
 import base64
 
 
