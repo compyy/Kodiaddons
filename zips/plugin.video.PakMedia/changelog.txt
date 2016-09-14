@@ -1,3 +1,5 @@
+[B]Version 2.2.6b[/B]
+- fixed Next-Page bug
 [B]Version 2.2.5b[/B]
 - fixed pycrypto dependancy
 [B]Version 2.2.4b[/B]

@@ -102,7 +102,7 @@ class Siasat:
         elif url_type == 'Hlmd':
             self.add_shows(self.hm_url)
         elif name == 'Next Page':
-            self.add_shows((self.next_url + url))
+            self.add_shows((self.next_url + url_type))
 
         return
 
