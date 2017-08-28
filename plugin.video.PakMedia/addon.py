@@ -28,6 +28,10 @@ addonversion = xbmcaddon.Addon().getAddonInfo("version")
 
 sys.path.append(os.path.join(addonPath, 'resources', 'siasatpk'))
 sys.path.append(os.path.join(addonPath, 'resources', 'lib'))
+
+ZEMCOOKIEFILE='ZemCookieFile.lwp'
+ZEMCOOKIEFILE=os.path.join(profile_path, ZEMCOOKIEFILE)
+
 import siasatpk
 
 # Initializing the settings ###
@@ -72,7 +76,7 @@ mode = None
 linkType = None
 
 # Initializing siasatpk Instance
-v = siasatpk.Siasat(__addon__,__addonname__,__icon__,addon_id,selfAddon,profile_path,addonPath,addonversion)
+v = siasatpk.Siasat(__addon__,__addonname__,__icon__,addon_id,selfAddon,profile_path,addonPath,addonversion,ZEMCOOKIEFILE)
 
 # noinspection PyBroadException
 try:
@@ -100,7 +104,10 @@ try:
 except:
     pass
 
-print mode, url, name, linkType
+print 'Mode = ',mode
+print 'URL = ',url
+print 'Name = ',name
+print 'LinkType = ', linkType
 
 # noinspection PyBroadException
 try:
@@ -111,7 +118,10 @@ try:
         v.add_enteries(name, url)
 
     elif mode == 3:
-        v.get_showLink(v.post_url + url, linkType)
+        v.get_showLink(v.post_url + url, linkType,type='siasat')
+
+    elif mode == 4:
+        v.get_showLink(url, linkType,type='zemtv')
 
     elif mode == 99:
         show_settings()

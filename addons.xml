@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
-    <addon id="plugin.video.PakMedia" name="PakMedia" version="2.2.8" provider-name="Yasir">
+<addon id="plugin.video.PakMedia" name="PakMedia" version="3.0.0B" provider-name="Yasir">
   <requires>
-		<import addon="xbmc.python" version="2.1.0"/>
 		<import addon="script.module.addon.common"/>
 	  	<import addon="script.module.urlresolver"/>
   </requires>
