@@ -263,7 +263,7 @@ class Siasat:
         if type=='siasat':
             yid = re.findall('<iframe.*YouTube.*src=["].*youtube[.]com.*[/](.*)[?].*["].*iframe>', link)
         elif type=='zemtv':
-            yidre.findall('<iframe.*?src=\".*?youtube.*?embed\/(.*?)\"', link, re.DOTALL | re.IGNORECASE)
+            yid= re.findall('<iframe.*?src=\".*?youtube.*?embed\/(.*?)\"', link, re.DOTALL | re.IGNORECASE)
         if yid:
             available_source.append("Youtube")
             available_link.append(yid[0])

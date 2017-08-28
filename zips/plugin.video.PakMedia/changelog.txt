@@ -1,4 +1,4 @@
-[B]Version 3.0.0Beta[/B]
+[B]Version 3.0.1Beta[/B]
 - Added ZemTV
 [B]Version 2.2.8[/B]
 - Dailymotion fix
