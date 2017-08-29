@@ -1,3 +1,5 @@
+[B]Version 3.0.4Beta[/B]
+- Fixed default videotype
 [B]Version 3.0.3Beta[/B]
 - Fixed Memory consumption issue.
 [B]Version 3.0.2Beta[/B]

@@ -299,21 +299,15 @@ def get_showLink(url, linkType, type):
     if len(available_source) > 0:
         if linkType == "":
             if default_play in available_source:
+                xbmcgui.Dialog().notification(__addonname__, "Playing " +default_play + " video", __icon__, 5000, False)
                 play_showLink(default_play, available_link[available_source.index(default_play)])
                 return
             else:
-                if default_play == "":
-                    xbmcgui.Dialog().ok(__addonname__, "Default Player has been initialized to DailyMotion")
-                    default_play = "DailyMotion"
-                dialog = xbmcgui.Dialog()
-                index = dialog.select(
-                    "No valid link available for " + default_play + " Source\nChoose from available stream",
-                    available_source)
-                if index > -1:
-                    play_showLink(available_source[index], available_link[index])
-                    return
-                else:
-                    return
+                xbmcgui.Dialog().notification(__addonname__, default_play+ " Video not found", __icon__, 2000, False)
+                xbmcgui.Dialog().notification(__addonname__, "Playing " + available_source[0] + " video", __icon__, 2000, False)
+                play_showLink(available_source[0], available_link[0])
+                return
+
         else:
             if linkType in available_source:
                 play_showLink(linkType, available_link[available_source.index(linkType)])
