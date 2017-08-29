@@ -1,3 +1,7 @@
+[B]Version 3.0.3Beta[/B]
+- Fixed Memory consumption issue.
+[B]Version 3.0.2Beta[/B]
+- Fixed Auto Play
 [B]Version 3.0.1Beta[/B]
 - Added ZemTV
 [B]Version 2.2.8[/B]
