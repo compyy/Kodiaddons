@@ -51,6 +51,11 @@ ZEMCOOKIEFILE = os.path.join(profile_path, ZEMCOOKIEFILE)
 spicon = addonPath + '/resources/icon/siasatpk.png'
 zmicon = addonPath + '/resources/icon/zem.jpg'
 
+p_dm= re.compile("<iframe.*src=.*http.*dailymotion.com.*video[/](.*?)['|/?]")
+p_yt= re.compile('<iframe.*?src=\".*?youtube.*?embed\/(.*?)[\"|\?]')
+p_pw = re.compile('src=".*?(playwire).*?data-publisher-id="(.*?)"\s*data-video-id="(.*?)"')
+p_fb = re.compile('<.*["]http.*facebook[.]com[/]video[.]php[?]v[=](.*?)["]')
+
 # Initializing the settings ###
 if not selfAddon.getSetting("dummy") == "true":
     selfAddon.setSetting("dummy", "true")
@@ -180,7 +185,7 @@ def addzemshows(Fromurl):
             tname = h.unescape(tname).encode("utf-8")
         except:
             tname = re.sub(r'[\x80-\xFF]+', convert, tname)
-        add_directory(tname, cname[1], 4, cname[0] + '|Cookie=%s' % getCookiesString(
+        add_directory(tname, cname[1], 3, cname[0] + '|Cookie=%s' % getCookiesString(
             CookieJar) + '&User-Agent=Mozilla/5.0(iPad; U; CPU iPhone OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B314 Safari/531.21.10',
                       True, isItFolder=False)
     pageNumber = re.findall("pageNumber=(.*?)&", Fromurl)[0]
@@ -260,41 +265,33 @@ def getCookiesString(cookieJar):
     return cookieString
 
 
-def get_showLink(url, linkType, type):
-    headers = {'User-Agent': 'Mozilla 5.10'}
-    request = urllib2.Request(url, None, headers)
-    response = urllib2.urlopen(request)
-    link = response.read()
+def get_showLink(url, linkType):
+    headers = [('User-Agent',
+                'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36')]
+    link = getUrl(url, headers=headers)
     available_source = []
     available_link = []
     default_play = selfAddon.getSetting("DefaultVideoType")
-    if type == 'siasat':
-        did = re.findall('<iframe.*src=["]http.*dailymotion.com.*video[/](.*)[?].*["]', link)
-    elif type == 'zemtv':
-        did = re.findall("<iframe.*src=[']http.*dailymotion.com.*video[/](.*?)[']", link)
+
+    did = re.search(p_dm, link)
     if did:
         available_source.append("DailyMotion")
-        available_link.append(did[0])
+        available_link.append(did.groups(0))
 
-    if type == 'siasat':
-        yid = re.findall('<iframe.*YouTube.*src=["].*youtube[.]com.*[/](.*)[?].*["].*iframe>', link)
-    elif type == 'zemtv':
-        yid = re.findall('<iframe.*?src=\".*?youtube.*?embed\/(.*?)\"', link, re.DOTALL | re.IGNORECASE)
+    yid = re.search(p_yt, link)
     if yid:
         available_source.append("Youtube")
-        available_link.append(yid[0])
+        available_link.append(yid.groups(0))
 
-    fid = re.findall('<.*["]http.*facebook[.]com[/]video[.]php[?]v[=](.*?)["]', link)
+    fid = re.search(p_fb, link)
     if fid:
         available_source.append("Facebook")
-        available_link.append(fid[0])
+        available_link.append(fid.groups(0))
 
-    pid = re.findall('src=".*?(playwire).*?data-publisher-id="(.*?)"\s*data-video-id="(.*?)"', link)
-    if len(pid) == 0:
-        pid = re.findall('data-config="(.*?config.playwire.com.*?)"', link)
+    pid = re.search(p_pw, link)
     if pid:
         available_source.append("Playwire")
-        available_link.append(pid[0])
+        available_link.append(pid.groups(0))
 
     if len(available_source) > 0:
         if linkType == "":
@@ -328,7 +325,6 @@ def get_showLink(url, linkType, type):
                 return
     xbmcgui.Dialog().ok(__addonname__, "No video link found in the post")
     return
-
 
 def play_showLink(name, video_id):
     if name == "Playwire":
@@ -414,9 +410,7 @@ try:
     elif mode == 2:
         add_enteries(name, url)
     elif mode == 3:
-        get_showLink(url, linkType, type='siasat')
-    elif mode == 4:
-        get_showLink(url, linkType, type='zemtv')
+        get_showLink(url, linkType)
     elif mode == 99:
         show_settings()
 
