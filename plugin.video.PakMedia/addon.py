@@ -12,7 +12,8 @@ import xbmc
 import xbmcaddon
 import xbmcgui
 import xbmcplugin
-
+from multiprocessing.dummy import Pool
+from multiprocessing import cpu_count
 #
 # End of Imports
 #
@@ -81,7 +82,11 @@ def add_types():
 
 
 def add_directory(name, url, mode, iconimage, showContext=False, isItFolder=True, linkType=None):
-    u = sys.argv[0] + "?url=" + urllib.quote_plus(url) + "&mode=" + str(mode) + "&name=" + urllib.quote_plus(name)
+    if mode==3:
+        u = sys.argv[0] + "?url=" + urllib.quote_plus(url.values()[0]) + "&mode=" + str(mode) + "&name=" + urllib.quote_plus(name) + "&provider=" + url.keys()[0]
+    else:
+        u = sys.argv[0] + "?url=" + urllib.quote_plus(url) + "&mode=" + str(mode) + "&name=" + urllib.quote_plus(name)
+
     liz = xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=iconimage)
     liz.setInfo(type="Video", infoLabels={"Title": name})
     if showContext:
@@ -124,23 +129,13 @@ def add_shows(Fromurl):
     link = getUrl(Fromurl, headers=headers)
     match = re.findall('<div class="threadinfo".*?<img src="(.*?)".*?href="(.*?)" id="thread_title.*?>(.*?)<', link,
                        re.DOTALL)
-    h = HTMLParser.HTMLParser()
 
-    for cname in match:
-        tname = cname[2]
-        url = cname[1]
-        imageurl = cname[0].replace('&amp;', '&')
-        try:
-            tname = h.unescape(tname).encode("utf-8")
-        except:
-            tname = re.sub(r'[\x80-\xFF]+', convert, tname)
-
-        if not url.startswith('http'):
-            url = 'http://www.siasat.pk/forum/' + url
-        if not imageurl.startswith('http'):
-            imageurl = 'http://www.siasat.pk/forum/' + url
-
-        add_directory(tname, url, 3, imageurl, True, isItFolder=False)
+    try:
+        pool = Pool(cpu_count()*2)
+        pool.map(url_processor,match)
+    finally:
+        pool.close()
+        pool.join()
 
     match = re.findall('title="Results.*?<a href="(.*?)" title', link, re.IGNORECASE)
 
@@ -177,17 +172,13 @@ def addzemshows(Fromurl):
     CookieJar.save(ZEMCOOKIEFILE, ignore_discard=True)
     match = re.findall('<div class=\"(?:teal)?.?card\">.*?<img src=\"(.*?)\".*?<a href=\"(.*?)\".*?>(.*?)<', linkfull,
                        re.UNICODE | re.DOTALL)
-    print match
-    h = HTMLParser.HTMLParser()
-    for cname in match:
-        tname = cname[2]
-        try:
-            tname = h.unescape(tname).encode("utf-8")
-        except:
-            tname = re.sub(r'[\x80-\xFF]+', convert, tname)
-        add_directory(tname, cname[1], 3, cname[0] + '|Cookie=%s' % getCookiesString(
-            CookieJar) + '&User-Agent=Mozilla/5.0(iPad; U; CPU iPhone OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B314 Safari/531.21.10',
-                      True, isItFolder=False)
+
+    try:
+        pool = Pool(cpu_count()*2)
+        pool.map(url_processor,match)
+    finally:
+        pool.close()
+        pool.join()
     pageNumber = re.findall("pageNumber=(.*?)&", Fromurl)[0]
     catid = re.findall("catNumber=(.*)", Fromurl)[0]
     pageNumber = int(pageNumber) + 1
@@ -326,6 +317,56 @@ def get_showLink(name, url, linkType):
     xbmcgui.Dialog().ok(__addonname__, "No video link found in the post")
     return
 
+def url_processor(cname):
+    h = HTMLParser.HTMLParser()
+    if 'zem' in cname[1]:
+        tname = cname[2]
+        url=cname[1]
+        imageurl=cname[0]
+        try:
+            tname = h.unescape(tname).encode("utf-8")
+        except:
+            tname = re.sub(r'[\x80-\xFF]+', convert, tname)
+
+    else:
+        tname = cname[2]
+        url = cname[1]
+        imageurl = cname[0].replace('&amp;', '&')
+        try:
+            tname = h.unescape(tname).encode("utf-8")
+        except:
+            tname = re.sub(r'[\x80-\xFF]+', convert, tname)
+        if not url.startswith('http'):
+            url = 'http://www.siasat.pk/forum/' + url
+        if not imageurl.startswith('http'):
+            imageurl = 'http://www.siasat.pk/forum/' + url
+
+    headers = [('User-Agent',
+                'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36')]
+    link = getUrl(url, headers=headers)
+
+    source = {}
+    did = re.search(p_dm, link)
+    if did:
+        source['DailyMotion'] = did.groups(0)[0]
+
+    yid = re.search(p_yt, link)
+    if yid:
+        source['Youtube'] = yid.groups(0)[0]
+
+    fid = re.search(p_fb, link)
+    if fid:
+        source['Facebook'] = fid.groups(0)[0]
+
+    pid = re.search(p_pw, link)
+    if pid:
+        source['Playwire'] = pid.groups(0)[0]
+
+    if len(source) > 0:
+        add_directory(tname, source, 3, imageurl, True, isItFolder=False)
+    return
+
+
 def play_showLink(name, linkType, video_id):
     playlist = xbmc.PlayList(1)
     playlist.clear()
@@ -338,24 +379,28 @@ def play_showLink(name, linkType, video_id):
         import playwire
         media_url = playwire.resolve(video_id)
         playlist.add(media_url, listitem)
+        xbmcgui.Dialog().notification(__addonname__, "Playing " + linkType + " video", __icon__, 3000, False)
         xbmc.Player().play(playlist)
         return
-    # noinspection PyUnresolvedReferences
+
     import urlresolver
     if linkType == "DailyMotion":
         media_url = urlresolver.HostedMediaFile(host='dailymotion.com', media_id=video_id).resolve()
         playlist.add(media_url, listitem)
+        xbmcgui.Dialog().notification(__addonname__, "Playing " + linkType + " video", __icon__, 3000, False)
         xbmc.Player().play(playlist)
     if linkType == "Youtube":
         media_url = urlresolver.HostedMediaFile(host='youtube.com', media_id=video_id).resolve()
         playlist.add(media_url, listitem)
+        xbmcgui.Dialog().notification(__addonname__, "Playing " + linkType + " video", __icon__, 3000, False)
         xbmc.Player().play(playlist)
     if linkType == "Facebook":
         media_url = urlresolver.HostedMediaFile(host='facebook.com', media_id=video_id).resolve()
         playlist.add(media_url, listitem)
+        xbmcgui.Dialog().notification(__addonname__, "Playing " + linkType + " video", __icon__, 3000, False)
         xbmc.Player().play(playlist)
-    return
 
+    return
 
 # Define function to monitor real time parameters ###
 def get_params():
@@ -383,6 +428,7 @@ url = None
 name = None
 mode = None
 linkType = None
+provider=None
 
 # noinspection PyBroadException
 try:
@@ -400,6 +446,11 @@ try:
 except:
     pass
 
+try:
+    provider = urllib.unquote_plus(params["provider"])
+except:
+    pass
+
 print params
 args = urlparse.parse_qs(sys.argv[2][1:])
 # noinspection PyRedeclaration
@@ -411,7 +462,7 @@ try:
 except:
     pass
 
-print name,mode,url,linkType
+print name,mode,url,linkType,provider
 
 # noinspection PyBroadException
 try:
@@ -420,7 +471,7 @@ try:
     elif mode == 2:
         add_enteries(name, url)
     elif mode == 3:
-        get_showLink(name, url, linkType)
+        play_showLink(name, provider, url)
     elif mode == 99:
         show_settings()
 
