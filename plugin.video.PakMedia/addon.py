@@ -265,7 +265,7 @@ def getCookiesString(cookieJar):
     return cookieString
 
 
-def get_showLink(url, linkType):
+def get_showLink(name, url, linkType):
     headers = [('User-Agent',
                 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36')]
     link = getUrl(url, headers=headers)
@@ -297,17 +297,17 @@ def get_showLink(url, linkType):
         if linkType == "":
             if default_play in available_source:
                 xbmcgui.Dialog().notification(__addonname__, "Playing " +default_play + " video", __icon__, 5000, False)
-                play_showLink(default_play, available_link[available_source.index(default_play)])
+                play_showLink(name, default_play, available_link[available_source.index(default_play)])
                 return
             else:
                 xbmcgui.Dialog().notification(__addonname__, default_play+ " Video not found", __icon__, 2000, False)
                 xbmcgui.Dialog().notification(__addonname__, "Playing " + available_source[0] + " video", __icon__, 2000, False)
-                play_showLink(available_source[0], available_link[0])
+                play_showLink(name, available_source[0], available_link[0])
                 return
 
         else:
             if linkType in available_source:
-                play_showLink(linkType, available_link[available_source.index(linkType)])
+                play_showLink(name, linkType, available_link[available_source.index(linkType)])
                 return
             else:
                 if linkType == "Checksrc":
@@ -318,7 +318,7 @@ def get_showLink(url, linkType):
                         dialog = xbmcgui.Dialog()
                         index = dialog.select("Available streams", available_source)
                         if index > -1:
-                            play_showLink(available_source[index], available_link[index])
+                            play_showLink(name, available_source[index], available_link[index])
                             return
                         return
                 xbmcgui.Dialog().ok(__addonname__, "No valid link found for " + linkType + " in the post")
@@ -326,24 +326,34 @@ def get_showLink(url, linkType):
     xbmcgui.Dialog().ok(__addonname__, "No video link found in the post")
     return
 
-def play_showLink(name, video_id):
-    if name == "Playwire":
+def play_showLink(name, linkType, video_id):
+    playlist = xbmc.PlayList(1)
+    playlist.clear()
+    listitem = xbmcgui.ListItem(name, iconImage="DefaultVideo.png")
+    listitem.setInfo("Video", {"Title": name})
+    listitem.setProperty('mimetype', 'video/x-msvideo')
+    listitem.setProperty('IsPlayable', 'true')
+
+    if linkType == "Playwire":
         import playwire
         media_url = playwire.resolve(video_id)
-        # media_url = urlresolver.HostedMediaFile(host='facebook.com', media_id=video_id).resolve()
-        xbmc.Player().play(media_url)
+        playlist.add(media_url, listitem)
+        xbmc.Player().play(playlist)
         return
     # noinspection PyUnresolvedReferences
     import urlresolver
-    if name == "DailyMotion":
+    if linkType == "DailyMotion":
         media_url = urlresolver.HostedMediaFile(host='dailymotion.com', media_id=video_id).resolve()
-        xbmc.Player().play(media_url)
-    if name == "Youtube":
+        playlist.add(media_url, listitem)
+        xbmc.Player().play(playlist)
+    if linkType == "Youtube":
         media_url = urlresolver.HostedMediaFile(host='youtube.com', media_id=video_id).resolve()
-        xbmc.Player().play(media_url)
-    if name == "Facebook":
+        playlist.add(media_url, listitem)
+        xbmc.Player().play(playlist)
+    if linkType == "Facebook":
         media_url = urlresolver.HostedMediaFile(host='facebook.com', media_id=video_id).resolve()
-        xbmc.Player().play(media_url)
+        playlist.add(media_url, listitem)
+        xbmc.Player().play(playlist)
     return
 
 
@@ -410,7 +420,7 @@ try:
     elif mode == 2:
         add_enteries(name, url)
     elif mode == 3:
-        get_showLink(url, linkType)
+        get_showLink(name, url, linkType)
     elif mode == 99:
         show_settings()
 

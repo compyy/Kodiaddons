@@ -1,4 +1,6 @@
 [B]Version 3.0.5Beta[/B]
+- Fixed video titles
+[B]Version 3.0.5Beta[/B]
 - optimized code for fast play
 [B]Version 3.0.4Beta[/B]
 - Fixed default videotype
