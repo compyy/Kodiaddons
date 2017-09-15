@@ -12,8 +12,6 @@ import xbmc
 import xbmcaddon
 import xbmcgui
 import xbmcplugin
-from multiprocessing.dummy import Pool
-from multiprocessing import cpu_count
 #
 # End of Imports
 #
@@ -130,12 +128,8 @@ def add_shows(Fromurl):
     match = re.findall('<div class="threadinfo".*?<img src="(.*?)".*?href="(.*?)" id="thread_title.*?>(.*?)<', link,
                        re.DOTALL)
 
-    try:
-        pool = Pool(cpu_count()*2)
-        pool.map(url_processor,match)
-    finally:
-        pool.close()
-        pool.join()
+    for i in match:
+        url_processor(i)
 
     match = re.findall('title="Results.*?<a href="(.*?)" title', link, re.IGNORECASE)
 
@@ -172,13 +166,9 @@ def addzemshows(Fromurl):
     CookieJar.save(ZEMCOOKIEFILE, ignore_discard=True)
     match = re.findall('<div class=\"(?:teal)?.?card\">.*?<img src=\"(.*?)\".*?<a href=\"(.*?)\".*?>(.*?)<', linkfull,
                        re.UNICODE | re.DOTALL)
+    for i in match:
+        url_processor(i)
 
-    try:
-        pool = Pool(cpu_count()*2)
-        pool.map(url_processor,match)
-    finally:
-        pool.close()
-        pool.join()
     pageNumber = re.findall("pageNumber=(.*?)&", Fromurl)[0]
     catid = re.findall("catNumber=(.*)", Fromurl)[0]
     pageNumber = int(pageNumber) + 1

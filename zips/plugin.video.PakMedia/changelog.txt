@@ -1,3 +1,5 @@
+[B]Version 3.1.1Beta[/B]
+- Disabled Multithreading, doesnt work on Android
 [B]Version 3.1.0Beta[/B]
 - Added Major Performance Improvement, Multithreading -- 16
 [B]Version 3.0.5Beta[/B]
