@@ -29,15 +29,8 @@ import sys
 import xml.etree.ElementTree as ET
 import zipfile
 
-# Compatibility with 3.0, 3.1 and 3.2 not supporting u"" literals
-if sys.version < '3':
-    import codecs
 
-
-    def u(x):
-        return codecs.unicode_escape_decode(x)[0]
-else:
-    def u(x):
+def u(x):
         return x
 
 
@@ -76,10 +69,7 @@ class Generator:
                     # skip encoding format line
                     if (line.find("<?xml") >= 0): continue
                     # add line
-                    if sys.version < '3':
-                        addon_xml += unicode(line.rstrip() + "\n", "UTF-8")
-                    else:
-                        addon_xml += line.rstrip() + "\n"
+                    addon_xml += line.rstrip() + "\n"
                 # we succeeded so add to our final addons.xml text
                 addons_xml += addon_xml.rstrip() + "\n\n"
             except Exception as e:
@@ -130,7 +120,7 @@ if (__name__ == "__main__"):
     Generator()
 
     # rezip files an move
-    print 'Starting zip file creation...'
+    print('Starting zip file creation...')
     rootdir = sys.path[0]
     zipsdir = rootdir + '/zips'
 
@@ -146,34 +136,28 @@ if (__name__ == "__main__"):
             zipsfolder = os.path.normpath(zipsfolder) + os.sep
             if not os.path.exists(zipsfolder):
                 os.mkdir(zipsfolder)
-                print 'Directory doesn\'t exist, creating: ' + zipsfolder
+                print('Directory doesn\'t exist, creating: ' + zipsfolder)
             # check if and move changelog, fanart and icon to zipdir
             filesinfoldertozip = os.listdir(foldertozip)
             for y in filesinfoldertozip:
-                print 'processing file: ' + os.path.join(rootdir, x, y)
+                print('processing file: ' + os.path.join(rootdir, x, y))
                 if re.search("addon.xml", y):  # get version number of plugin
                     tree = ET.parse(os.path.join(rootdir, x, y))
                     root = tree.getroot()
                     for elem in root.iter('addon'):
-                        print elem.tag + ': ' + elem.attrib['version']
+                        print(elem.tag + ': ' + elem.attrib['version'])
                         version = '-' + elem.attrib['version']
                 if re.search("changelog", y):
                     firstpart = y[:-4]
                     lastpart = y[len(y) - 4:]
                     shutil.copyfile(os.path.join(rootdir, x, y),
                                     os.path.join(zipsfolder, firstpart + version + lastpart))
-                    print 'Copying ' + y + ' to ' + zipsfolder
+                    print('Copying ' + y + ' to ' + zipsfolder)
                 if re.search("changelog|icon|fanart", y):
                     shutil.copyfile(os.path.join(rootdir, x, y), os.path.join(zipsfolder, y))
-                    print 'Copying ' + y + ' to ' + zipsfolder
+                    print('Copying ' + y + ' to ' + zipsfolder)
             zipfolder(zipfilenamefirstpart + zipfilenamelastpart, foldertozip, zipsfolder)
-            print 'Zipping ' + zipfilename + ' and moving to ' + zipfilenamefirstpart + version
-            #            print 'zipfolder',zipsfolder
-            #            print 'foldertozip',foldertozip
-            #            print 'Old dir',os.path.join(os.path.join(os.getcwd(),zipsfolder),zipfilenamefirstpart+zipfilenamelastpart)
-            #            print 'New Name',zipfilenamefirstpart+version+zipfilenamelastpart
+            print('Zipping ' + zipfilename + ' and moving to ' + zipfilenamefirstpart + version)
             shutil.move(os.path.join(os.path.join(os.getcwd(), zipsfolder), zipfilenamefirstpart + zipfilenamelastpart),
                         os.path.join(os.path.join(os.getcwd(), zipsfolder),
                                      zipfilenamefirstpart + version + zipfilenamelastpart))
-            # ,zipfilenamefirstpart+version+zipfilenamelastpart);
-            # print 'Zipping ' + zipfilename + ' and moving to ' + zipfilenamefirstpart+version
