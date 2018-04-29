@@ -27,7 +27,9 @@ addonversion = xbmcaddon.Addon().getAddonInfo("version")
 sys.path.append(os.path.join(addonPath, 'resources', 'lib'))
 
 spicon = addonPath + '/resources/icon/siasatpk.png'
+docicon = addonPath + '/resources/icon/docu.png'
 zmicon = addonPath + '/resources/icon/zem.jpg'
+
 
 # Initializing the settings ###
 if not selfAddon.getSetting("dummy") == "true":
@@ -48,6 +50,7 @@ def add_types():
     add_directory('Sports Corner', 'SP_SC', 2, spicon)
     add_directory('ZemTV Shows', 'ZEM_Shows', 2, zmicon)
     add_directory('Zemtv Videos', 'ZEM_Viral', 2, zmicon)
+    add_directory('Documentry HD', 'DOCHD', 2, docicon)
     add_directory('Settings', 'Settings', 99, 'OverlayZIP.png', isItFolder=False)
 
     return
@@ -80,9 +83,15 @@ def add_directory(name, url, mode, iconimage, showContext=False, isItFolder=True
 
 def add_enteries(url_type=None):
     if url_type:
-        url = urllib.urlopen("http://compysc.westus2.cloudapp.azure.com/shows.json")
-        shows_json = json.loads(url.read().decode("utf-8"))
-        add_shows(url_type, shows_json)
+        if 'DOCHD' in url_type:
+            url = urllib.urlopen("http://compysc.westus2.cloudapp.azure.com/docshows.json")
+            shows_json = json.loads(url.read().decode("utf-8"))
+            add_shows(url_type, shows_json)
+
+        else:
+            url = urllib.urlopen("http://compysc.westus2.cloudapp.azure.com/shows.json")
+            shows_json = json.loads(url.read().decode("utf-8"))
+            add_shows(url_type, shows_json)
     return
 
 
@@ -138,6 +147,11 @@ def play_showLink(name, linkType, video_id):
         xbmc.Player().play(playlist)
     if linkType == "Facebook":
         media_url = urlresolver.HostedMediaFile(host='facebook.com', media_id=video_id).resolve()
+        playlist.add(media_url, listitem)
+        xbmcgui.Dialog().notification(__addonname__, "Playing " + linkType + " video", __icon__, 3000, False)
+        xbmc.Player().play(playlist)
+    if linkType == "Openload":
+        media_url = urlresolver.HostedMediaFile(host='openload.co', media_id=video_id).resolve()
         playlist.add(media_url, listitem)
         xbmcgui.Dialog().notification(__addonname__, "Playing " + linkType + " video", __icon__, 3000, False)
         xbmc.Player().play(playlist)
