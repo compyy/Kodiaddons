@@ -29,6 +29,7 @@ sys.path.append(os.path.join(addonPath, 'resources', 'lib'))
 spicon = addonPath + '/resources/icon/siasatpk.png'
 docicon = addonPath + '/resources/icon/docu.png'
 zmicon = addonPath + '/resources/icon/zem.jpg'
+docshowjson = addonPath + '/resources/lib/docshows.json'
 
 
 # Initializing the settings ###
@@ -51,6 +52,7 @@ def add_types():
     add_directory('ZemTV Shows', 'ZEM_Shows', 2, zmicon)
     add_directory('Zemtv Videos', 'ZEM_Viral', 2, zmicon)
     add_directory('Documentry HD', 'DOCHD', 2, docicon)
+    add_directory('Documentry HD April-2018', 'DOCHDOLD', 2, docicon)
     add_directory('Settings', 'Settings', 99, 'OverlayZIP.png', isItFolder=False)
 
     return
@@ -88,6 +90,11 @@ def add_enteries(url_type=None):
             shows_json = json.loads(url.read().decode("utf-8"))
             add_shows(url_type, shows_json)
 
+        if 'DOCHDOLD' in url_type:
+            with open(docshowjson) as data_file:
+                shows_json = json.loads(data_file.read().decode("utf-8"))
+            add_shows('DOCHD', shows_json)
+
         else:
             url = urllib.urlopen("http://compysc.westus2.cloudapp.azure.com/shows.json")
             shows_json = json.loads(url.read().decode("utf-8"))
@@ -96,6 +103,7 @@ def add_enteries(url_type=None):
 
 
 def add_shows(url_type, shows_json):
+    shows_json = [x for x in shows_json if x != []]
     for i in range(1, len(shows_json)):
         if (shows_json[i]['Tag']) == url_type:
             link = {}

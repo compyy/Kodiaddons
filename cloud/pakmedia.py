@@ -1,222 +1,205 @@
 import base64
+import datetime
+import json
 import re
 
-import HTMLParser
-import urllib2
+import requests
+from bs4 import BeautifulSoup
 
-dts_url = base64.b64decode('aHR0cDovL3d3dy5zaWFzYXQucGsvZm9ydW0vZm9ydW1kaXNwbGF5LnBocD8yOS1EYWlseS1UYWxrLVNob3dzLw==')
-dv_url = base64.b64decode('aHR0cDovL3d3dy5zaWFzYXQucGsvZm9ydW0vZm9ydW1kaXNwbGF5LnBocD8yMS1TaWFzaS1WaWRlb3Mv')
-sc_url = base64.b64decode('aHR0cDovL3d3dy5zaWFzYXQucGsvZm9ydW0vZm9ydW1kaXNwbGF5LnBocD8zNy1TcG9ydHMtQ29ybmVyLw==')
-zs_url = base64.b64decode('aHR0cDovL3d3dy56ZW10di5jb20vY2F0ZWdvcnkvcGFraXN0YW5pLw==')
-zv_url = base64.b64decode('aHR0cDovL3d3dy56ZW10di5jb20vY2F0ZWdvcnkvdmlyYWwtdmlkZW9zLw==')
+spk_url = [base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9pbmRleC5waHA/Zm9ydW1zL2RhaWx5LXRhbGstc2hvd3MuMjkv'),
+           base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9pbmRleC5waHA/Zm9ydW1zL3NpYXNpLXZpZGVvcy4yMS8='),
+           base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9pbmRleC5waHA/Zm9ydW1zL3Nwb3J0cy1jb3JuZXIuMzcv')]
+zem_url = [base64.b64decode('aHR0cDovL3d3dy56ZW10di5jb20vY2F0ZWdvcnkvdmlyYWwtdmlkZW9zLw=='),
+           base64.b64decode('aHR0cDovL3d3dy56ZW10di5jb20vY2F0ZWdvcnkvcGFraXN0YW5pLw==')]
 
-ZEMCOOKIEFILE = 'ZemCookieFile.lwp'
+doc_url = base64.b64decode('aHR0cDovL3d3dy5oZGRvY3VtZW50YXJ5LmNvbS9jYXRlZ29yeS9zY2llbmNlLWFuZC10ZWNobm9sb2d5Lw==')
+
+web_path = '/home/beta/scripts/json/'
 
 p_dm = re.compile("<iframe.*src=.*http.*dailymotion.com.*video[/](.*?)['|/?]")
 p_yt = re.compile('<iframe.*?src=\".*?youtube.*?embed\/(.*?)[\"|\?]')
 p_pw = re.compile('src=".*?(playwire).*?data-publisher-id="(.*?)"\s*data-video-id="(.*?)"')
 p_fb = re.compile('<.*["]http.*facebook[.]com[/]video[.]php[?]v[=](.*?)["]')
+p_op = re.compile('.*["]http.*openload[.]co[\/]embed[\/](.*?)[\/]["]')
 
 
-def add_shows(dts_url):
-    headers = [('User-Agent',
-                'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36')]
-    link = getUrl(dts_url, headers=headers)
-    match = re.findall('<div class="threadinfo".*?<img src="(.*?)".*?href="(.*?)" id="thread_title.*?>(.*?)<', link,
-                       re.DOTALL)
-    h = HTMLParser.HTMLParser()
+def spkshows(Fromurl, session, shows):
+    print(datetime.datetime.now().time())
+    print('Downloading sisasatpk Shows...!')
+    for link in Fromurl:
+        match = []
+        data = get_fast(link, session)
+        soup = BeautifulSoup(data, "lxml")
+        for div in soup.find_all('div', {'class': 'structItem-title'}):
+            a = div.find_all('a')[0]
+            match.append((a.attrs['data-preview-url'], a.attrs['href'], a.text.strip()))
 
-    for cname in match:
+        link = link + b'page-2'
+        data = get_fast(link, session)
+        soup = BeautifulSoup(data, "lxml")
+        for div in soup.find_all('div', {'class': 'structItem-title'}):
+            a = div.find_all('a')[0]
+            match.append((a.attrs['data-preview-url'], a.attrs['href'], a.text.strip()))
+
+        for i in match:
+            if b'siasi' in link:
+                empty_check = url_processor(i, "SP_Viral", session)
+            elif b'shows' in link:
+                empty_check = url_processor(i, "SP_Shows", session)
+            elif b'sports' in link:
+                empty_check = url_processor(i, "SP_SC", session)
+
+            if empty_check:
+                shows.append(empty_check)
+
+    with open(web_path + 'shows.json', 'w', encoding='utf-8') as fout:
+        json.dump(shows, fout, ensure_ascii=False)
+        print('File Writing Successfull..!')
+
+    return
+
+
+def zemshows(Fromurl, session):
+    print(datetime.datetime.now().time())
+    print('Downloading Zem Shows...!')
+    shows = []
+    for link in Fromurl:
+        orig_link = link
+        linkfull = get_fast(link, session)
+        pageNumber = 1
+        catid = ''
+
+        if not b'loopHandler' in link:
+            catid = re.findall("currentcat = (.*?);", linkfull)[0]
+            link = 'http://www.zemtv.com/wp-content/themes/zemresponsive/loopHandler.php?pageNumber=%s&catNumber=%s' % (
+                str(pageNumber), catid)
+            linkfull = get_fast(link, session)
+
+        match = re.findall('<div class=\"(?:teal)?.?card\">.*?<img src=\"(.*?)\".*?<a href=\"(.*?)\".*?>(.*?)<',
+                           linkfull,
+                           re.UNICODE | re.DOTALL)
+
+        pageNumber = re.findall("pageNumber=(.*?)&", link)[0]
+        catid = re.findall("catNumber=(.*)", link)[0]
+        pageNumber = int(pageNumber) + 1
+        link = 'http://www.zemtv.com/wp-content/themes/zemresponsive/loopHandler.php?pageNumber=%s&catNumber=%s' % (
+            str(pageNumber), catid)
+        linkfull = get_fast(link, session)
+        match.extend(
+            re.findall('<div class=\"(?:teal)?.?card\">.*?<img src=\"(.*?)\".*?<a href=\"(.*?)\".*?>(.*?)<', linkfull,
+                       re.UNICODE | re.DOTALL))
+
+        pageNumber = re.findall("pageNumber=(.*?)&", link)[0]
+        catid = re.findall("catNumber=(.*)", link)[0]
+        pageNumber = int(pageNumber) + 1
+        link = 'http://www.zemtv.com/wp-content/themes/zemresponsive/loopHandler.php?pageNumber=%s&catNumber=%s' % (
+            str(pageNumber), catid)
+        linkfull = get_fast(link, session)
+        match.extend(
+            re.findall('<div class=\"(?:teal)?.?card\">.*?<img src=\"(.*?)\".*?<a href=\"(.*?)\".*?>(.*?)<', linkfull,
+                       re.UNICODE | re.DOTALL))
+
+        for i in match:
+            if b'viral' in orig_link:
+                empty_check = url_processor(i, "ZEM_Viral", session)
+            else:
+                empty_check = url_processor(i, "ZEM_Shows", session)
+
+            if empty_check:
+                shows.append(empty_check)
+
+    return shows
+
+
+def docshows(link, session):
+    print(datetime.datetime.now().time())
+    print('Downloading Doc Shows...!')
+    docshows = []
+    match = []
+    data = get_fast(link, session)
+    soup = BeautifulSoup(data, "lxml")
+    for i in soup.find_all('article'):
+        a = i.find_all(class_='post-image post-image-left')[0]
+        icon = ((a.find('div', {'class': 'featured-thumbnail'})).find('img').attrs['src'])
+        match.append((icon, a.attrs['href'], a.attrs['title']))
+
+    for i in match:
+        docshows.append(url_processor(i, "DOCHD", session))
+
+    with open(web_path + 'docshows.json', 'w', encoding='utf-8') as fout:
+        json.dump(docshows, fout, ensure_ascii=False)
+
+    return
+
+
+#
+def url_processor(cname, tag, session):
+    shows = []
+    if 'forums' in cname[1]:
         tname = cname[2]
         url = cname[1]
-        imageurl = cname[0].replace('&amp;', '&')
-        try:
-            tname = h.unescape(tname).encode("utf-8")
-        except:
-            tname = re.sub(r'[\x80-\xFF]+', convert, tname)
-
+        imageurl = str(cname[0])
         if not url.startswith('http'):
-            url = 'http://www.siasat.pk/forum/' + url
+            url = 'http://www.siasat.pk' + url
         if not imageurl.startswith('http'):
-            imageurl = 'http://www.siasat.pk/forum/' + url
-
-        print(tname, url, imageurl)
-
-
-#
-# def addzemshows(Fromurl):
-#     CookieJar = getZemCookieJar()
-#     headers = [('User-Agent',
-#                 'Mozilla/5.0(iPad; U; CPU iPhone OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B314 Safari/531.21.10')]
-#     try:
-#         linkfull = getUrl(Fromurl, cookieJar=CookieJar, headers=headers)
-#     except:
-#         import cloudflare
-#         cloudflare.createCookie(Fromurl, CookieJar,
-#                                 'Mozilla/5.0(iPad; U; CPU iPhone OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B314 Safari/531.21.10')
-#         linkfull = getUrl(Fromurl, cookieJar=CookieJar, headers=headers)
-#     pageNumber = 1
-#     catid = ''
-#     if not 'loopHandler' in Fromurl:
-#         catid = re.findall("currentcat = (.*?);", linkfull)[0]
-#         Fromurl = 'http://www.zemtv.com/wp-content/themes/zemresponsive/loopHandler.php?pageNumber=%s&catNumber=%s' % (
-#             str(pageNumber), catid)
-#         linkfull = getUrl(Fromurl, cookieJar=CookieJar, headers=headers)
-#     CookieJar.save(ZEMCOOKIEFILE, ignore_discard=True)
-#     match = re.findall('<div class=\"(?:teal)?.?card\">.*?<img src=\"(.*?)\".*?<a href=\"(.*?)\".*?>(.*?)<', linkfull,
-#                        re.UNICODE | re.DOTALL)
-#     print match
-#     h = HTMLParser.HTMLParser()
-#     for cname in match:
-#         tname = cname[2]
-#         try:
-#             tname = h.unescape(tname).encode("utf-8")
-#         except:
-#             tname = re.sub(r'[\x80-\xFF]+', convert, tname)
-#         add_directory(tname, cname[1], 3, cname[0] + '|Cookie=%s' % getCookiesString(
-#             CookieJar) + '&User-Agent=Mozilla/5.0(iPad; U; CPU iPhone OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B314 Safari/531.21.10',
-#                       True, isItFolder=False)
-#     pageNumber = re.findall("pageNumber=(.*?)&", Fromurl)[0]
-#     catid = re.findall("catNumber=(.*)", Fromurl)[0]
-#     pageNumber = int(pageNumber) + 1
-#     Fromurl = 'http://www.zemtv.com/wp-content/themes/zemresponsive/loopHandler.php?pageNumber=%s&catNumber=%s' % (
-#         str(pageNumber), catid)
-#     add_directory('Next Page', Fromurl, 2, '', isItFolder=True)
-#     return
-#
-#
-# def getZemCookieJar(updatedUName=False):
-#     cookieJar = None
-#     try:
-#         cookieJar = cookielib.LWPCookieJar()
-#         if not updatedUName:
-#             cookieJar.load(ZEMCOOKIEFILE, ignore_discard=True)
-#     except:
-#         cookieJar = None
-#     if not cookieJar:
-#         cookieJar = cookielib.LWPCookieJar()
-#     return cookieJar
-#
-#
-def getUrl(url, cookieJar=None, post=None, timeout=20, headers=None, jsonpost=False):
-    cookie_handler = urllib2.HTTPCookieProcessor(cookieJar)
-    opener = urllib2.build_opener(cookie_handler, urllib2.HTTPBasicAuthHandler(), urllib2.HTTPHandler())
-    header_in_page = None
-    if '|' in url:
-        url, header_in_page = url.split('|')
-    req = urllib2.Request(url)
-    req.add_header('User-Agent',
-                   'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.154 Safari/537.36')
-    req.add_header('Accept-Encoding', 'gzip')
-    if headers:
-        for h, hv in headers:
-            req.add_header(h, hv)
-    if header_in_page:
-        header_in_page = header_in_page.split('&')
-        for h in header_in_page:
-            if len(h.split('=')) == 2:
-                n, v = h.split('=')
-            else:
-                vals = h.split('=')
-                n = vals[0]
-                v = '='.join(vals[1:])
-            req.add_header(n, v)
-    if jsonpost:
-        req.add_header('Content-Type', 'application/json')
-    response = opener.open(req, post, timeout=timeout)
-    if response.info().get('Content-Encoding') == 'gzip':
-        from StringIO import StringIO
-        import gzip
-        buf = StringIO(response.read())
-        f = gzip.GzipFile(fileobj=buf)
-        link = f.read()
+            imageurl = 'http://www.siasat.pk' + imageurl
     else:
-        link = response.read()
-    response.close()
-    return link
+        tname = cname[2]
+        url = cname[1]
+        imageurl = cname[0]
+
+    link = get_fast(url, session)
+    source = {}
+    did = re.search(p_dm, link)
+    if did:
+        source['DailyMotion'] = did.groups(0)[0]
+
+    yid = re.search(p_yt, link)
+    if yid:
+        source['Youtube'] = yid.groups(0)[0]
+
+    fid = re.search(p_fb, link)
+    if fid:
+        source['Facebook'] = fid.groups(0)[0]
+
+    pid = re.search(p_pw, link)
+    if pid:
+        source['Playwire'] = pid.groups(0)[0]
+
+    oid = re.search(p_op, link)
+    if oid:
+        source['Openload'] = oid.groups(1)[0]
+
+    if len(source) > 0:
+        if 'forums' in imageurl:
+            if 'Youtube' in source:
+                imageurl = 'https://img.youtube.com/vi/' + source['Youtube'] + '/maxresdefault.jpg'
+            elif 'DailyMotion' in source:
+                imageurl = 'https://www.dailymotion.com/thumbnail/video/' + source['DailyMotion']
+        shows = ({'Tag': tag, 'Title': tname, 'icon': imageurl, 'link': source})
+
+    return shows
 
 
-def convert(s):
-    try:
-        return s.group(0).encode('latin1').decode('utf8')
-    except:
-        return s.group(0)
+#
+
+def get_fast(url, session):
+    data = session.get(url)
+    return data.text
 
 
-def getCookiesString(cookieJar):
-    try:
-        cookieString = ""
-        for index, cookie in enumerate(cookieJar):
-            cookieString += cookie.name + "=" + cookie.value + ";"
-    except:
-        pass
-    return cookieString
-#
-#
-# def get_showLink(name, url, linkType):
-#     headers = [('User-Agent',
-#                 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36')]
-#     link = getUrl(url, headers=headers)
-#     available_source = []
-#     available_link = []
-#     default_play = selfAddon.getSetting("DefaultVideoType")
-#
-#     did = re.search(p_dm, link)
-#     if did:
-#         available_source.append("DailyMotion")
-#         available_link.append(did.groups(0))
-#
-#     yid = re.search(p_yt, link)
-#     if yid:
-#         available_source.append("Youtube")
-#         available_link.append(yid.groups(0))
-#
-#     fid = re.search(p_fb, link)
-#     if fid:
-#         available_source.append("Facebook")
-#         available_link.append(fid.groups(0))
-#
-#     pid = re.search(p_pw, link)
-#     if pid:
-#         available_source.append("Playwire")
-#         available_link.append(pid.groups(0))
-#
-#     if len(available_source) > 0:
-#         if linkType == "":
-#             if default_play in available_source:
-#                 xbmcgui.Dialog().notification(__addonname__, "Playing " +default_play + " video", __icon__, 5000, False)
-#                 play_showLink(name, default_play, available_link[available_source.index(default_play)])
-#                 return
-#             else:
-#                 xbmcgui.Dialog().notification(__addonname__, default_play+ " Video not found", __icon__, 2000, False)
-#                 xbmcgui.Dialog().notification(__addonname__, "Playing " + available_source[0] + " video", __icon__, 2000, False)
-#                 play_showLink(name, available_source[0], available_link[0])
-#                 return
-#
-#         else:
-#             if linkType in available_source:
-#                 play_showLink(name, linkType, available_link[available_source.index(linkType)])
-#                 return
-#             else:
-#                 if linkType == "Checksrc":
-#                     if available_source is None:
-#                         xbmcgui.Dialog().ok(__addonname__, "No video link found in the post")
-#                         return
-#                     else:
-#                         dialog = xbmcgui.Dialog()
-#                         index = dialog.select("Available streams", available_source)
-#                         if index > -1:
-#                             play_showLink(name, available_source[index], available_link[index])
-#                             return
-#                         return
-#                 xbmcgui.Dialog().ok(__addonname__, "No valid link found for " + linkType + " in the post")
-#                 return
-#     xbmcgui.ialog().ok(__addonname__, "No video link found in the post")
-#     return
-#
-#
-#
-# p = Pool(10)
-# records = p.map(parse, cars_links)
-# p.terminate()
-# p.join()
+if __name__ == "__main__":
+    zem_session = requests.Session()
+    zem_session.get('http://www.zemtv.com/')
+    spk_session = requests.Session()
+    spk_session.get('https://www.siasat.pk/forum/home.php')
+    print('Script Starting...! ')
+    print(datetime.datetime.now().time())
+    shows = zemshows(zem_url, zem_session)
+    # shows=[]
+    spkshows(spk_url, spk_session, shows)
+    doc_session = requests.Session()
+    doc_session.get('http://www.hddocumentary.com/')
+    docshows(doc_url, doc_session)
+    print('Script Ended')
+    print(datetime.datetime.now().time())

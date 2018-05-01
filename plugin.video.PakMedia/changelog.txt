@@ -1,3 +1,5 @@
+[B]Version 3.4Beta[/B]
+- Fixed Documentaries
 [B]Version 3.3Beta[/B]
 - Added Documentaries
 [B]Version 3.2Beta[/B]
