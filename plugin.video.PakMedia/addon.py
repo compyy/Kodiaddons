@@ -29,7 +29,7 @@ sys.path.append(os.path.join(addonPath, 'resources', 'lib'))
 spicon = addonPath + '/resources/icon/siasatpk.png'
 docicon = addonPath + '/resources/icon/docu.png'
 zmicon = addonPath + '/resources/icon/zem.jpg'
-docshowjson = addonPath + '/resources/lib/docshows.json'
+docshowjson = addonPath + '/resources/lib/'
 
 
 # Initializing the settings ###
@@ -91,7 +91,7 @@ def add_enteries(url_type=None):
             add_shows(url_type, shows_json)
 
         if 'DOCHDOLD' in url_type:
-            with open(docshowjson) as data_file:
+            with open(docshowjson + 'docshowsold.json') as data_file:
                 shows_json = json.loads(data_file.read().decode("utf-8"))
             add_shows('DOCHD', shows_json)
 
@@ -104,7 +104,8 @@ def add_enteries(url_type=None):
 
 def add_shows(url_type, shows_json):
     shows_json = [x for x in shows_json if x != []]
-    for i in range(1, len(shows_json)):
+    print(len(shows_json))
+    for i in range(0, len(shows_json)):
         if (shows_json[i]['Tag']) == url_type:
             link = {}
             Title = shows_json[i]['Title']
@@ -116,6 +117,7 @@ def add_shows(url_type, shows_json):
                 Title = re.sub(r'[\x80-\xFF]+', convert, Title)
 
             add_directory(Title.encode('utf-8'), link, 3, icon, True, isItFolder=False)
+
     return
 
 
