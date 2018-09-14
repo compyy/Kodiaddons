@@ -1,9 +1,8 @@
 import base64
-import datetime
-import json
 import re
-
 import requests
+import json
+import datetime
 from bs4 import BeautifulSoup
 
 spk_url = [base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9pbmRleC5waHA/Zm9ydW1zL2RhaWx5LXRhbGstc2hvd3MuMjkv'),
@@ -14,6 +13,7 @@ zem_url = [base64.b64decode('aHR0cDovL3d3dy56ZW10di5jb20vY2F0ZWdvcnkvdmlyYWwtdml
 
 doc_url = base64.b64decode('aHR0cDovL3d3dy5oZGRvY3VtZW50YXJ5LmNvbS9jYXRlZ29yeS9zY2llbmNlLWFuZC10ZWNobm9sb2d5Lw==')
 
+
 web_path = '/home/beta/scripts/json/'
 
 p_dm = re.compile("<iframe.*src=.*http.*dailymotion.com.*video[/](.*?)['|/?]")
@@ -23,23 +23,21 @@ p_fb = re.compile('<.*["]http.*facebook[.]com[/]video[.]php[?]v[=](.*?)["]')
 p_op = re.compile('.*["]http.*openload[.]co[\/]embed[\/](.*?)[\/]["]')
 
 
+
 def spkshows(Fromurl, session, shows):
     print(datetime.datetime.now().time())
     print('Downloading sisasatpk Shows...!')
     for link in Fromurl:
         match = []
-        data = get_fast(link, session)
-        soup = BeautifulSoup(data, "lxml")
-        for div in soup.find_all('div', {'class': 'structItem-title'}):
-            a = div.find_all('a')[0]
-            match.append((a.attrs['data-preview-url'], a.attrs['href'], a.text.strip()))
-
-        link = link + b'page-2'
-        data = get_fast(link, session)
-        soup = BeautifulSoup(data, "lxml")
-        for div in soup.find_all('div', {'class': 'structItem-title'}):
-            a = div.find_all('a')[0]
-            match.append((a.attrs['data-preview-url'], a.attrs['href'], a.text.strip()))
+        for x in range(1, 5):
+            newlink=link
+            if x is not 1:
+                newlink = link + b'page-%d' %x
+            data = get_fast(newlink , session)
+            soup = BeautifulSoup(data, "lxml")
+            for div in soup.find_all('div', {'class': 'structItem-title'}):
+                a = div.find_all('a')[0]
+                match.append((a.attrs['data-preview-url'],a.attrs['href'],a.text.strip()))
 
         for i in match:
             if b'siasi' in link:
@@ -58,58 +56,36 @@ def spkshows(Fromurl, session, shows):
 
     return
 
-
-def zemshows(Fromurl, session):
+def zemshows(Fromurl, session, shows):
     print(datetime.datetime.now().time())
-    print('Downloading Zem Shows...!')
-    shows = []
+    print('Downloading ZemTV Shows...!')
     for link in Fromurl:
-        orig_link = link
-        linkfull = get_fast(link, session)
-        pageNumber = 1
-        catid = ''
-
-        if not b'loopHandler' in link:
-            catid = re.findall("currentcat = (.*?);", linkfull)[0]
-            link = 'http://www.zemtv.com/wp-content/themes/zemresponsive/loopHandler.php?pageNumber=%s&catNumber=%s' % (
-                str(pageNumber), catid)
-            linkfull = get_fast(link, session)
-
-        match = re.findall('<div class=\"(?:teal)?.?card\">.*?<img src=\"(.*?)\".*?<a href=\"(.*?)\".*?>(.*?)<',
-                           linkfull,
-                           re.UNICODE | re.DOTALL)
-
-        pageNumber = re.findall("pageNumber=(.*?)&", link)[0]
-        catid = re.findall("catNumber=(.*)", link)[0]
-        pageNumber = int(pageNumber) + 1
-        link = 'http://www.zemtv.com/wp-content/themes/zemresponsive/loopHandler.php?pageNumber=%s&catNumber=%s' % (
-            str(pageNumber), catid)
-        linkfull = get_fast(link, session)
-        match.extend(
-            re.findall('<div class=\"(?:teal)?.?card\">.*?<img src=\"(.*?)\".*?<a href=\"(.*?)\".*?>(.*?)<', linkfull,
-                       re.UNICODE | re.DOTALL))
-
-        pageNumber = re.findall("pageNumber=(.*?)&", link)[0]
-        catid = re.findall("catNumber=(.*)", link)[0]
-        pageNumber = int(pageNumber) + 1
-        link = 'http://www.zemtv.com/wp-content/themes/zemresponsive/loopHandler.php?pageNumber=%s&catNumber=%s' % (
-            str(pageNumber), catid)
-        linkfull = get_fast(link, session)
-        match.extend(
-            re.findall('<div class=\"(?:teal)?.?card\">.*?<img src=\"(.*?)\".*?<a href=\"(.*?)\".*?>(.*?)<', linkfull,
-                       re.UNICODE | re.DOTALL))
+        match = []
+        for x in range(1, 4):
+            newlink=link
+            if x is not 1:
+                newlink = link + b'page/%d' %x
+            data = get_fast(newlink , session)
+            soup = BeautifulSoup(data, "lxml")
+            for div in soup.find_all('div', {'class': 'ui cards'}):
+                img = div.findAll('img')[0]
+                src = img.get('src')
+                a = div.find_all('a')[1]
+                match.append((src,a.attrs['href'],a.text.strip()))
 
         for i in match:
-            if b'viral' in orig_link:
+            if b'viral' in link:
                 empty_check = url_processor(i, "ZEM_Viral", session)
             else:
                 empty_check = url_processor(i, "ZEM_Shows", session)
-
             if empty_check:
                 shows.append(empty_check)
 
-    return shows
+    with open(web_path + 'shows.json', 'w', encoding='utf-8') as fout:
+        json.dump(shows, fout, ensure_ascii=False)
+        print('File Writing Successfull..!')
 
+    return
 
 def docshows(link, session):
     print(datetime.datetime.now().time())
@@ -130,7 +106,6 @@ def docshows(link, session):
         json.dump(docshows, fout, ensure_ascii=False)
 
     return
-
 
 #
 def url_processor(cname, tag, session):
@@ -173,9 +148,9 @@ def url_processor(cname, tag, session):
     if len(source) > 0:
         if 'forums' in imageurl:
             if 'Youtube' in source:
-                imageurl = 'https://img.youtube.com/vi/' + source['Youtube'] + '/maxresdefault.jpg'
+                imageurl='https://img.youtube.com/vi/'+source['Youtube']+'/maxresdefault.jpg'
             elif 'DailyMotion' in source:
-                imageurl = 'https://www.dailymotion.com/thumbnail/video/' + source['DailyMotion']
+                imageurl='https://www.dailymotion.com/thumbnail/video/'+source['DailyMotion']
         shows = ({'Tag': tag, 'Title': tname, 'icon': imageurl, 'link': source})
 
     return shows
@@ -195,11 +170,11 @@ if __name__ == "__main__":
     spk_session.get('https://www.siasat.pk/forum/home.php')
     print('Script Starting...! ')
     print(datetime.datetime.now().time())
-    shows = zemshows(zem_url, zem_session)
-    # shows=[]
+    shows=[]
+    zemshows(zem_url, zem_session,shows)
     spkshows(spk_url, spk_session, shows)
-    doc_session = requests.Session()
-    doc_session.get('http://www.hddocumentary.com/')
-    docshows(doc_url, doc_session)
+    #doc_session = requests.Session()
+    #doc_session.get('http://www.hddocumentary.com/')
+    #docshows(doc_url,doc_session)
     print('Script Ended')
     print(datetime.datetime.now().time())
