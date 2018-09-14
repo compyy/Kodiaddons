@@ -1,8 +1,8 @@
 import base64
+import datetime
+import json
 import re
 import requests
-import json
-import datetime
 from bs4 import BeautifulSoup
 
 spk_url = [base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9pbmRleC5waHA/Zm9ydW1zL2RhaWx5LXRhbGstc2hvd3MuMjkv'),
@@ -64,14 +64,17 @@ def zemshows(Fromurl, session, shows):
         for x in range(1, 4):
             newlink=link
             if x is not 1:
-                newlink = link + b'page/%d' %x
+                newlink = link + b'page/%d/' % x
             data = get_fast(newlink , session)
             soup = BeautifulSoup(data, "lxml")
-            for div in soup.find_all('div', {'class': 'ui cards'}):
-                img = div.findAll('img')[0]
-                src = img.get('src')
-                a = div.find_all('a')[1]
-                match.append((src,a.attrs['href'],a.text.strip()))
+            for div in soup.find_all('div', attrs={'class': 'ui cards'}):
+                div_nested = div.descendants
+                for d in div_nested:
+                    if d.name == 'div' and d.get('class', '') == ['card']:
+                        img = div.find_all('img')[0]
+                        src = img.get('src')
+                        a = div.find_all('a')[1]
+                        match.append((src, a.attrs['href'], a.text.strip()))
 
         for i in match:
             if b'viral' in link:
@@ -172,7 +175,7 @@ if __name__ == "__main__":
     print(datetime.datetime.now().time())
     shows=[]
     zemshows(zem_url, zem_session,shows)
-    spkshows(spk_url, spk_session, shows)
+    # spkshows(spk_url, spk_session, shows)
     #doc_session = requests.Session()
     #doc_session.get('http://www.hddocumentary.com/')
     #docshows(doc_url,doc_session)
