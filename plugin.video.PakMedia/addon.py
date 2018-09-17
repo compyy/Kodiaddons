@@ -28,6 +28,7 @@ sys.path.append(os.path.join(addonPath, 'resources', 'lib'))
 
 spicon = addonPath + '/resources/icon/siasatpk.png'
 docicon = addonPath + '/resources/icon/docu.png'
+skyicon = addonPath + '/resources/icon/skysports.png'
 zmicon = addonPath + '/resources/icon/zem.jpg'
 docshowjson = addonPath + '/resources/lib/'
 
@@ -51,6 +52,7 @@ def add_types():
     add_directory('Sports Corner', 'SP_SC', 2, spicon)
     add_directory('ZemTV Shows', 'ZEM_Shows', 2, zmicon)
     add_directory('Zemtv Videos', 'ZEM_Viral', 2, zmicon)
+    add_directory('SkySports Cricket', 'SKYCRIC', 2, skyicon)
     add_directory('Documentry HD', 'DOCHD', 2, docicon)
     add_directory('Documentry HD April-2018', 'DOCHDOLD', 2, docicon)
     add_directory('Settings', 'Settings', 99, 'OverlayZIP.png', isItFolder=False)
@@ -94,6 +96,11 @@ def add_enteries(url_type=None):
             with open(docshowjson + 'docshowsold.json') as data_file:
                 shows_json = json.loads(data_file.read().decode("utf-8"))
             add_shows('DOCHD', shows_json)
+
+        if 'SKYCRIC' in url_type:
+            url = urllib.urlopen("http://compysc.westus2.cloudapp.azure.com/sky.json")
+            shows_json = json.loads(url.read().decode("utf-8"))
+            add_shows(url_type, shows_json)
 
         else:
             url = urllib.urlopen("http://compysc.westus2.cloudapp.azure.com/shows.json")

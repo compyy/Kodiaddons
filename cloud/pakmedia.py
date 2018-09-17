@@ -5,8 +5,8 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
-spk_url = [base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9pbmRleC5waHA/Zm9ydW1zL2RhaWx5LXRhbGstc2hvd3MuMjkv'),
-           base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9pbmRleC5waHA/Zm9ydW1zL3NpYXNpLXZpZGVvcy4yMS8='),
+spk_url = [base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9pbmRleC5waHA/Zm9ydW1zL3NpYXNpLXZpZGVvcy4yMS8='),
+           base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9pbmRleC5waHA/Zm9ydW1zL2RhaWx5LXRhbGstc2hvd3MuMjkv'),
            base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9pbmRleC5waHA/Zm9ydW1zL3Nwb3J0cy1jb3JuZXIuMzcv')]
 zem_url = [base64.b64decode('aHR0cDovL3d3dy56ZW10di5jb20vY2F0ZWdvcnkvdmlyYWwtdmlkZW9zLw=='),
            base64.b64decode('aHR0cDovL3d3dy56ZW10di5jb20vY2F0ZWdvcnkvcGFraXN0YW5pLw==')]
@@ -151,7 +151,7 @@ def url_processor(cname, tag, session):
     if len(source) > 0:
         if 'forums' in imageurl:
             if 'Youtube' in source:
-                imageurl='https://img.youtube.com/vi/'+source['Youtube']+'/maxresdefault.jpg'
+                imageurl = 'https://img.youtube.com/vi/' + source['Youtube'] + '/hqdefault.jpg'
             elif 'DailyMotion' in source:
                 imageurl='https://www.dailymotion.com/thumbnail/video/'+source['DailyMotion']
         shows = ({'Tag': tag, 'Title': tname, 'icon': imageurl, 'link': source})
@@ -175,7 +175,7 @@ if __name__ == "__main__":
     print(datetime.datetime.now().time())
     shows=[]
     zemshows(zem_url, zem_session,shows)
-    # spkshows(spk_url, spk_session, shows)
+    spkshows(spk_url, spk_session, shows)
     #doc_session = requests.Session()
     #doc_session.get('http://www.hddocumentary.com/')
     #docshows(doc_url,doc_session)
