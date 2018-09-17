@@ -4,9 +4,8 @@
     <option name="SCOPE_TYPE" value="3" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dabfa14b-13f5-43de-bfa8-87ad120a9061" name="Default" comment="">
+    <list default="true" id="dabfa14b-13f5-43de-bfa8-87ad120a9061" name="Default" comment="Fixed skysports">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cloud/pakmedia.py" beforeDir="false" afterPath="$PROJECT_DIR$/cloud/pakmedia.py" afterDir="false" />
     </list>
     <ignored path="Kodiaddons.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -23,8 +22,10 @@
     <session id="1376345719">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.5" value="1" />
-          <entry key="project.opened" value="1" />
+          <entry key="project.opened" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -40,12 +41,12 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="py" value="639" />
-          <entry key="txt" value="5" />
+          <entry key="txt" value="14" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="5" />
+          <entry key="PLAIN_TEXT" value="14" />
           <entry key="Python" value="639" />
         </counts>
       </usages-collector>
@@ -59,17 +60,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cloud/pakmedia.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="451">
+            <state relative-caret-position="2644">
               <caret line="182" column="41" selection-start-line="182" selection-start-column="41" selection-end-line="182" selection-end-column="41" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/AppData/Local/Temp/scp06944/home/beta/scripts/pakmedia.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="176" column="4" lean-forward="true" selection-end-line="182" selection-end-column="41" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -306,7 +301,14 @@
       <option name="project" value="LOCAL" />
       <updated>1536960773799</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Fixed skysports">
+      <created>1537217474913</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1537217474913</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TodoView">
@@ -386,7 +388,8 @@
     <MESSAGE value="Added Documenataries" />
     <MESSAGE value="Fixed Documentries" />
     <MESSAGE value="Fixed zemtv" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed zemtv" />
+    <MESSAGE value="Fixed skysports" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed skysports" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -486,17 +489,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Temp/scp06944/home/beta/scripts/pakmedia.py">
+    <entry file="file://$PROJECT_DIR$/cloud/pakmedia.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="176" column="4" lean-forward="true" selection-end-line="182" selection-end-column="41" />
+        <state relative-caret-position="2644">
+          <caret line="182" column="41" selection-start-line="182" selection-start-column="41" selection-end-line="182" selection-end-column="41" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cloud/pakmedia.py">
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/scp06944/home/beta/scripts/pakmedia.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="451">
-          <caret line="182" column="41" selection-start-line="182" selection-start-column="41" selection-end-line="182" selection-end-column="41" />
+        <state relative-caret-position="2907">
+          <caret line="176" column="4" selection-end-line="182" selection-end-column="41" />
         </state>
       </provider>
     </entry>
