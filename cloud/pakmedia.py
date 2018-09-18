@@ -13,7 +13,9 @@ zem_url = [base64.b64decode('aHR0cDovL3d3dy56ZW10di5jb20vY2F0ZWdvcnkvdmlyYWwtdml
 
 doc_url = base64.b64decode('aHR0cDovL3d3dy5oZGRvY3VtZW50YXJ5LmNvbS9jYXRlZ29yeS9zY2llbmNlLWFuZC10ZWNobm9sb2d5Lw==')
 
+sky_url = base64.b64decode('aHR0cHM6Ly93d3cuc2t5c3BvcnRzLmNvbS93YXRjaC92aWRlby9zcG9ydHMvY3JpY2tldA==')
 
+VIDEO_URL_FMT = 'http://player.ooyala.com/player/all/{video_id}.m3u8'
 web_path = '/home/beta/scripts/json/'
 
 p_dm = re.compile("<iframe.*src=.*http.*dailymotion.com.*video[/](.*?)['|/?]")
@@ -23,21 +25,20 @@ p_fb = re.compile('<.*["]http.*facebook[.]com[/]video[.]php[?]v[=](.*?)["]')
 p_op = re.compile('.*["]http.*openload[.]co[\/]embed[\/](.*?)[\/]["]')
 
 
-
 def spkshows(Fromurl, session, shows):
     print(datetime.datetime.now().time())
     print('Downloading sisasatpk Shows...!')
     for link in Fromurl:
         match = []
         for x in range(1, 5):
-            newlink=link
+            newlink = link
             if x is not 1:
-                newlink = link + b'page-%d' %x
-            data = get_fast(newlink , session)
+                newlink = link + b'page-%d' % x
+            data = get_fast(newlink, session)
             soup = BeautifulSoup(data, "lxml")
             for div in soup.find_all('div', {'class': 'structItem-title'}):
                 a = div.find_all('a')[0]
-                match.append((a.attrs['data-preview-url'],a.attrs['href'],a.text.strip()))
+                match.append((a.attrs['data-preview-url'], a.attrs['href'], a.text.strip()))
 
         for i in match:
             if b'siasi' in link:
@@ -56,16 +57,17 @@ def spkshows(Fromurl, session, shows):
 
     return
 
+
 def zemshows(Fromurl, session, shows):
     print(datetime.datetime.now().time())
     print('Downloading ZemTV Shows...!')
     for link in Fromurl:
         match = []
         for x in range(1, 4):
-            newlink=link
+            newlink = link
             if x is not 1:
                 newlink = link + b'page/%d/' % x
-            data = get_fast(newlink , session)
+            data = get_fast(newlink, session)
             soup = BeautifulSoup(data, "lxml")
             for div in soup.find_all('div', attrs={'class': 'ui cards'}):
                 div_nested = div.descendants
@@ -90,6 +92,7 @@ def zemshows(Fromurl, session, shows):
 
     return
 
+
 def docshows(link, session):
     print(datetime.datetime.now().time())
     print('Downloading Doc Shows...!')
@@ -109,6 +112,44 @@ def docshows(link, session):
         json.dump(docshows, fout, ensure_ascii=False)
 
     return
+
+
+def skyshows(link, session):
+    print(datetime.datetime.now().time())
+    print('Downloading SkySports Cricket...!')
+    match = []
+    for x in range(1, 5):
+        newlink = link
+        if x is not 1:
+            newlink = link + b'/more/%d' % x
+        data = get_fast(newlink, session)
+        soup = BeautifulSoup(data, "lxml")
+        for item in soup('div', {'class': 'polaris-tile-grid__item'}):
+            thumbnail = item.find('div', 'polaris-tile__media-wrap').img['data-src']
+            thumbnail_large = thumbnail.replace('384x216', '768x432')
+            heading = item.find('a', 'polaris-tile__heading-link')
+            m = re.search('/([\w-]+).jpg', thumbnail)
+            if m:
+                video_id = m.group(1)
+                match.append({'Tag': 'SKYCRIC', 'Title': heading.get_text().strip(), 'icon': thumbnail_large,
+                              'link': VIDEO_URL_FMT.format(video_id=video_id)})
+
+    with open(web_path + 'sky.json', 'w', encoding='utf-8') as fout:
+        json.dump(match, fout, ensure_ascii=False)
+
+    return
+
+
+#
+#
+#
+
+def video_item(video_id, title, thumbnail):
+    return {'label': title,
+            'thumbnail': thumbnail,
+            'path': VIDEO_URL_FMT.format(video_id=video_id),
+            'is_playable': True}
+
 
 #
 def url_processor(cname, tag, session):
@@ -153,7 +194,7 @@ def url_processor(cname, tag, session):
             if 'Youtube' in source:
                 imageurl = 'https://img.youtube.com/vi/' + source['Youtube'] + '/hqdefault.jpg'
             elif 'DailyMotion' in source:
-                imageurl='https://www.dailymotion.com/thumbnail/video/'+source['DailyMotion']
+                imageurl = 'https://www.dailymotion.com/thumbnail/video/' + source['DailyMotion']
         shows = ({'Tag': tag, 'Title': tname, 'icon': imageurl, 'link': source})
 
     return shows
@@ -171,13 +212,16 @@ if __name__ == "__main__":
     zem_session.get('http://www.zemtv.com/')
     spk_session = requests.Session()
     spk_session.get('https://www.siasat.pk/forum/home.php')
+    sky_session = requests.Session()
+    sky_session.get('https://www.skysports.com/')
+    doc_session = requests.Session()
+    doc_session.get('http://www.hddocumentary.com/')
     print('Script Starting...! ')
     print(datetime.datetime.now().time())
-    shows=[]
-    zemshows(zem_url, zem_session,shows)
+    shows = []
+    zemshows(zem_url, zem_session, shows)
     spkshows(spk_url, spk_session, shows)
-    #doc_session = requests.Session()
-    #doc_session.get('http://www.hddocumentary.com/')
-    #docshows(doc_url,doc_session)
+    docshows(doc_url, doc_session)
+    skyshows(sky_url, sky_session)
     print('Script Ended')
     print(datetime.datetime.now().time())
