@@ -1,0 +1,59 @@
+[B]Version 3.7Beta[/B]
+- fixed spk shows
+[B]Version 3.6Beta[/B]
+- Added skysports Video
+[B]Version 3.5Beta[/B]
+- Fixed Documentaries
+[B]Version 3.3Beta[/B]
+- Added Documentaries
+[B]Version 3.2Beta[/B]
+- Extract links from cloud
+[B]Version 3.1.1Beta[/B]
+- Disabled Multithreading, doesnt work on Android
+[B]Version 3.1.0Beta[/B]
+- Added Major Performance Improvement, Multithreading -- 16
+[B]Version 3.0.6Beta[/B]
+- Fixed video titles
+[B]Version 3.0.5Beta[/B]
+- optimized code for fast play
+[B]Version 3.0.4Beta[/B]
+- Fixed default videotype
+[B]Version 3.0.3Beta[/B]
+- Fixed Memory consumption issue.
+[B]Version 3.0.2Beta[/B]
+- Fixed Auto Play
+[B]Version 3.0.1Beta[/B]
+- Added ZemTV
+[B]Version 2.2.8[/B]
+- Dailymotion fix
+[B]Version 2.2.6b[/B]
+- fixed Next-Page bug
+[B]Version 2.2.5b[/B]
+- fixed pycrypto dependancy
+[B]Version 2.2.4b[/B]
+- Added playwire links
+[B]Version 2.2.3b[/B]
+-fixed AES Errors
+[B]Version 2.2.1b[/B]
+- small bug fixes
+[B]Version 2.1b[/B]
+- changed the name from siasat-pk to PakMedia
+- moved the siasatpk to module
+[B]Version 2.0b[/B]
+- Major code cleanup and optimization.
+[B]Version 1.9.1[/B]
+- fixed thumbnails
+[B]Version 1.8[/B]
+- Added Extra video sections.
+[B]Version 1.7[/B]
+- fixed the default video issue.
+[B]Version 1.6[/B]
+- Fixed auto Play and default video settings.
+[B]Version 1.5[/B]
+- Added context/auto play feature.
+[B]Version 1.0[/B]
+- First Public Release
+[B]Version 0.3[/B]
+- fixed updates
+[B]Version 0.2[/B]
+- First commit
