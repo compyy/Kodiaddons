@@ -53,8 +53,8 @@ def spkshows(Fromurl, session):
             if empty_check:
                 spkshows.append(empty_check)
 
-    if not spkshows:
-        with open(web_path + 'shows.json', 'w', encoding='utf-8') as fout:
+    if spkshows:
+        with open(web_path + 'spkshows.json', 'w', encoding='utf-8') as fout:
             json.dump(spkshows, fout, ensure_ascii=False)
             print('File Writing Successfull..!')
 
@@ -90,7 +90,7 @@ def zemshows(Fromurl, session):
             if empty_check:
                 zemshows.append(empty_check)
 
-    if not zemshows:
+    if zemshows:
         with open(web_path + 'zemshows.json', 'w', encoding='utf-8') as fout:
             json.dump(zemshows, fout, ensure_ascii=False)
             print('File Writing Successfull..!')
