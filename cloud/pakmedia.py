@@ -53,9 +53,9 @@ def spkshows(Fromurl, session):
             if empty_check:
                 spkshows.append(empty_check)
 
-    if len(spkshows > 10):
+    if not spkshows:
         with open(web_path + 'shows.json', 'w', encoding='utf-8') as fout:
-            json.dump(shows, fout, ensure_ascii=False)
+            json.dump(spkshows, fout, ensure_ascii=False)
             print('File Writing Successfull..!')
 
     return
@@ -90,7 +90,7 @@ def zemshows(Fromurl, session):
             if empty_check:
                 zemshows.append(empty_check)
 
-    if len(zemshows > 10):
+    if not zemshows:
         with open(web_path + 'zemshows.json', 'w', encoding='utf-8') as fout:
             json.dump(zemshows, fout, ensure_ascii=False)
             print('File Writing Successfull..!')
@@ -219,13 +219,13 @@ if __name__ == "__main__":
     spk_session.get('https://www.siasat.pk/forum/home.php')
     # sky_session = requests.Session()
     # sky_session.get('https://www.skysports.com/')
-    # doc_session = requests.Session()
-    # doc_session.get('http://www.hddocumentary.com/')
+    doc_session = requests.Session()
+    doc_session.get('http://www.hddocumentary.com/')
     print('Script Starting...! ')
     print(datetime.datetime.now().time())
-    # spkshows(spk_url, spk_session, shows)
+    spkshows(spk_url, spk_session)
     zemshows(zem_url, zem_session)
-    # docshows(doc_url, doc_session)
+    docshows(doc_url, doc_session)
     #skyshows(sky_url, sky_session)
     print('Script Ended')
     print(datetime.datetime.now().time())
