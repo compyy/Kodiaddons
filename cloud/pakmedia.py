@@ -2,6 +2,7 @@ import base64
 import datetime
 import json
 import re
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -25,7 +26,8 @@ p_fb = re.compile('<.*["]http.*facebook[.]com[/]video[.]php[?]v[=](.*?)["]')
 p_op = re.compile('.*["]http.*openload[.]co[\/]embed[\/](.*?)[\/]["]')
 
 
-def spkshows(Fromurl, session, shows):
+def spkshows(Fromurl, session):
+    spkshows = []
     print(datetime.datetime.now().time())
     print('Downloading sisasatpk Shows...!')
     for link in Fromurl:
@@ -49,16 +51,18 @@ def spkshows(Fromurl, session, shows):
                 empty_check = url_processor(i, "SP_SC", session)
 
             if empty_check:
-                shows.append(empty_check)
+                spkshows.append(empty_check)
 
-    with open(web_path + 'shows.json', 'w', encoding='utf-8') as fout:
-        json.dump(shows, fout, ensure_ascii=False)
-        print('File Writing Successfull..!')
+    if len(spkshows > 10):
+        with open(web_path + 'shows.json', 'w', encoding='utf-8') as fout:
+            json.dump(shows, fout, ensure_ascii=False)
+            print('File Writing Successfull..!')
 
     return
 
 
-def zemshows(Fromurl, session, shows):
+def zemshows(Fromurl, session):
+    zemshows = []
     print(datetime.datetime.now().time())
     print('Downloading ZemTV Shows...!')
     for link in Fromurl:
@@ -84,11 +88,12 @@ def zemshows(Fromurl, session, shows):
             else:
                 empty_check = url_processor(i, "ZEM_Shows", session)
             if empty_check:
-                shows.append(empty_check)
+                zemshows.append(empty_check)
 
-    with open(web_path + 'shows.json', 'w', encoding='utf-8') as fout:
-        json.dump(shows, fout, ensure_ascii=False)
-        print('File Writing Successfull..!')
+    if len(zemshows > 10):
+        with open(web_path + 'zemshows.json', 'w', encoding='utf-8') as fout:
+            json.dump(zemshows, fout, ensure_ascii=False)
+            print('File Writing Successfull..!')
 
     return
 
@@ -212,16 +217,15 @@ if __name__ == "__main__":
     zem_session.get('http://www.zemtv.com/')
     spk_session = requests.Session()
     spk_session.get('https://www.siasat.pk/forum/home.php')
-    sky_session = requests.Session()
-    sky_session.get('https://www.skysports.com/')
-    doc_session = requests.Session()
-    doc_session.get('http://www.hddocumentary.com/')
+    # sky_session = requests.Session()
+    # sky_session.get('https://www.skysports.com/')
+    # doc_session = requests.Session()
+    # doc_session.get('http://www.hddocumentary.com/')
     print('Script Starting...! ')
     print(datetime.datetime.now().time())
-    shows = []
-    zemshows(zem_url, zem_session, shows)
-    spkshows(spk_url, spk_session, shows)
-    docshows(doc_url, doc_session)
-    skyshows(sky_url, sky_session)
+    # spkshows(spk_url, spk_session, shows)
+    zemshows(zem_url, zem_session)
+    # docshows(doc_url, doc_session)
+    #skyshows(sky_url, sky_session)
     print('Script Ended')
     print(datetime.datetime.now().time())

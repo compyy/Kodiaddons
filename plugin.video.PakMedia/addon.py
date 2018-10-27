@@ -102,8 +102,13 @@ def add_enteries(url_type=None):
             shows_json = json.loads(url.read().decode("utf-8"))
             add_shows(url_type, shows_json)
 
-        else:
-            url = urllib.urlopen("http://compysc.westus2.cloudapp.azure.com/shows.json")
+        if 'ZEM' in url_type:
+            url = urllib.urlopen("http://compysc.westus2.cloudapp.azure.com/zemshows.json")
+            shows_json = json.loads(url.read().decode("utf-8"))
+            add_shows(url_type, shows_json)
+
+        if 'SP' in url_type:
+            url = urllib.urlopen("http://compysc.westus2.cloudapp.azure.com/spkshows.json")
             shows_json = json.loads(url.read().decode("utf-8"))
             add_shows(url_type, shows_json)
     return
@@ -111,7 +116,6 @@ def add_enteries(url_type=None):
 
 def add_shows(url_type, shows_json):
     shows_json = [x for x in shows_json if x != []]
-    print(len(shows_json))
     for i in range(0, len(shows_json)):
         if (shows_json[i]['Tag']) == url_type:
             link = {}
