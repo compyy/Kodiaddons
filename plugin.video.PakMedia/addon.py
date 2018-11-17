@@ -30,6 +30,7 @@ spicon = addonPath + '/resources/icon/siasatpk.png'
 docicon = addonPath + '/resources/icon/docu.png'
 skyicon = addonPath + '/resources/icon/skysports.png'
 zmicon = addonPath + '/resources/icon/zem.jpg'
+smicon = addonPath + '/resources/icon/smartcric.png'
 docshowjson = addonPath + '/resources/lib/'
 
 # Initializing the settings ###
@@ -51,7 +52,7 @@ def add_types():
     add_directory('Sports Corner', 'SP_SC', 2, spicon)
     add_directory('ZemTV Shows', 'ZEM_Shows', 2, zmicon)
     add_directory('Zemtv Videos', 'ZEM_Viral', 2, zmicon)
-    add_directory('SmartCric', 'SMARTCRIC', 2, skyicon)
+    add_directory('SmartCric', 'SMARTCRIC', 2, smicon)
     add_directory('SkySports Cricket', 'SKYCRIC', 2, skyicon)
     add_directory('Documentry HD', 'DOCHD', 2, docicon)
     add_directory('Documentry HD April-2018', 'DOCHDOLD', 2, docicon)
