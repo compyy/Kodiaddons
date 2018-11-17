@@ -32,7 +32,6 @@ skyicon = addonPath + '/resources/icon/skysports.png'
 zmicon = addonPath + '/resources/icon/zem.jpg'
 docshowjson = addonPath + '/resources/lib/'
 
-
 # Initializing the settings ###
 if not selfAddon.getSetting("dummy") == "true":
     selfAddon.setSetting("dummy", "true")
@@ -52,6 +51,7 @@ def add_types():
     add_directory('Sports Corner', 'SP_SC', 2, spicon)
     add_directory('ZemTV Shows', 'ZEM_Shows', 2, zmicon)
     add_directory('Zemtv Videos', 'ZEM_Viral', 2, zmicon)
+    add_directory('SmartCric', 'SMARTCRIC', 2, skyicon)
     add_directory('SkySports Cricket', 'SKYCRIC', 2, skyicon)
     add_directory('Documentry HD', 'DOCHD', 2, docicon)
     add_directory('Documentry HD April-2018', 'DOCHDOLD', 2, docicon)
@@ -111,6 +111,24 @@ def add_enteries(url_type=None):
             url = urllib.urlopen("http://compysc.westus2.cloudapp.azure.com/spkshows.json")
             shows_json = json.loads(url.read().decode("utf-8"))
             add_shows(url_type, shows_json)
+
+        if 'SMARTCRIC' in url_type:
+            AddSmartCric(url_type)
+    return
+
+
+def AddSmartCric(url):
+    import scdec
+    channeladded = False
+    for source in scdec.getlinks():
+        add_directory(source[0], source[1], source[2], '', False, isItFolder=False)  # name,url,mode,icon
+        channeladded = True
+
+    if not channeladded:
+        cname = 'No streams available'
+        curl = ''
+        add_directory('    -' + cname, curl, -1, '', False, isItFolder=False)  # name,url,mode,icon
+
     return
 
 
@@ -146,6 +164,11 @@ def play_showLink(name, linkType, video_id):
     listitem.setInfo("Video", {"Title": name})
     listitem.setProperty('mimetype', 'video/x-msvideo')
     listitem.setProperty('IsPlayable', 'true')
+
+    if linkType == "SMARTCRIC":
+        playlist.add(url, listitem)
+        xbmcPlayer = xbmc.Player()
+        xbmcPlayer.play(playlist)
 
     if linkType == "Playwire":
         import playwire
