@@ -237,6 +237,6 @@ if __name__ == "__main__":
     spkshows(spk_url, spk_session)
     zemshows(zem_url, zem_session)
     # docshows(doc_url, doc_session)
-    # skyshows(sky_url, sky_session)
+    #skyshows(sky_url, sky_session)
     print('Script Ended')
     print(datetime.datetime.now().time())
