@@ -2,13 +2,14 @@ import base64
 import datetime
 import json
 import re
-
 import requests
 from bs4 import BeautifulSoup
 
-spk_url = [base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9pbmRleC5waHA/Zm9ydW1zL3NpYXNpLXZpZGVvcy4yMS8='),
-           base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9pbmRleC5waHA/Zm9ydW1zL2RhaWx5LXRhbGstc2hvd3MuMjkv'),
-           base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9pbmRleC5waHA/Zm9ydW1zL3Nwb3J0cy1jb3JuZXIuMzcv')]
+spk_url = [base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9mb3J1bXMvc2lhc2ktdmlkZW9zLjIxLw=='),
+           base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9mb3J1bXMvZGFpbHktdGFsay1zaG93cy4yOS8='),
+           base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9mb3J1bXMvc3BvcnRzLWNvcm5lci4zNy8=')]
+
+
 zem_url = [base64.b64decode('aHR0cDovL3d3dy56ZW10di5jb20vY2F0ZWdvcnkvdmlyYWwtdmlkZW9zLw=='),
            base64.b64decode('aHR0cDovL3d3dy56ZW10di5jb20vY2F0ZWdvcnkvcGFraXN0YW5pLw==')]
 
@@ -39,6 +40,8 @@ def spkshows(Fromurl, session):
             data = get_fast(newlink, session)
             soup = BeautifulSoup(data, "lxml")
             for div in soup.find_all('div', {'class': 'structItem-title'}):
+                if "contentRow" in div["class"][0]:
+                    continue
                 a = div.find_all('a')[0]
                 match.append((a.attrs['data-preview-url'], a.attrs['href'], a.text.strip()))
 
@@ -172,7 +175,15 @@ def url_processor(cname, tag, session):
         url = cname[1]
         imageurl = cname[0]
 
-    link = get_fast(url, session)
+    if "SP" in tag:
+        data = get_fast(url, session)
+        soup = BeautifulSoup(data, "lxml")
+        div = soup.find('div', {'class': 'bbWrapper'})
+        link = str(div)
+
+    else:
+        link = get_fast(url, session)
+
     source = {}
     did = re.search(p_dm, link)
     if did:
@@ -217,15 +228,15 @@ if __name__ == "__main__":
     zem_session.get('http://www.zemtv.com/')
     spk_session = requests.Session()
     spk_session.get('https://www.siasat.pk/forum/home.php')
-    # sky_session = requests.Session()
-    # sky_session.get('https://www.skysports.com/')
-    doc_session = requests.Session()
-    doc_session.get('http://www.hddocumentary.com/')
+    #sky_session = requests.Session()
+    #sky_session.get('https://www.skysports.com/')
+    #doc_session = requests.Session()
+    #doc_session.get('http://www.hddocumentary.com/')
     print('Script Starting...! ')
     print(datetime.datetime.now().time())
     spkshows(spk_url, spk_session)
     zemshows(zem_url, zem_session)
-    docshows(doc_url, doc_session)
+    #docshows(doc_url, doc_session)
     #skyshows(sky_url, sky_session)
     print('Script Ended')
     print(datetime.datetime.now().time())
