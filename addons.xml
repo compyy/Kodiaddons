@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
-    <addon id="plugin.video.PakMedia" name="PakMedia" version="3.8B" provider-name="Yasir">
+    <addon id="plugin.video.PakMedia" name="PakMedia" version="3.9B" provider-name="Yasir">
   <requires>
 		<import addon="script.module.addon.common"/>
 	  	<import addon="script.module.urlresolver"/>

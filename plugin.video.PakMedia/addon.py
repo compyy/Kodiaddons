@@ -89,7 +89,7 @@ def add_directory(name, url, mode, iconimage, showContext=False, isItFolder=True
 def add_enteries(url_type=None):
     if url_type:
         if 'DOCHD' in url_type:
-            url = urllib.urlopen("http://compysc.westus2.cloudapp.azure.com/docshows.json")
+            url = urllib.urlopen("http://192.168.0.160/kodi/docshows.json")
             shows_json = json.loads(url.read().decode("utf-8"))
             add_shows(url_type, shows_json)
 
@@ -99,17 +99,17 @@ def add_enteries(url_type=None):
             add_shows('DOCHD', shows_json)
 
         if 'SKYCRIC' in url_type:
-            url = urllib.urlopen("http://compysc.westus2.cloudapp.azure.com/sky.json")
+            url = urllib.urlopen("http://192.168.0.160/kodi/sky.json")
             shows_json = json.loads(url.read().decode("utf-8"))
             add_shows(url_type, shows_json)
 
         if 'ZEM' in url_type:
-            url = urllib.urlopen("http://compysc.westus2.cloudapp.azure.com/zemshows.json")
+            url = urllib.urlopen("http://192.168.0.160/kodi/zemshows.json")
             shows_json = json.loads(url.read().decode("utf-8"))
             add_shows(url_type, shows_json)
 
         if 'SP' in url_type:
-            url = urllib.urlopen("http://compysc.westus2.cloudapp.azure.com/spkshows.json")
+            url = urllib.urlopen("http://192.168.0.160/kodi/spkshows.json")
             shows_json = json.loads(url.read().decode("utf-8"))
             add_shows(url_type, shows_json)
 
