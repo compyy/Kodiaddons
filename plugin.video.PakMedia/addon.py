@@ -7,13 +7,13 @@ import sys
 import traceback
 import urllib
 
-import beautifulsoup4 as BeautifulSoup
 import requests
 import urlparse
 import xbmc
 import xbmcaddon
 import xbmcgui
 import xbmcplugin
+from bs4 import BeautifulSoup
 
 #
 # End of Imports
