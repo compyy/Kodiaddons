@@ -7,7 +7,7 @@ import sys
 import traceback
 import urllib
 
-import beautifulsoup4 as BeautifulSoup
+import beautifulsoup as BeautifulSoup
 import requests
 import urlparse
 import xbmc
