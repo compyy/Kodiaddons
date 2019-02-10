@@ -7,7 +7,7 @@ import sys
 import traceback
 import urllib
 
-import BeautifulSoup
+import BeautifulSoup4 as BeautifulSoup
 import requests
 import urlparse
 import xbmc
@@ -127,13 +127,13 @@ def add_enteries(url_type=None):
             add_shows(url_type, shows_json)
 
         if 'ZEM' in url_type:
-            url = urllib.urlopen("http://192.168.0.160/zemshows.json")
-            shows_json = json.loads(url.read().decode("utf-8"))
+            with open(json_path + 'zemshows.json') as data_file:
+                shows_json = json.loads(data_file.read().decode("utf-8"))
             add_shows(url_type, shows_json)
 
         if 'SP' in url_type:
-            url = urllib.urlopen("http://192.168.0.160/spkshows.json")
-            shows_json = json.loads(url.read().decode("utf-8"))
+            with open(json_path + 'spkshows.json') as data_file:
+                shows_json = json.loads(data_file.read().decode("utf-8"))
             add_shows(url_type, shows_json)
 
         if 'SMARTCRIC' in url_type:
@@ -261,7 +261,7 @@ def spkshows(Fromurl, session):
                 spkshows.append(empty_check)
 
     if spkshows:
-        with open(web_path + 'spkshows.json', 'w', encoding='utf-8') as fout:
+        with open(json_path + 'spkshows.json', 'w', encoding='utf-8') as fout:
             json.dump(spkshows, fout, ensure_ascii=False)
             print('File Writing Successfull..!')
 
@@ -298,7 +298,7 @@ def zemshows(Fromurl, session):
                 zemshows.append(empty_check)
 
     if zemshows:
-        with open(web_path + 'zemshows.json', 'w', encoding='utf-8') as fout:
+        with open(json_path + 'zemshows.json', 'w', encoding='utf-8') as fout:
             json.dump(zemshows, fout, ensure_ascii=False)
             print('File Writing Successfull..!')
 
