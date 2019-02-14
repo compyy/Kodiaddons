@@ -7,7 +7,6 @@ import sys
 import traceback
 import urllib
 
-import beautifulsoup4 as BeautifulSoup
 import requests
 import urlparse
 import xbmc
@@ -15,6 +14,9 @@ import xbmcaddon
 import xbmcgui
 import xbmcplugin
 
+#
+sys.path.append(xbmcaddon.Addon(id='script.module.beautifulsoup4').getAddonInfo("path") + '/lib')
+from bs4 import BeautifulSoup
 #
 # End of Imports
 #
@@ -242,12 +244,13 @@ def spkshows(Fromurl, session):
             if x is not 1:
                 newlink = link + b'page-%d' % x
             data = get_fast(newlink, session)
-            soup = BeautifulSoup(data, "lxml")
+            soup = BeautifulSoup(data, 'html.parser')
             for div in soup.find_all('div', {'class': 'structItem-title'}):
                 if "contentRow" in div["class"][0]:
                     continue
                 a = div.find_all('a')[0]
-                match.append((a.attrs['data-preview-url'], a.attrs['href'], a.text.strip()))
+                match.append((a.attrs['data-preview-url'].encode('utf-8'), a.attrs['href'].encode('utf-8'),
+                              a.text.strip().encode('utf-8')))
 
         for i in match:
             if b'siasi' in link:
@@ -261,7 +264,7 @@ def spkshows(Fromurl, session):
                 spkshows.append(empty_check)
 
     if spkshows:
-        with open(json_path + 'spkshows.json', 'w', encoding='utf-8') as fout:
+        with open(json_path + 'spkshows.json', 'w') as fout:
             json.dump(spkshows, fout, ensure_ascii=False)
             print('File Writing Successfull..!')
 
@@ -279,7 +282,7 @@ def zemshows(Fromurl, session):
             if x is not 1:
                 newlink = link + b'page/%d/' % x
             data = get_fast(newlink, session)
-            soup = BeautifulSoup(data, "lxml")
+            soup = BeautifulSoup(data, 'html.parser')
             for div in soup.find_all('div', attrs={'class': 'ui cards'}):
                 div_nested = div.descendants
                 for d in div_nested:
@@ -287,7 +290,7 @@ def zemshows(Fromurl, session):
                         img = div.find_all('img')[0]
                         src = img.get('src')
                         a = div.find_all('a')[1]
-                        match.append((src, a.attrs['href'], a.text.strip()))
+                        match.append((src, a.attrs['href'].encode('utf-8'), a.text.strip().encode('utf-8')))
 
         for i in match:
             if b'viral' in link:
@@ -298,7 +301,7 @@ def zemshows(Fromurl, session):
                 zemshows.append(empty_check)
 
     if zemshows:
-        with open(json_path + 'zemshows.json', 'w', encoding='utf-8') as fout:
+        with open(json_path + 'zemshows.json', 'w') as fout:
             json.dump(zemshows, fout, ensure_ascii=False)
             print('File Writing Successfull..!')
 
@@ -323,7 +326,7 @@ def url_processor(cname, tag, session):
 
     if "SP" in tag:
         data = get_fast(url, session)
-        soup = BeautifulSoup(data, "lxml")
+        soup = BeautifulSoup(data, 'html.parser')
         div = soup.find('div', {'class': 'bbWrapper'})
         link = str(div)
 
