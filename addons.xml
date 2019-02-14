@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
-    <addon id="plugin.video.PakMedia" name="PakMedia" version="4.0B" provider-name="Yasir">
+    <addon id="plugin.video.PakMedia" name="PakMedia" version="4.1B" provider-name="Yasir">
   <requires>
       <import addon="script.module.addon.common"/>
       <import addon="script.module.urlresolver"/>
       <import addon="script.module.requests"/>
+      <import addon="script.module.beautifulsoup4"/>
       <import addon="xbmc.python" version="2.7.0"/>
   </requires>
   <extension point="xbmc.python.pluginsource" library="addon.py">
