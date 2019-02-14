@@ -76,7 +76,7 @@ def add_types():
     add_directory('Sports Corner', 'SP_SC', 2, spicon)
     add_directory('ZemTV Shows', 'ZEM_Shows', 2, zmicon)
     add_directory('Zemtv Videos', 'ZEM_Viral', 2, zmicon)
-    add_directory('Refresh Shows', 'refresh_shows', 2, zmicon)
+    add_directory('Refresh Shows', 'refresh_shows', 2, '')
     add_directory('SmartCric', 'SMARTCRIC', 2, smicon)
     add_directory('SkySports Cricket', 'SKYCRIC', 2, skyicon)
     add_directory('Documentry HD', 'DOCHD', 2, docicon)
@@ -457,7 +457,6 @@ name, mode, url, linkType, provider
 try:
     if mode is None or url is None or len(url) < 1:
         add_types()
-        shows_update()
     elif mode == 2:
         add_enteries(url)
     elif mode == 3:

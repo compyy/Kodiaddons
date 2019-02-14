@@ -7,7 +7,6 @@
     <list default="true" id="dabfa14b-13f5-43de-bfa8-87ad120a9061" name="Default" comment="fixed shows loading">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/addons.xml" beforeDir="false" afterPath="$PROJECT_DIR$/addons.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/addons.xml.md5" beforeDir="false" afterPath="$PROJECT_DIR$/addons.xml.md5" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugin.video.PakMedia/addon.py" beforeDir="false" afterPath="$PROJECT_DIR$/plugin.video.PakMedia/addon.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugin.video.PakMedia/addon.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plugin.video.PakMedia/addon.xml" afterDir="false" />
     </list>
@@ -75,7 +74,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cloud/pakmedia.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
+            <state relative-caret-position="-2312">
               <caret line="59" column="67" selection-start-line="59" selection-start-column="51" selection-end-line="59" selection-end-column="67" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
@@ -88,7 +87,7 @@
         <entry file="file://$PROJECT_DIR$/addons.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="34">
-              <caret line="2" column="62" selection-start-line="2" selection-start-column="62" selection-end-line="2" selection-end-column="62" />
+              <caret line="2" column="66" selection-start-line="2" selection-start-column="66" selection-end-line="2" selection-end-column="66" />
             </state>
           </provider>
         </entry>
@@ -105,8 +104,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/plugin.video.PakMedia/addon.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="13" column="14" lean-forward="true" selection-start-line="13" selection-start-column="14" selection-end-line="13" selection-end-column="14" />
+            <state relative-caret-position="257">
+              <caret line="463" column="20" lean-forward="true" selection-start-line="463" selection-start-column="20" selection-end-line="463" selection-end-column="20" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -206,9 +208,9 @@
         <option value="$USER_HOME$/AppData/Local/Temp/scp39181/home/beta/scripts/Kodiaddons/cloud/pakmedia.py" />
         <option value="$PROJECT_DIR$/cloud/pakmedia.py" />
         <option value="$USER_HOME$/AppData/Roaming/Kodi/addons/plugin.video.PakMedia/addon.py" />
-        <option value="$PROJECT_DIR$/plugin.video.PakMedia/addon.py" />
         <option value="$PROJECT_DIR$/addons.xml" />
         <option value="$PROJECT_DIR$/plugin.video.PakMedia/addon.xml" />
+        <option value="$PROJECT_DIR$/plugin.video.PakMedia/addon.py" />
       </list>
     </option>
   </component>
@@ -242,25 +244,7 @@
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="Kodiaddons" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Kodiaddons" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Kodiaddons" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Kodiaddons" type="462c0819:PsiDirectoryNode" />
-              <item name="plugin.video.PakMedia" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -572,7 +556,21 @@
       <option name="project" value="LOCAL" />
       <updated>1550148279036</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="fixed shows loading">
+      <created>1550156761262</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1550156761262</updated>
+    </task>
+    <task id="LOCAL-00034" summary="fixed shows loading">
+      <created>1550157745950</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1550157745950</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TodoView">
@@ -593,7 +591,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49726775" visible="true" weight="0.19182949" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49726775" weight="0.19182949" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -759,16 +757,6 @@
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Temp/scp39181/home/beta/scripts/Kodiaddons/cloud/pakmedia.py" />
-    <entry file="file://$PROJECT_DIR$/cloud/pakmedia.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="59" column="67" selection-start-line="59" selection-start-column="51" selection-end-line="59" selection-end-column="67" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Roaming/Kodi/addons/plugin.video.PakMedia/addon.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2499">
@@ -782,7 +770,7 @@
     <entry file="file://$PROJECT_DIR$/addons.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
-          <caret line="2" column="62" selection-start-line="2" selection-start-column="62" selection-end-line="2" selection-end-column="62" />
+          <caret line="2" column="66" selection-start-line="2" selection-start-column="66" selection-end-line="2" selection-end-column="66" />
         </state>
       </provider>
     </entry>
@@ -793,10 +781,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/cloud/pakmedia.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2312">
+          <caret line="59" column="67" selection-start-line="59" selection-start-column="51" selection-end-line="59" selection-end-column="67" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/plugin.video.PakMedia/addon.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="14" lean-forward="true" selection-start-line="13" selection-start-column="14" selection-end-line="13" selection-end-column="14" />
+        <state relative-caret-position="257">
+          <caret line="463" column="20" lean-forward="true" selection-start-line="463" selection-start-column="20" selection-end-line="463" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
