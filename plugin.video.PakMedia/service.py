@@ -192,7 +192,7 @@ def shows_update():
 if __name__ == '__main__':
     monitor = xbmc.Monitor()
     while not monitor.abortRequested():
-        if monitor.waitForAbort(300):
+        if monitor.waitForAbort(10):
             break
         xbmc.log("Updating Shows " % datetime.datetime.now().time(), level=xbmc.LOGNOTICE)
-        shows_update()
+        # shows_update()
