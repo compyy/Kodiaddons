@@ -3,6 +3,7 @@ import datetime
 import json
 import re
 import sys
+import time
 
 import requests
 import xbmc
@@ -189,6 +190,9 @@ def shows_update():
 
 #
 ###
+with open(addonPath + '/runtime', 'w') as fout:
+    fout.write(str(time.time()))
+
 xbmc.log('Shows Update Start ' + str(datetime.datetime.now().time()), level=xbmc.LOGNOTICE)
 dialog = xbmcgui.Dialog()
 xbmc.log('Shows Update Start ' + str(datetime.datetime.now().time()), level=xbmc.LOGNOTICE)

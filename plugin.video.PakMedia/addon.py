@@ -2,6 +2,7 @@ import json
 import os
 import re
 import sys
+import time
 import traceback
 import urllib
 
@@ -277,6 +278,11 @@ except:
 
 print
 name, mode, url, linkType, provider
+
+with open(addonPath + '/runtime', 'r') as fout:
+    script_time = float(fout.readline())
+    if time.time() > (script_time + 1800):
+        xbmc.executebuiltin('XBMC.RunScript(' + service_addon + ')')
 
 
 # noinspection PyBroadException
