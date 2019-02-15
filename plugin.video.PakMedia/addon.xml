@@ -1,22 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.PakMedia" name="PakMedia" version="4.4B" provider-name="Yasir">
-  <requires>
-      <import addon="script.module.addon.common"/>
-      <import addon="script.module.urlresolver"/>
-      <import addon="script.module.requests"/>
-      <import addon="script.module.beautifulsoup4"/>
-      <import addon="xbmc.python" version="2.7.0"/>
-  </requires>
-  <extension point="xbmc.python.pluginsource" library="addon.py">
-    <provides>video</provides>
-  </extension>
-  <extension point="xbmc.addon.metadata">
-    <summary lang="en">www.PakMedia.com.pk</summary>
-    <description lang="en">Watch Vidoes uploaded to different Pakistani video sites</description>
-    <disclaimer lang="en">The author does not host or distribute any of the content displayed by this addon. The author does not have any affiliation with the content provider.</disclaimer>
-    <language>English</language>
-    <source>https://github.com/compyy/Kodisiasat</source>
-    <website>https://github.com/compyy/Kodisiasat</website>
-    <platform>all</platform>
-  </extension>
+<addon id="plugin.video.PakMedia" name="PakMedia" version="4.5B" provider-name="Yasir">
+    <requires>
+        <import addon="script.module.addon.common"/>
+        <import addon="script.module.urlresolver"/>
+        <import addon="script.module.requests"/>
+        <import addon="script.module.beautifulsoup4"/>
+        <import addon="xbmc.python" version="2.7.0"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="addon.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.service" library="service.py"/>
+    <extension point="xbmc.addon.metadata">
+        <platform>all</platform>
+        <summary lang="en"></summary>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en">www.PakMedia.com.pk</summary>
+        <description lang="en">Watch Vidoes uploaded to different Pakistani video sites</description>
+        <disclaimer lang="en">The author does not host or distribute any of the content displayed by this addon. The
+            author does not have any affiliation with the content provider.
+        </disclaimer>
+        <language>English</language>
+        <source>https://github.com/compyy/Kodisiasat</source>
+        <website>https://github.com/compyy/Kodisiasat</website>
+        <platform>all</platform>
+    </extension>
 </addon>
