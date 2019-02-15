@@ -7,6 +7,7 @@ import sys
 import requests
 import xbmc
 import xbmcaddon
+import xbmcgui
 
 #
 sys.path.append(xbmcaddon.Addon(id='script.module.beautifulsoup4').getAddonInfo("path") + '/lib')
@@ -180,19 +181,21 @@ def shows_update():
     zem_session.get('http://www.zemtv.com/')
     spk_session = requests.Session()
     spk_session.get('https://www.siasat.pk/forum/home.php')
-    print('Script Starting...! ')
-    print(datetime.datetime.now().time())
     spkshows(spk_url, spk_session)
     zemshows(zem_url, zem_session)
-    print('Script Ended')
-    print(datetime.datetime.now().time())
 
 
+#
 ###
 if __name__ == '__main__':
     monitor = xbmc.Monitor()
+    dialog = xbmcgui.Dialog()
     while not monitor.abortRequested():
-        if monitor.waitForAbort(10):
+        if monitor.waitForAbort(300):
             break
-        xbmc.log("Updating Shows " % datetime.datetime.now().time(), level=xbmc.LOGNOTICE)
-        # shows_update()
+        xbmc.log('Shows Update Start ' + str(datetime.datetime.now().time()), level=xbmc.LOGNOTICE)
+        dialog.notification('Addon Update', 'Shows Update Started ' + str(datetime.datetime.now().time()),
+                            xbmcgui.NOTIFICATION_INFO, 5000)
+        shows_update()
+        dialog.notification('Addon Update', 'Shows Update Ended ' + str(datetime.datetime.now().time()),
+                            xbmcgui.NOTIFICATION_INFO, 5000)
