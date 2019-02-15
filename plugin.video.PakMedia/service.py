@@ -14,7 +14,9 @@ sys.path.append(xbmcaddon.Addon(id='script.module.beautifulsoup4').getAddonInfo(
 from bs4 import BeautifulSoup
 
 #
-addonPath = xbmcaddon.Addon().getAddonInfo("path")
+addon_id = 'plugin.video.PakMedia'
+selfAddon = xbmcaddon.Addon(id=addon_id)
+addonPath = selfAddon.getAddonInfo("path")
 json_path = addonPath + '/resources/json/'
 
 ###
@@ -187,15 +189,11 @@ def shows_update():
 
 #
 ###
-if __name__ == '__main__':
-    monitor = xbmc.Monitor()
-    dialog = xbmcgui.Dialog()
-    while not monitor.abortRequested():
-        if monitor.waitForAbort(300):
-            break
-        xbmc.log('Shows Update Start ' + str(datetime.datetime.now().time()), level=xbmc.LOGNOTICE)
-        dialog.notification('Addon Update', 'Shows Update Started ' + str(datetime.datetime.now().time()),
-                            xbmcgui.NOTIFICATION_INFO, 5000)
-        shows_update()
-        dialog.notification('Addon Update', 'Shows Update Ended ' + str(datetime.datetime.now().time()),
-                            xbmcgui.NOTIFICATION_INFO, 5000)
+xbmc.log('Shows Update Start ' + str(datetime.datetime.now().time()), level=xbmc.LOGNOTICE)
+dialog = xbmcgui.Dialog()
+xbmc.log('Shows Update Start ' + str(datetime.datetime.now().time()), level=xbmc.LOGNOTICE)
+dialog.notification('Shows Update', 'Shows Update Started ' + str(datetime.datetime.now().time()),
+                    xbmcgui.NOTIFICATION_INFO, 5000)
+# shows_update()
+dialog.notification('Shows Update', 'Shows Update Ended ' + str(datetime.datetime.now().time()),
+                    xbmcgui.NOTIFICATION_INFO, 5000)

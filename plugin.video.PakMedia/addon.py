@@ -32,6 +32,7 @@ zmicon = addonPath + '/resources/icon/zem.jpg'
 smicon = addonPath + '/resources/icon/smartcric.png'
 docshowjson = addonPath + '/resources/lib/'
 json_path = addonPath + '/resources/json/'
+service_addon = addonPath + '/service.py'
 
 
 # Initializing the settings ###
@@ -118,8 +119,9 @@ def add_enteries(url_type=None):
         if 'SMARTCRIC' in url_type:
             AddSmartCric(url_type)
 
-        # if 'refresh_shows' in url_type:
-        # shows_update()
+        if 'refresh_shows' in url_type:
+            xbmc.executebuiltin('XBMC.RunScript(' + service_addon + ')')
+
     return
 
 
