@@ -194,6 +194,6 @@ dialog = xbmcgui.Dialog()
 xbmc.log('Shows Update Start ' + str(datetime.datetime.now().time()), level=xbmc.LOGNOTICE)
 dialog.notification('Shows Update', 'Shows Update Started ' + str(datetime.datetime.now().time()),
                     xbmcgui.NOTIFICATION_INFO, 5000)
-# shows_update()
+shows_update()
 dialog.notification('Shows Update', 'Shows Update Ended ' + str(datetime.datetime.now().time()),
                     xbmcgui.NOTIFICATION_INFO, 5000)
