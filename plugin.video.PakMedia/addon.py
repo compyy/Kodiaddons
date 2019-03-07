@@ -189,10 +189,11 @@ def play_showLink(name, linkType, video_id):
 
     import urlresolver
     if linkType == "DailyMotion":
-        media_url = urlresolver.HostedMediaFile(host='dailymotion.com', media_id=video_id).resolve()
-        playlist.add(media_url, listitem)
+        # media_url = urlresolver.HostedMediaFile(host='dailymotion.com', media_id=video_id).resolve()
+        # playlist.add(media_url, listitem)
         xbmcgui.Dialog().notification(__addonname__, "Playing " + linkType + " video", __icon__, 3000, False)
-        xbmc.Player().play(playlist)
+        # xbmc.Player().play(playlist)
+        xbmc.executebuiltin('PlayMedia(plugin://plugin.video.dailymotion_com/?url=' + video_id + '&mode=playVideo)')
     if linkType == "Youtube":
         media_url = urlresolver.HostedMediaFile(host='youtube.com', media_id=video_id).resolve()
         playlist.add(media_url, listitem)
