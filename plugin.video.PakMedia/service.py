@@ -32,7 +32,7 @@ doc_url = base64.b64decode('aHR0cDovL3d3dy5oZGRvY3VtZW50YXJ5LmNvbS9jYXRlZ29yeS9z
 
 sky_url = base64.b64decode('aHR0cHM6Ly93d3cuc2t5c3BvcnRzLmNvbS93YXRjaC92aWRlby9zcG9ydHMvY3JpY2tldA==')
 
-p_dm = re.compile("<iframe.*src=.*http.*dailymotion.com.*video[/](.*?)['|/?]")
+p_dm = re.compile("<iframe.*src=.*http.*dailymotion.com.*video[/](.*?)[\"|\'|/?]")
 p_yt = re.compile('<iframe.*?src=\".*?youtube.*?embed\/(.*?)[\"|\?]')
 p_pw = re.compile('src=".*?(playwire).*?data-publisher-id="(.*?)"\s*data-video-id="(.*?)"')
 p_fb = re.compile('<.*["]http.*facebook[.]com[/]video[.]php[?]v[=](.*?)["]')
