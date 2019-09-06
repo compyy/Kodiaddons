@@ -101,7 +101,7 @@ def add_shows(url_type, shows_json):
             except:
                 Title = re.sub(r'[\x80-\xFF]+', convert, Title)
 
-            add_directory(Title.encode('utf-8'), link, 3, icon, True, isItFolder=False)
+            add_directory(Title.encode('utf-8'), link, 3, icon, isItFolder=False)
 
     return
 

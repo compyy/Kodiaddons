@@ -5,15 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dabfa14b-13f5-43de-bfa8-87ad120a9061" name="Default" comment="fixed shows loading">
-      <change beforePath="$PROJECT_DIR$/.idea/Kodiaddons.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Kodiaddons.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/addons.xml" beforeDir="false" afterPath="$PROJECT_DIR$/addons.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugin.video.PakMedia/addon.py" beforeDir="false" afterPath="$PROJECT_DIR$/plugin.video.PakMedia/addon.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugin.video.PakMedia/addon.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plugin.video.PakMedia/addon.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin.video.PakMedia/changelog.txt" beforeDir="false" afterPath="$PROJECT_DIR$/plugin.video.PakMedia/changelog.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin.video.PakMedia/code.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin.video.PakMedia/service.py" beforeDir="false" afterPath="$PROJECT_DIR$/plugin.video.PakMedia/service.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -475,7 +469,14 @@
       <option name="project" value="LOCAL" />
       <updated>1551955155592</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="fixed shows loading">
+      <created>1567784759911</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1567784759911</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TodoView">
