@@ -25,12 +25,8 @@ spk_url = [base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9mb3J1bXMvc2l
            base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9mb3J1bXMvZGFpbHktdGFsay1zaG93cy4yOS8='),
            base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9mb3J1bXMvc3BvcnRzLWNvcm5lci4zNy8=')]
 
-zem_url = [base64.b64decode('aHR0cDovL3d3dy56ZW10di5jb20vY2F0ZWdvcnkvdmlyYWwtdmlkZW9zLw=='),
-           base64.b64decode('aHR0cDovL3d3dy56ZW10di5jb20vY2F0ZWdvcnkvcGFraXN0YW5pLw==')]
+zem_url = [base64.b64decode('aHR0cDovL3d3dy56ZW10di5jb20=')]
 
-doc_url = base64.b64decode('aHR0cDovL3d3dy5oZGRvY3VtZW50YXJ5LmNvbS9jYXRlZ29yeS9zY2llbmNlLWFuZC10ZWNobm9sb2d5Lw==')
-
-sky_url = base64.b64decode('aHR0cHM6Ly93d3cuc2t5c3BvcnRzLmNvbS93YXRjaC92aWRlby9zcG9ydHMvY3JpY2tldA==')
 
 p_dm = re.compile("<iframe.*src=.*http.*dailymotion.com.*video[/](.*?)[\"|\'|/?]")
 p_yt = re.compile('<iframe.*?src=\".*?youtube.*?embed\/(.*?)[\"|\?]')
@@ -180,12 +176,12 @@ def get_fast(url, session):
 
 #
 def shows_update():
-    zem_session = requests.Session()
-    zem_session.get('http://www.zemtv.com/')
+    # zem_session = requests.Session()
+    # zem_session.get('http://www.zemtv.com/')
     spk_session = requests.Session()
     spk_session.get('https://www.siasat.pk/forum/home.php')
     spkshows(spk_url, spk_session)
-    zemshows(zem_url, zem_session)
+    #zemshows(zem_url, zem_session)
 
 
 #

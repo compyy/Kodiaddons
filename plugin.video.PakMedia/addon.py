@@ -27,14 +27,9 @@ addonversion = xbmcaddon.Addon().getAddonInfo("version")
 sys.path.append(os.path.join(addonPath, 'resources', 'lib'))
 
 spicon = addonPath + '/resources/icon/siasatpk.png'
-docicon = addonPath + '/resources/icon/docu.png'
-skyicon = addonPath + '/resources/icon/skysports.png'
 zmicon = addonPath + '/resources/icon/zem.jpg'
-smicon = addonPath + '/resources/icon/smartcric.png'
-docshowjson = addonPath + '/resources/lib/'
 json_path = addonPath + '/resources/json/'
 service_addon = addonPath + '/service.py'
-
 
 # Initializing the settings ###
 if not selfAddon.getSetting("dummy") == "true":
@@ -53,19 +48,14 @@ def add_types():
     add_directory('Daily Talk Shows', 'SP_Shows', 2, spicon)
     add_directory('Daily Vidoes', 'SP_Viral', 2, spicon)
     add_directory('Sports Corner', 'SP_SC', 2, spicon)
-    add_directory('ZemTV Shows', 'ZEM_Shows', 2, zmicon)
-    add_directory('Zemtv Videos', 'ZEM_Viral', 2, zmicon)
+    add_directory('Zemtv Videos', 'ZEM_VID', 2, zmicon)
     add_directory('Refresh Shows', 'refresh_shows', 2, '')
-    add_directory('SmartCric', 'SMARTCRIC', 2, smicon)
-    add_directory('SkySports Cricket', 'SKYCRIC', 2, skyicon)
-    add_directory('Documentry HD', 'DOCHD', 2, docicon)
-    add_directory('Documentry HD April-2018', 'DOCHDOLD', 2, docicon)
     add_directory('Settings', 'Settings', 99, 'OverlayZIP.png', isItFolder=False)
 
     return
 
 
-def add_directory(name, url, mode, iconimage, showContext=False, isItFolder=True, linkType=None):
+def add_directory(name, url, mode, iconimage, isItFolder=True, linkType=None):
     if mode == 3:
         u = sys.argv[0] + "?url=" + urllib.quote_plus(url.values()[0]) + "&mode=" + str(
             mode) + "&name=" + urllib.quote_plus(name) + "&provider=" + url.keys()[0]
@@ -74,16 +64,6 @@ def add_directory(name, url, mode, iconimage, showContext=False, isItFolder=True
 
     liz = xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=iconimage)
     liz.setInfo(type="Video", infoLabels={"Title": name})
-    if showContext:
-        cmd1 = "XBMC.RunPlugin(%s&linkType=%s)" % (u, "DailyMotion")
-        cmd2 = "XBMC.RunPlugin(%s&linkType=%s)" % (u, "Youtube")
-        cmd3 = "XBMC.RunPlugin(%s&linkType=%s)" % (u, "Facebook")
-        cmd4 = "XBMC.RunPlugin(%s&linkType=%s)" % (u, "Playwire")
-        cmd5 = "XBMC.RunPlugin(%s&linkType=%s)" % (u, "Checksrc")
-        liz.addContextMenuItems(
-            [('Play DailyMotion video', cmd1), ('Play Youtube video', cmd2), ('Play Facebook video', cmd3),
-             ('Play Playwire video', cmd4), ('Check Available Sources', cmd5)],
-            replaceItems=True)
     if linkType:
         u = "XBMC.RunPlugin(%s&linkType=%s)" % (u, linkType)
     ok = xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=u, listitem=liz, isFolder=isItFolder)
@@ -92,22 +72,7 @@ def add_directory(name, url, mode, iconimage, showContext=False, isItFolder=True
 
 def add_enteries(url_type=None):
     if url_type:
-        if 'DOCHD' in url_type:
-            url = urllib.urlopen("http://192.168.0.160/docshows.json")
-            shows_json = json.loads(url.read().decode("utf-8"))
-            add_shows(url_type, shows_json)
-
-        if 'DOCHDOLD' in url_type:
-            with open(docshowjson + 'docshowsold.json') as data_file:
-                shows_json = json.loads(data_file.read().decode("utf-8"))
-            add_shows('DOCHD', shows_json)
-
-        if 'SKYCRIC' in url_type:
-            url = urllib.urlopen("http://192.168.0.160/sky.json")
-            shows_json = json.loads(url.read().decode("utf-8"))
-            add_shows(url_type, shows_json)
-
-        if 'ZEM' in url_type:
+        if 'ZEM_VID' in url_type:
             with open(json_path + 'zemshows.json') as data_file:
                 shows_json = json.loads(data_file.read().decode("utf-8"))
             add_shows(url_type, shows_json)
@@ -117,26 +82,8 @@ def add_enteries(url_type=None):
                 shows_json = json.loads(data_file.read().decode("utf-8"))
             add_shows(url_type, shows_json)
 
-        if 'SMARTCRIC' in url_type:
-            AddSmartCric(url_type)
-
         if 'refresh_shows' in url_type:
             xbmc.executebuiltin('XBMC.RunScript(' + service_addon + ')')
-
-    return
-
-
-def AddSmartCric(url):
-    import scdec
-    channeladded = False
-    for source in scdec.getlinks():
-        add_directory(source[0], source[1], source[2], '', False, isItFolder=False)  # name,url,mode,icon
-        channeladded = True
-
-    if not channeladded:
-        cname = 'No streams available'
-        curl = ''
-        add_directory('    -' + cname, curl, -1, '', False, isItFolder=False)  # name,url,mode,icon
 
     return
 
@@ -174,46 +121,41 @@ def play_showLink(name, linkType, video_id):
     listitem.setProperty('mimetype', 'video/x-msvideo')
     listitem.setProperty('IsPlayable', 'true')
 
-    if linkType == "SMARTCRIC":
-        playlist.add(url, listitem)
-        xbmcPlayer = xbmc.Player()
-        xbmcPlayer.play(playlist)
-
     if linkType == "Playwire":
+        xbmcgui.Dialog().notification(__addonname__, "Playing " + linkType + " video", __icon__, 3000, False)
         import playwire
         media_url = playwire.resolve(video_id)
         playlist.add(media_url, listitem)
-        xbmcgui.Dialog().notification(__addonname__, "Playing " + linkType + " video", __icon__, 3000, False)
         xbmc.Player().play(playlist)
         return
 
-    if linkType == "DailyMotion":
-        # media_url = urlresolver.HostedMediaFile(host='dailymotion.com', media_id=video_id).resolve()
-        # playlist.add(media_url, listitem)
-        xbmcgui.Dialog().notification(__addonname__, "Playing " + linkType + " video", __icon__, 3000, False)
-        # xbmc.Player().play(playlist)
-        xbmc.executebuiltin('PlayMedia(plugin://plugin.video.dailymotion_com/?url=' + video_id + '&mode=playVideo)')
-
     import urlresolver
+    if linkType == "DailyMotion":
+        xbmcgui.Dialog().notification(__addonname__, "Playing " + linkType + " video", __icon__, 3000, False)
+        media_url = urlresolver.HostedMediaFile(host='dailymotion.com', media_id=video_id).resolve()
+        playlist.add(media_url, listitem)
+        xbmc.Player().play(playlist)
+        # xbmc.executebuiltin('PlayMedia(plugin://plugin.video.dailymotion_com/?url=' + video_id + '&mode=playVideo)')
+
     if linkType == "Youtube":
+        xbmcgui.Dialog().notification(__addonname__, "Playing " + linkType + " video", __icon__, 3000, False)
         media_url = urlresolver.HostedMediaFile(host='youtube.com', media_id=video_id).resolve()
         playlist.add(media_url, listitem)
-        xbmcgui.Dialog().notification(__addonname__, "Playing " + linkType + " video", __icon__, 3000, False)
         xbmc.Player().play(playlist)
+
     if linkType == "Facebook":
+        xbmcgui.Dialog().notification(__addonname__, "Playing " + linkType + " video", __icon__, 3000, False)
         media_url = urlresolver.HostedMediaFile(host='facebook.com', media_id=video_id).resolve()
         playlist.add(media_url, listitem)
-        xbmcgui.Dialog().notification(__addonname__, "Playing " + linkType + " video", __icon__, 3000, False)
         xbmc.Player().play(playlist)
+
     if linkType == "Openload":
+        xbmcgui.Dialog().notification(__addonname__, "Playing " + linkType + " video", __icon__, 3000, False)
         media_url = urlresolver.HostedMediaFile(host='openload.co', media_id=video_id).resolve()
         playlist.add(media_url, listitem)
-        xbmcgui.Dialog().notification(__addonname__, "Playing " + linkType + " video", __icon__, 3000, False)
         xbmc.Player().play(playlist)
 
     return
-
-
 
 
 # Define function to monitor real time parameters ###
@@ -285,7 +227,6 @@ with open(addonPath + '/runtime', 'r') as fout:
     script_time = float(fout.readline())
     if time.time() > (script_time + 1800):
         xbmc.executebuiltin('XBMC.RunScript(' + service_addon + ')')
-
 
 # noinspection PyBroadException
 try:
