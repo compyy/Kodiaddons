@@ -1,4 +1,6 @@
-[B]Version 5.9Beta[/B]
+[B]Version 5.8Beta[/B]
+- fixed Dailymotion
+[B]Version 5.7Beta[/B]
 - fixed ZemTV
 - Removed unnecessary functions
 [B]Version 3.8Beta[/B]
