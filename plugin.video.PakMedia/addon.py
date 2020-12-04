@@ -118,7 +118,6 @@ def play_showLink(name, linkType, video_id):
         xbmc.Player().play(playlist)
         return
 
-    import urlresolver
     if linkType == "DailyMotion":
         xbmcgui.Dialog().notification(__addonname__, "Playing " + linkType + " video", __icon__, 3000, False)
         playback_url = 'plugin://plugin.video.dailymotion_com/?url=%s&mode=playVideo' % video_id
@@ -132,12 +131,14 @@ def play_showLink(name, linkType, video_id):
         xbmc.Player().play(playlist)
 
     if linkType == "Facebook":
+        import urlresolver
         xbmcgui.Dialog().notification(__addonname__, "Playing " + linkType + " video", __icon__, 3000, False)
         media_url = urlresolver.HostedMediaFile(host='facebook.com', media_id=video_id).resolve()
         playlist.add(media_url, listitem)
         xbmc.Player().play(playlist)
 
     if linkType == "Openload":
+        import urlresolver
         xbmcgui.Dialog().notification(__addonname__, "Playing " + linkType + " video", __icon__, 3000, False)
         media_url = urlresolver.HostedMediaFile(host='openload.co', media_id=video_id).resolve()
         playlist.add(media_url, listitem)
