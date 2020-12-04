@@ -1,4 +1,4 @@
-[B]Version 6.0Beta[/B]
+[B]Version 6.2Beta[/B]
 - fixed Facebook
 - V3 Only
 [B]Version 5.8Beta[/B]
