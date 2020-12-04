@@ -1,0 +1,9 @@
+[B]Version 1.1[/B]
+- changed the name from siasat-pk to PakMedia
+- moved the siasatpk to module
+[B]Version 1.0[/B]
+First Public Release
+[B]Version 0.3[/B]
+- fixed updates
+[B]Version 0.2[/B]
+- First commit

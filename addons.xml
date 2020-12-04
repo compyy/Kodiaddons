@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
-<addon id="repository.yasir" name="Yasirs Addon Repository" version="1.2" provider-name="Yasir">
+<addon id="repository.yasir" name="Yasirs Addon Repository" version="1.4" provider-name="Yasir">
     <extension point="xbmc.addon.repository" name="Yasirs Addon Repository">
         <dir>
             <info compressed="false">https://raw.github.com/compyy/Kodiaddons/master/addons.xml</info>
             <checksum>https://raw.github.com/compyy/Kodiaddons/master/addons.xml.md5</checksum>
-            <datadir zip="true">https://raw.github.com/compyy/Kodiaddons/master/zips</datadir>
+            <datadir zip="true">https://github.com/compyy/Kodiaddons/raw/master/zips</datadir>
         </dir>
 
         <info compressed="false">https://raw.github.com/compyy/Kodiaddons/master/addons.xml</info>
         <checksum>https://raw.github.com/compyy/Kodiaddons/master/addons.xml.md5</checksum>
-        <datadir zip="true">https://raw.github.com/compyy/Kodiaddons/master/zips</datadir>
+        <datadir zip="true">https://github.com/compyy/Kodiaddons/raw/master/zips</datadir>
 
     </extension>
     <extension point="xbmc.addon.metadata">
