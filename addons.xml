@@ -20,7 +20,7 @@
     </extension>
 </addon>
 
-    <addon id="plugin.video.PakMedia" name="PakMedia" version="6.2B" provider-name="Yasir">
+    <addon id="plugin.video.PakMedia" name="PakMedia" version="6.3B" provider-name="Yasir">
         <requires>
             <import addon="script.module.urlresolver"/>
             <import addon="script.module.requests"/>
@@ -41,10 +41,10 @@
             <disclaimer lang="en">The author does not host or distribute any of the content displayed by this addon. The
                 author does not have any affiliation with the content provider.
             </disclaimer>
-        <language>English</language>
-        <source>https://github.com/compyy/Kodisiasat</source>
-        <website>https://github.com/compyy/Kodisiasat</website>
-        <platform>all</platform>
-    </extension>
-</addon>
+            <language>English</language>
+            <source>https://github.com/compyy/Kodisiasat</source>
+            <website>https://github.com/compyy/Kodisiasat</website>
+            <platform>all</platform>
+        </extension>
+    </addon>
 </addons>
