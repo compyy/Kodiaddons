@@ -58,7 +58,7 @@ def add_directory(name, url, mode, iconimage, isItFolder=True, linkType=None):
         u = sys.argv[0] + "?url=" + quote_plus(url) + "&mode=" + str(mode) + "&name=" + quote_plus(name)
 
     liz = xbmcgui.ListItem(name)
-    liz.setArt({"poster": iconimage, "banner": iconimage})
+    liz.setArt({"icon": "DefaultFolder.png", "thumb": iconimage})
     liz.setInfo(type="Video", infoLabels={"Title": name})
     if linkType:
         u = "XBMC.RunPlugin(%s&linkType=%s)" % (u, linkType)
@@ -104,7 +104,7 @@ def play_showLink(name, linkType, video_id):
     playlist = xbmc.PlayList(1)
     playlist.clear()
     listitem = xbmcgui.ListItem(name)
-    listitem.setArt({"poster": "DefaultFolder.png"})
+    listitem.setArt({"icon": "DefaultFolder.png"})
     listitem.setInfo("Video", {"Title": name})
     listitem.setProperty('mimetype', 'video/x-msvideo')
     listitem.setProperty('IsPlayable', 'true')

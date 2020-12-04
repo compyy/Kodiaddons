@@ -1,3 +1,5 @@
+[B]Version 6.6[/B]
+- Fix Icons
 [B]Version 6.5[/B]
 - V3 Only
 [B]Version 6.4Beta[/B]
