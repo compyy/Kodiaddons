@@ -6,12 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="dabfa14b-13f5-43de-bfa8-87ad120a9061" name="Default" comment="fixed shows loading">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/addons.xml" beforeDir="false" afterPath="$PROJECT_DIR$/addons.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/addons.xml.md5" beforeDir="false" afterPath="$PROJECT_DIR$/addons.xml.md5" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugin.video.PakMedia/addon.py" beforeDir="false" afterPath="$PROJECT_DIR$/plugin.video.PakMedia/addon.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin.video.PakMedia/addon.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plugin.video.PakMedia/addon.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin.video.PakMedia/changelog.txt" beforeDir="false" afterPath="$PROJECT_DIR$/plugin.video.PakMedia/changelog.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/zips/plugin.video.PakMedia/changelog.txt" beforeDir="false" afterPath="$PROJECT_DIR$/zips/plugin.video.PakMedia/changelog.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,13 +142,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1478633393359</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Added Documenataries">
-      <created>1525015809962</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1525015809962</updated>
     </task>
     <task id="LOCAL-00006" summary="Fixed Documentries">
       <created>1525187917429</created>
@@ -491,7 +479,14 @@
       <option name="project" value="LOCAL" />
       <updated>1607076857947</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="fixed shows loading">
+      <created>1607095462344</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1607095462345</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="TodoView">

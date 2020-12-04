@@ -47,7 +47,6 @@ def add_types():
     add_directory('Sports Corner', 'SP_SC', 2, spicon)
     add_directory('Refresh Shows', 'refresh_shows', 2, '')
     add_directory('Settings', 'Settings', 99, 'OverlayZIP.png', isItFolder=False)
-
     return
 
 
@@ -59,7 +58,7 @@ def add_directory(name, url, mode, iconimage, isItFolder=True, linkType=None):
         u = sys.argv[0] + "?url=" + quote_plus(url) + "&mode=" + str(mode) + "&name=" + quote_plus(name)
 
     liz = xbmcgui.ListItem(name)
-    liz.setArt({"poster": "DefaultFolder.png", "banner": iconimage})
+    liz.setArt({"poster": iconimage, "banner": iconimage})
     liz.setInfo(type="Video", infoLabels={"Title": name})
     if linkType:
         u = "XBMC.RunPlugin(%s&linkType=%s)" % (u, linkType)
