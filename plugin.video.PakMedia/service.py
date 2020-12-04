@@ -25,9 +25,6 @@ spk_url = [base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9mb3J1bXMvc2l
            base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9mb3J1bXMvZGFpbHktdGFsay1zaG93cy4yOS8='),
            base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9mb3J1bXMvc3BvcnRzLWNvcm5lci4zNy8=')]
 
-zem_url = [base64.b64decode('aHR0cDovL3d3dy56ZW10di5jb20=')]
-
-
 p_dm = re.compile("<iframe.*src=.*http.*dailymotion.com.*video[/](.*?)[\"|\'|/?]")
 p_yt = re.compile('<iframe.*?src=\".*?youtube.*?embed\/(.*?)[\"|\?]')
 p_pw = re.compile('src=".*?(playwire).*?data-publisher-id="(.*?)"\s*data-video-id="(.*?)"')
@@ -44,7 +41,7 @@ def spkshows(Fromurl, session):
         match = []
         for x in range(1, 5):
             newlink = link
-            if x is not 1:
+            if x != 1:
                 newlink = link + b'page-%d' % x
             data = get_fast(newlink, session)
             soup = BeautifulSoup(data, 'html.parser')
@@ -67,63 +64,25 @@ def spkshows(Fromurl, session):
                 spkshows.append(empty_check)
 
     if spkshows:
-        with open(json_path + 'spkshows.json', 'w') as fout:
+        with open(json_path + 'spkshows.json', 'w', encoding='utf-8') as fout:
             json.dump(spkshows, fout, ensure_ascii=False)
             print('File Writing Successfull..!')
-
-    return
-
-
-def zemshows(Fromurl, session):
-    zemshows = []
-    print(datetime.datetime.now().time())
-    print('Downloading ZemTV Shows...!')
-    for link in Fromurl:
-        match = []
-        for x in range(1, 4):
-            newlink = link
-            if x is not 1:
-                newlink = link + b'page/%d/' % x
-            data = get_fast(newlink, session)
-            soup = BeautifulSoup(data, 'html.parser')
-            for div in soup.find_all('div', attrs={'class': 'ui cards'}):
-                div_nested = div.descendants
-                for d in div_nested:
-                    if d.name == 'div' and d.get('class', '') == ['card']:
-                        img = div.find_all('img')[0]
-                        src = img.get('src')
-                        a = div.find_all('a')[1]
-                        match.append((src, a.attrs['href'].encode('utf-8'), a.text.strip().encode('utf-8')))
-
-        for i in match:
-            if b'viral' in link:
-                empty_check = url_processor(i, "ZEM_Viral", session)
-            else:
-                empty_check = url_processor(i, "ZEM_Shows", session)
-            if empty_check:
-                zemshows.append(empty_check)
-
-    if zemshows:
-        with open(json_path + 'zemshows.json', 'w') as fout:
-            json.dump(zemshows, fout, ensure_ascii=False)
-            print('File Writing Successfull..!')
-
     return
 
 
 #
 def url_processor(cname, tag, session):
     shows = []
-    if 'forums' in cname[1]:
-        tname = cname[2]
+    if b'forums' in cname[1]:
+        tname = cname[2].decode('utf-8')
         url = cname[1]
         imageurl = str(cname[0])
-        if not url.startswith('http'):
-            url = 'http://www.siasat.pk' + url
+        if not url.startswith(b'http'):
+            url = b'http://www.siasat.pk' + url
         if not imageurl.startswith('http'):
             imageurl = 'http://www.siasat.pk' + imageurl
     else:
-        tname = cname[2]
+        tname = cname[2].decode('utf-8')
         url = cname[1]
         imageurl = cname[0]
 
@@ -176,12 +135,9 @@ def get_fast(url, session):
 
 #
 def shows_update():
-    # zem_session = requests.Session()
-    # zem_session.get('http://www.zemtv.com/')
     spk_session = requests.Session()
     spk_session.get('https://www.siasat.pk/forum/home.php')
     spkshows(spk_url, spk_session)
-    #zemshows(zem_url, zem_session)
 
 
 #
@@ -189,9 +145,9 @@ def shows_update():
 with open(addonPath + '/runtime', 'w') as fout:
     fout.write(str(time.time()))
 
-xbmc.log('Shows Update Start ' + str(datetime.datetime.now().time()), level=xbmc.LOGNOTICE)
+xbmc.log('Shows Update Start ' + str(datetime.datetime.now().time()), level=xbmc.LOGINFO)
 dialog = xbmcgui.Dialog()
-xbmc.log('Shows Update Start ' + str(datetime.datetime.now().time()), level=xbmc.LOGNOTICE)
+xbmc.log('Shows Update Start ' + str(datetime.datetime.now().time()), level=xbmc.LOGINFO)
 dialog.notification('Shows Update', 'Shows Update Started ' + str(datetime.datetime.now().time()),
                     xbmcgui.NOTIFICATION_INFO, 5000)
 shows_update()

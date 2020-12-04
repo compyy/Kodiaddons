@@ -1,16 +1,15 @@
 import json
 import os
-import re
 import sys
 import time
 import traceback
-import urllib
+from urllib.parse import quote_plus, parse_qs, unquote_plus
 
-import urlparse
 import xbmc
 import xbmcaddon
 import xbmcgui
 import xbmcplugin
+import xbmcvfs
 
 # End of Imports
 #
@@ -21,20 +20,18 @@ __icon__ = __addon__.getAddonInfo('icon')
 
 addon_id = 'plugin.video.PakMedia'
 selfAddon = xbmcaddon.Addon(id=addon_id)
-profile_path = xbmc.translatePath(selfAddon.getAddonInfo('profile'))
+profile_path = xbmcvfs.translatePath(selfAddon.getAddonInfo('profile'))
 addonPath = xbmcaddon.Addon().getAddonInfo("path")
 addonversion = xbmcaddon.Addon().getAddonInfo("version")
 sys.path.append(os.path.join(addonPath, 'resources', 'lib'))
 
 spicon = addonPath + '/resources/icon/siasatpk.png'
-zmicon = addonPath + '/resources/icon/zem.jpg'
 json_path = addonPath + '/resources/json/'
 service_addon = addonPath + '/service.py'
 
 # Initializing the settings ###
 if not selfAddon.getSetting("dummy") == "true":
     selfAddon.setSetting("dummy", "true")
-
 
 # Define settting function ###
 def show_settings():
@@ -48,7 +45,6 @@ def add_types():
     add_directory('Daily Talk Shows', 'SP_Shows', 2, spicon)
     add_directory('Daily Vidoes', 'SP_Viral', 2, spicon)
     add_directory('Sports Corner', 'SP_SC', 2, spicon)
-    add_directory('Zemtv Videos', 'ZEM_VID', 2, zmicon)
     add_directory('Refresh Shows', 'refresh_shows', 2, '')
     add_directory('Settings', 'Settings', 99, 'OverlayZIP.png', isItFolder=False)
 
@@ -57,12 +53,13 @@ def add_types():
 
 def add_directory(name, url, mode, iconimage, isItFolder=True, linkType=None):
     if mode == 3:
-        u = sys.argv[0] + "?url=" + urllib.quote_plus(url.values()[0]) + "&mode=" + str(
-            mode) + "&name=" + urllib.quote_plus(name) + "&provider=" + url.keys()[0]
+        u = sys.argv[0] + "?url=" + quote_plus(list(url.values())[0]) + "&mode=" + str(
+            mode) + "&name=" + quote_plus(name) + "&provider=" + list(url.keys())[0]
     else:
-        u = sys.argv[0] + "?url=" + urllib.quote_plus(url) + "&mode=" + str(mode) + "&name=" + urllib.quote_plus(name)
+        u = sys.argv[0] + "?url=" + quote_plus(url) + "&mode=" + str(mode) + "&name=" + quote_plus(name)
 
-    liz = xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=iconimage)
+    liz = xbmcgui.ListItem(name)
+    liz.setArt({"poster": "DefaultFolder.png", "banner": iconimage})
     liz.setInfo(type="Video", infoLabels={"Title": name})
     if linkType:
         u = "XBMC.RunPlugin(%s&linkType=%s)" % (u, linkType)
@@ -72,14 +69,9 @@ def add_directory(name, url, mode, iconimage, isItFolder=True, linkType=None):
 
 def add_enteries(url_type=None):
     if url_type:
-        if 'ZEM_VID' in url_type:
-            with open(json_path + 'zemshows.json') as data_file:
-                shows_json = json.loads(data_file.read().decode("utf-8"))
-            add_shows(url_type, shows_json)
-
         if 'SP' in url_type:
-            with open(json_path + 'spkshows.json') as data_file:
-                shows_json = json.loads(data_file.read().decode("utf-8"))
+            with open(json_path + 'spkshows.json', encoding='utf-8') as data_file:
+                shows_json = json.loads(data_file.read())
             add_shows(url_type, shows_json)
 
         if 'refresh_shows' in url_type:
@@ -96,12 +88,8 @@ def add_shows(url_type, shows_json):
             Title = shows_json[i]['Title']
             icon = shows_json[i]['icon']
             link.update(shows_json[i]['link'])
-            try:
-                Title = h.unescape(Title).encode("utf-8")
-            except:
-                Title = re.sub(r'[\x80-\xFF]+', convert, Title)
-
-            add_directory(Title.encode('utf-8'), link, 3, icon, isItFolder=False)
+            print(Title, icon, link)
+            add_directory(Title, link, 3, icon, isItFolder=False)
 
     return
 
@@ -116,7 +104,8 @@ def convert(s):
 def play_showLink(name, linkType, video_id):
     playlist = xbmc.PlayList(1)
     playlist.clear()
-    listitem = xbmcgui.ListItem(name, iconImage="DefaultVideo.png")
+    listitem = xbmcgui.ListItem(name)
+    listitem.setArt({"poster": "DefaultFolder.png"})
     listitem.setInfo("Video", {"Title": name})
     listitem.setProperty('mimetype', 'video/x-msvideo')
     listitem.setProperty('IsPlayable', 'true')
@@ -139,8 +128,9 @@ def play_showLink(name, linkType, video_id):
 
     if linkType == "Youtube":
         xbmcgui.Dialog().notification(__addonname__, "Playing " + linkType + " video", __icon__, 3000, False)
-        media_url = urlresolver.HostedMediaFile(host='youtube.com', media_id=video_id).resolve()
-        playlist.add(media_url, listitem)
+        playback_url = 'plugin://plugin.video.youtube/?action=play_video&videoid=%s' % video_id
+        # media_url = urlresolver.HostedMediaFile(host='youtube.com', media_id=video_id).resolve()
+        playlist.add(playback_url, listitem)
         xbmc.Player().play(playlist)
 
     if linkType == "Facebook":
@@ -162,12 +152,12 @@ def play_showLink(name, linkType, video_id):
 def get_params():
     param = []
     paramstring = sys.argv[2]
-    print
-    sys.argv[2]
+    print(sys.argv[2])
     if len(paramstring) >= 2:
         params = sys.argv[2]
         cleanedparams = params.replace('?', '')
         if params[len(params) - 1] == '/':
+            params = params[0:len(params) - 2]
             params = params[0:len(params) - 2]
         pairsofparams = cleanedparams.split('&')
         param = {}
@@ -189,12 +179,12 @@ provider = None
 
 # noinspection PyBroadException
 try:
-    url = urllib.unquote_plus(params["url"])
+    url = unquote_plus(params["url"])
 except:
     pass
 # noinspection PyBroadException
 try:
-    name = urllib.unquote_plus(params["name"])
+    name = unquote_plus(params["name"])
 except:
     pass
 # noinspection PyBroadException
@@ -204,13 +194,12 @@ except:
     pass
 
 try:
-    provider = urllib.unquote_plus(params["provider"])
+    provider = unquote_plus(params["provider"])
 except:
     pass
 
-print
-params
-args = urlparse.parse_qs(sys.argv[2][1:])
+print(params)
+args = parse_qs(sys.argv[2][1:])
 # noinspection PyRedeclaration
 linkType = ''
 
@@ -220,8 +209,7 @@ try:
 except:
     pass
 
-print
-name, mode, url, linkType, provider
+print(name, mode, url, linkType, provider)
 
 with open(addonPath + '/runtime', 'r') as fout:
     script_time = float(fout.readline())
@@ -240,8 +228,7 @@ try:
         show_settings()
 
 except:
-    print
-    'Something dint work'
+    print('Something dint work')
     traceback.print_exc(file=sys.stdout)
 
 if not (mode == 3):

@@ -1,7 +1,28 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<settings>
-    <category label="32001">
-        <setting label="32010" type="labelenum" id="DefaultVideoType" default="DailyMotion" values="DailyMotion|Youtube|Facebook"/>
-		<setting label="32012" type="text" id="url_key" value="URL_KEY"  default="1234567890123456"/>
-     </category>
+<?xml version="1.0" ?>
+<settings version="1">
+    <section id="plugin.video.PakMedia">
+        <category id="default" label="32001" help="">
+            <group id="1">
+                <setting id="DefaultVideoType" type="string" label="32010" help="">
+                    <level>0</level>
+                    <default>DailyMotion</default>
+                    <constraints>
+                        <options>
+                            <option label="DailyMotion">DailyMotion</option>
+                            <option label="Youtube">Youtube</option>
+                            <option label="Facebook">Facebook</option>
+                        </options>
+                    </constraints>
+                    <control type="spinner" format="string"/>
+                </setting>
+                <setting id="url_key" type="string" label="32012" help="">
+                    <level>0</level>
+                    <default>1234567890123456</default>
+                    <control type="edit" format="string">
+                        <heading>32012</heading>
+                    </control>
+                </setting>
+            </group>
+        </category>
+    </section>
 </settings>

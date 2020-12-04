@@ -1,3 +1,6 @@
+[B]Version 6.0Beta[/B]
+- fixed Facebook
+- V3 Only
 [B]Version 5.8Beta[/B]
 - fixed Dailymotion
 [B]Version 5.7Beta[/B]
