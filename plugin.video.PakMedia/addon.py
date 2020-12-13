@@ -74,7 +74,9 @@ def add_enteries(url_type=None):
             add_shows(url_type, shows_json)
 
         if 'refresh_shows' in url_type:
-            xbmc.executebuiltin('XBMC.RunScript(' + service_addon + ')')
+            print('Here')
+            print(service_addon)
+            xbmc.executebuiltin('RunScript(' + service_addon + ')')
 
     return
 
@@ -212,7 +214,7 @@ print(name, mode, url, linkType, provider)
 with open(addonPath + '/runtime', 'r') as fout:
     script_time = float(fout.readline())
     if time.time() > (script_time + 1800):
-        xbmc.executebuiltin('XBMC.RunScript(' + service_addon + ')')
+        xbmc.executebuiltin('RunScript(' + service_addon + ')')
 
 # noinspection PyBroadException
 try:
