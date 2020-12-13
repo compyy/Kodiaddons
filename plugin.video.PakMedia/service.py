@@ -26,8 +26,7 @@ spk_url = [base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9mb3J1bXMvc2l
            base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9mb3J1bXMvc3BvcnRzLWNvcm5lci4zNy8=')]
 
 p_dm = re.compile("<iframe.*src=.*http.*dailymotion.com.*video[/](.*?)[\"|\'|/?]")
-p_yt = re.compile('<iframe.*?src=\".*?youtube.*?embed\/(.*?)[\"]')
-p_yt_icon = re.compile('(.*?)[\?]')
+p_yt = re.compile('<iframe.*?src=\".*?youtube.*?embed\/(.*?)[\"|\?]')
 p_pw = re.compile('src=".*?(playwire).*?data-publisher-id="(.*?)"\s*data-video-id="(.*?)"')
 p_fb = re.compile('<.*["]http.*facebook[.]com[/]video[.]php[?]v[=](.*?)["]')
 p_op = re.compile('.*["]http.*openload[.]co[\/]embed[\/](.*?)[\/]["]')
@@ -113,7 +112,6 @@ def url_processor(cname, tag, session):
         source['DailyMotion'] = did.groups(0)[0]
 
     yid = re.search(p_yt, link)
-    yid = re.search(p_yt_icon, yid)
     if yid:
         source['Youtube'] = yid.groups(0)[0]
 
@@ -132,9 +130,7 @@ def url_processor(cname, tag, session):
     if len(source) > 0:
         if 'forums' in imageurl:
             if 'Youtube' in source:
-                decode_image = re.search(p_yt_icon, source['Youtube'])
-                decode_image = decode_image.groups(0)[0]
-                imageurl = 'https://img.youtube.com/vi/' + decode_image + '/hqdefault.jpg'
+                imageurl = 'https://img.youtube.com/vi/' + source['Youtube'] + '/hqdefault.jpg'
             elif 'DailyMotion' in source:
                 imageurl = 'https://www.dailymotion.com/thumbnail/video/' + source['DailyMotion']
         shows = ({'Tag': tag, 'Title': tname, 'icon': imageurl, 'link': source})
