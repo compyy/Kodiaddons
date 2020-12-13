@@ -74,8 +74,6 @@ def add_enteries(url_type=None):
             add_shows(url_type, shows_json)
 
         if 'refresh_shows' in url_type:
-            print('Here')
-            print(service_addon)
             xbmc.executebuiltin('RunScript(' + service_addon + ')')
 
     return
@@ -89,7 +87,6 @@ def add_shows(url_type, shows_json):
             Title = shows_json[i]['Title']
             icon = shows_json[i]['icon']
             link.update(shows_json[i]['link'])
-            print(Title, icon, link)
             add_directory(Title, link, 3, icon, isItFolder=False)
 
     return

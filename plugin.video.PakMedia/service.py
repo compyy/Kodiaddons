@@ -26,7 +26,8 @@ spk_url = [base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9mb3J1bXMvc2l
            base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9mb3J1bXMvc3BvcnRzLWNvcm5lci4zNy8=')]
 
 p_dm = re.compile("<iframe.*src=.*http.*dailymotion.com.*video[/](.*?)[\"|\'|/?]")
-p_yt = re.compile('<iframe.*?src=\".*?youtube.*?embed\/(.*?)[\"|\?]')
+p_yt = re.compile('<iframe.*?src=\".*?youtube.*?embed\/(.*?)[\"]')
+p_yt_icon = re.compile('(.*?)[\?]')
 p_pw = re.compile('src=".*?(playwire).*?data-publisher-id="(.*?)"\s*data-video-id="(.*?)"')
 p_fb = re.compile('<.*["]http.*facebook[.]com[/]video[.]php[?]v[=](.*?)["]')
 p_op = re.compile('.*["]http.*openload[.]co[\/]embed[\/](.*?)[\/]["]')
@@ -35,7 +36,6 @@ p_op = re.compile('.*["]http.*openload[.]co[\/]embed[\/](.*?)[\/]["]')
 ###
 def spkshows(Fromurl, session):
     spkshows = []
-    print(datetime.datetime.now().time())
     print('Downloading sisasatpk Shows...!')
     for link in Fromurl:
         match = []
@@ -64,6 +64,18 @@ def spkshows(Fromurl, session):
                 spkshows.append(empty_check)
 
     if spkshows:
+        show_end_time = datetime.datetime.now()
+        show_end_time = show_end_time.strftime("%d/%m/%Y, %H:%M:%S")
+        show_end_time_SP_Viral = {"Tag": "SP_Viral", "Title": show_end_time, "icon": "DefaultYear.png",
+                                  "link": {"Youtube": ""}}
+        show_end_time_SP_Shows = {"Tag": "SP_Shows", "Title": show_end_time, "icon": "DefaultYear.png",
+                                  "link": {"Youtube": ""}}
+        show_end_time_SP_SC = {"Tag": "SP_SC", "Title": show_end_time, "icon": "DefaultYear.png",
+                               "link": {"Youtube": ""}}
+        spkshows.insert(0, show_end_time_SP_SC)
+        spkshows.insert(0, show_end_time_SP_Shows)
+        spkshows.insert(0, show_end_time_SP_Viral)
+
         with open(json_path + 'spkshows.json', 'w', encoding='utf-8') as fout:
             json.dump(spkshows, fout, ensure_ascii=False)
             print('File Writing Successfull..!')
@@ -119,7 +131,9 @@ def url_processor(cname, tag, session):
     if len(source) > 0:
         if 'forums' in imageurl:
             if 'Youtube' in source:
-                imageurl = 'https://img.youtube.com/vi/' + source['Youtube'] + '/hqdefault.jpg'
+                decode_image = re.search(p_yt_icon, source['Youtube'])
+                decode_image = decode_image.groups(0)[0]
+                imageurl = 'https://img.youtube.com/vi/' + decode_image + '/hqdefault.jpg'
             elif 'DailyMotion' in source:
                 imageurl = 'https://www.dailymotion.com/thumbnail/video/' + source['DailyMotion']
         shows = ({'Tag': tag, 'Title': tname, 'icon': imageurl, 'link': source})
