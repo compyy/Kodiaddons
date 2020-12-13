@@ -113,6 +113,7 @@ def url_processor(cname, tag, session):
         source['DailyMotion'] = did.groups(0)[0]
 
     yid = re.search(p_yt, link)
+    yid = re.search(p_yt_icon, yid)
     if yid:
         source['Youtube'] = yid.groups(0)[0]
 

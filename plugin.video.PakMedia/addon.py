@@ -125,6 +125,7 @@ def play_showLink(name, linkType, video_id):
     if linkType == "Youtube":
         xbmcgui.Dialog().notification(__addonname__, "Playing " + linkType + " video", __icon__, 3000, False)
         playback_url = 'plugin://plugin.video.youtube/?action=play_video&videoid=%s' % video_id
+        playback_url = 'plugin://plugin.video.youtube/play/?video_id=%s' % video_id
         playlist.add(playback_url, listitem)
         xbmc.Player().play(playlist)
 

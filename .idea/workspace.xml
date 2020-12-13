@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dabfa14b-13f5-43de-bfa8-87ad120a9061" name="Default" comment="fixed shows loading">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugin.video.PakMedia/addon.py" beforeDir="false" afterPath="$PROJECT_DIR$/plugin.video.PakMedia/addon.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin.video.PakMedia/addon.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plugin.video.PakMedia/addon.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugin.video.PakMedia/service.py" beforeDir="false" afterPath="$PROJECT_DIR$/plugin.video.PakMedia/service.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -144,13 +142,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1478633393359</updated>
-    </task>
-    <task id="LOCAL-00009" summary="Fixed skysports">
-      <created>1537217754645</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1537217754645</updated>
     </task>
     <task id="LOCAL-00010" summary="Fixed skysports">
       <created>1537274715336</created>
@@ -488,7 +479,14 @@
       <option name="project" value="LOCAL" />
       <updated>1607850423206</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="fixed shows loading">
+      <created>1607855792692</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1607855792692</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="TodoView">
