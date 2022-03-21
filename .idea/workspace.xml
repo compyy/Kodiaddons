@@ -8,12 +8,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dabfa14b-13f5-43de-bfa8-87ad120a9061" name="Default" comment="fixed shows loading">
-      <change beforePath="$PROJECT_DIR$/.idea/Kodiaddons.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Kodiaddons.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/addons.xml" beforeDir="false" afterPath="$PROJECT_DIR$/addons.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugin.video.PakMedia/addon.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plugin.video.PakMedia/addon.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin.video.PakMedia/service.py" beforeDir="false" afterPath="$PROJECT_DIR$/plugin.video.PakMedia/service.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,20 +148,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1478633393359</updated>
-    </task>
-    <task id="LOCAL-00011" summary="Fixed skysports">
-      <created>1540637498117</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1540637498117</updated>
-    </task>
-    <task id="LOCAL-00012" summary="Fixed skysports">
-      <created>1540637814860</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1540637814860</updated>
     </task>
     <task id="LOCAL-00013" summary="Fixed skysports">
       <created>1540638005764</created>
@@ -496,7 +478,21 @@
       <option name="project" value="LOCAL" />
       <updated>1607856482830</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="fixed shows loading">
+      <created>1647866035406</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1647866035409</updated>
+    </task>
+    <task id="LOCAL-00061" summary="fixed shows loading">
+      <created>1647866177724</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1647866177724</updated>
+    </task>
+    <option name="localTasksCounter" value="62" />
     <servers />
   </component>
   <component name="TodoView">

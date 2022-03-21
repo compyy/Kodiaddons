@@ -1,4 +1,3 @@
-import base64
 import json
 import os
 import sys
@@ -29,11 +28,6 @@ sys.path.append(os.path.join(addonPath, 'resources', 'lib'))
 spicon = addonPath + '/resources/icon/siasatpk.png'
 json_path = addonPath + '/resources/json/'
 service_addon = addonPath + '/service.py'
-
-PTV_URL = base64.b64decode(
-    'aHR0cHM6Ly9saXZlc3RyZWFtMS5uYXlhdGVsLmNvbS9saXZlL2NoYW5uZWwxNi5zdHJlYW0vcGxheWxpc3QubTN1OA==')
-PTV_ICON = base64.b64decode(
-    'aHR0cHM6Ly9td2FyZS5uYXlhdGVsLmNvbS9qbWMvZGVmYXVsdC9maWxlbWFuYWdlci91cGxvYWRzL3B0dnNwb3J0cy5wbmc=')
 
 PTV_URL = "https://livestream1.nayatel.com/live/channel16.stream/playlist.m3u8"
 PTV_ICON = "https://mware.nayatel.com/jmc/default/filemanager/uploads/ptvsports.png"
