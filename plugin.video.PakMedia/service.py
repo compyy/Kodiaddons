@@ -25,6 +25,8 @@ spk_url = [base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9mb3J1bXMvc2l
            base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9mb3J1bXMvZGFpbHktdGFsay1zaG93cy4yOS8='),
            base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9mb3J1bXMvc3BvcnRzLWNvcm5lci4zNy8=')]
 
+nayatel_url = base64.b64decode('aHR0cHM6Ly9saXZlLm5heWF0ZWwuY29tL2luZGV4Lmh0bWw=')
+
 p_dm = re.compile("<iframe.*src=.*http.*dailymotion.com.*video[/](.*?)[\"|\'|/?]")
 p_yt = re.compile('<iframe.*?src=\".*?youtube.*?embed\/(.*?)[\"|\?]')
 p_pw = re.compile('src=".*?(playwire).*?data-publisher-id="(.*?)"\s*data-video-id="(.*?)"')

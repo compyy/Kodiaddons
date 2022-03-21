@@ -1,3 +1,4 @@
+import base64
 import json
 import os
 import sys
@@ -29,9 +30,19 @@ spicon = addonPath + '/resources/icon/siasatpk.png'
 json_path = addonPath + '/resources/json/'
 service_addon = addonPath + '/service.py'
 
+PTV_URL = base64.b64decode(
+    'aHR0cHM6Ly9saXZlc3RyZWFtMS5uYXlhdGVsLmNvbS9saXZlL2NoYW5uZWwxNi5zdHJlYW0vcGxheWxpc3QubTN1OA==')
+PTV_ICON = base64.b64decode(
+    'aHR0cHM6Ly9td2FyZS5uYXlhdGVsLmNvbS9qbWMvZGVmYXVsdC9maWxlbWFuYWdlci91cGxvYWRzL3B0dnNwb3J0cy5wbmc=')
+
+PTV_URL = "https://livestream1.nayatel.com/live/channel16.stream/playlist.m3u8"
+PTV_ICON = "https://mware.nayatel.com/jmc/default/filemanager/uploads/ptvsports.png"
+NTL_ICON = "https://nayatel.com/wp-content/uploads/2017/01/live_latestoffer_logo.png"
+
 # Initializing the settings ###
 if not selfAddon.getSetting("dummy") == "true":
     selfAddon.setSetting("dummy", "true")
+
 
 # Define settting function ###
 def show_settings():
@@ -45,6 +56,7 @@ def add_types():
     add_directory('Daily Talk Shows', 'SP_Shows', 2, spicon)
     add_directory('Daily Vidoes', 'SP_Viral', 2, spicon)
     add_directory('Sports Corner', 'SP_SC', 2, spicon)
+    add_directory('Nayatel Live', 'NTL_LIVE', 2, NTL_ICON)
     add_directory('Refresh Shows', 'refresh_shows', 2, '')
     add_directory('Settings', 'Settings', 99, 'OverlayZIP.png', isItFolder=False)
     return
@@ -76,6 +88,11 @@ def add_enteries(url_type=None):
         if 'refresh_shows' in url_type:
             xbmc.executebuiltin('RunScript(' + service_addon + ')')
 
+        if 'NTL_LIVE' in url_type:
+            add_ntlstreams()
+            # xbmc.Player().play(PTV_URL)
+            # add_directory("PTV Sports Live",PTV_URL , 4, PTV_URL, isItFolder=False)
+
     return
 
 
@@ -88,6 +105,15 @@ def add_shows(url_type, shows_json):
             icon = shows_json[i]['icon']
             link.update(shows_json[i]['link'])
             add_directory(Title, link, 3, icon, isItFolder=False)
+
+    return
+
+
+def add_ntlstreams():
+    link = {"m3u8": PTV_URL}
+    Title = "PTV LIVE STREAM"
+    icon = PTV_ICON
+    add_directory(Title, link, 3, icon, isItFolder=False)
 
     return
 
@@ -142,6 +168,10 @@ def play_showLink(name, linkType, video_id):
         media_url = urlresolver.HostedMediaFile(host='openload.co', media_id=video_id).resolve()
         playlist.add(media_url, listitem)
         xbmc.Player().play(playlist)
+
+    if linkType == "m3u8":
+        print(video_id)
+        xbmc.Player().play(video_id)
 
     return
 
