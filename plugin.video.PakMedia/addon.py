@@ -1,3 +1,4 @@
+import base64
 import json
 import os
 import sys
@@ -5,6 +6,7 @@ import time
 import traceback
 from urllib.parse import quote_plus, parse_qs, unquote_plus
 
+import requests
 import xbmc
 import xbmcaddon
 import xbmcgui
@@ -29,9 +31,10 @@ spicon = addonPath + '/resources/icon/siasatpk.png'
 json_path = addonPath + '/resources/json/'
 service_addon = addonPath + '/service.py'
 
-PTV_URL = "https://livestream1.nayatel.com/live/channel16.stream/playlist.m3u8"
-PTV_ICON = "https://mware.nayatel.com/jmc/default/filemanager/uploads/ptvsports.png"
-NTL_ICON = "https://nayatel.com/wp-content/uploads/2017/01/live_latestoffer_logo.png"
+NTL_URL = base64.b64decode(
+    'aHR0cHM6Ly9td2FyZS5uYXlhdGVsLmNvbS9qbWNfam95L2pveV9wYWNrYWdlL2xpdmVfYXBpL2xpdmVXZWJzaXRlQVBJLnBocD9mdW5jdGlvbj1nZXRBbGxDaGFubmVscw==')
+NTL_ICON = base64.b64decode(
+    'aHR0cHM6Ly9uYXlhdGVsLmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wMS9saXZlX2xhdGVzdG9mZmVyX2xvZ28ucG5n')
 
 # Initializing the settings ###
 if not selfAddon.getSetting("dummy") == "true":
@@ -50,7 +53,7 @@ def add_types():
     add_directory('Daily Talk Shows', 'SP_Shows', 2, spicon)
     add_directory('Daily Vidoes', 'SP_Viral', 2, spicon)
     add_directory('Sports Corner', 'SP_SC', 2, spicon)
-    add_directory('Nayatel Live', 'NTL_LIVE', 2, NTL_ICON)
+    add_directory('NTL Live', 'NTL_LIVE', 2, NTL_ICON)
     add_directory('Refresh Shows', 'refresh_shows', 2, '')
     add_directory('Settings', 'Settings', 99, 'OverlayZIP.png', isItFolder=False)
     return
@@ -82,11 +85,8 @@ def add_enteries(url_type=None):
         if 'refresh_shows' in url_type:
             xbmc.executebuiltin('RunScript(' + service_addon + ')')
 
-        if 'NTL_LIVE' in url_type:
-            add_ntlstreams()
-            # xbmc.Player().play(PTV_URL)
-            # add_directory("PTV Sports Live",PTV_URL , 4, PTV_URL, isItFolder=False)
-
+        if 'NTL' in url_type:
+            add_ntlentries(url_type)
     return
 
 
@@ -103,11 +103,30 @@ def add_shows(url_type, shows_json):
     return
 
 
-def add_ntlstreams():
-    link = {"m3u8": PTV_URL}
-    Title = "PTV LIVE STREAM"
-    icon = PTV_ICON
-    add_directory(Title, link, 3, icon, isItFolder=False)
+def add_ntlentries(url_type):
+    html = requests.get(NTL_URL)
+    DATA = json.loads(html.content)
+    jsonData = DATA["posts"]
+    jsonData = [x for x in jsonData if x != []]
+
+    if url_type:
+        if url_type == 'NTL_LIVE':
+            category = []
+            for i in range(0, len(jsonData)):
+                category.append(jsonData[i]['categories'][0]['title'])
+
+            category = list(dict.fromkeys(category))
+
+            for i in category:
+                add_directory(i, 'NTL_LIST', 2, NTL_ICON, isItFolder=True)
+
+        if url_type == 'NTL_LIST':
+            for i in range(0, len(jsonData)):
+                if name == (jsonData[i]['categories'][0]['title']):
+                    Title = jsonData[i]['title']
+                    icon = jsonData[i]['dp_video_poster']
+                    link = {"m3u8": (jsonData[i]['channel_url'])}
+                    add_directory(Title, link, 3, icon, isItFolder=False)
 
     return
 
@@ -164,12 +183,14 @@ def play_showLink(name, linkType, video_id):
         xbmc.Player().play(playlist)
 
     if linkType == "m3u8":
-        print(video_id)
+        xbmcgui.Dialog().notification(__addonname__, "Playing " + name + " video", __icon__, 3000, False)
+        playlist.add(video_id, listitem)
         xbmc.Player().play(video_id)
 
     return
 
 
+#######
 # Define function to monitor real time parameters ###
 def get_params():
     param = []
