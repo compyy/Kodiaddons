@@ -31,9 +31,9 @@ spicon = addonPath + '/resources/icon/siasatpk.png'
 json_path = addonPath + '/resources/json/'
 service_addon = addonPath + '/service.py'
 
-NTL_URL = base64.b64decode(
+NET_URL = base64.b64decode(
     'aHR0cHM6Ly9td2FyZS5uYXlhdGVsLmNvbS9qbWNfam95L2pveV9wYWNrYWdlL2xpdmVfYXBpL2xpdmVXZWJzaXRlQVBJLnBocD9mdW5jdGlvbj1nZXRBbGxDaGFubmVscw==')
-NTL_ICON = base64.b64decode(
+NET_ICON = base64.b64decode(
     'aHR0cHM6Ly9uYXlhdGVsLmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wMS9saXZlX2xhdGVzdG9mZmVyX2xvZ28ucG5n')
 
 # Initializing the settings ###
@@ -53,7 +53,7 @@ def add_types():
     add_directory('Daily Talk Shows', 'SP_Shows', 2, spicon)
     add_directory('Daily Vidoes', 'SP_Viral', 2, spicon)
     add_directory('Sports Corner', 'SP_SC', 2, spicon)
-    add_directory('NTL Live', 'NTL_LIVE', 2, NTL_ICON)
+    add_directory('NET Live', 'NET_LIVE', 2, NET_ICON)
     add_directory('Refresh Shows', 'refresh_shows', 2, '')
     add_directory('Settings', 'Settings', 99, 'OverlayZIP.png', isItFolder=False)
     return
@@ -85,8 +85,8 @@ def add_enteries(url_type=None):
         if 'refresh_shows' in url_type:
             xbmc.executebuiltin('RunScript(' + service_addon + ')')
 
-        if 'NTL' in url_type:
-            add_ntlentries(url_type)
+        if 'NET' in url_type:
+            add_NETentries(url_type)
     return
 
 
@@ -103,29 +103,29 @@ def add_shows(url_type, shows_json):
     return
 
 
-def add_ntlentries(url_type):
-    html = requests.get(NTL_URL)
+def add_NETentries(url_type):
+    html = requests.get(NET_URL)
     DATA = json.loads(html.content)
-    jsonData = DATA["posts"]
+    jsonData = DATA["data"]
     jsonData = [x for x in jsonData if x != []]
 
     if url_type:
-        if url_type == 'NTL_LIVE':
+        if url_type == 'NET_LIVE':
             category = []
             for i in range(0, len(jsonData)):
-                category.append(jsonData[i]['categories'][0]['title'])
+                category.append(jsonData[i]['categoryname'])
 
             category = list(dict.fromkeys(category))
 
             for i in category:
-                add_directory(i, 'NTL_LIST', 2, NTL_ICON, isItFolder=True)
+                add_directory(i, 'NET_LIST', 2, NET_ICON, isItFolder=True)
 
-        if url_type == 'NTL_LIST':
+        if url_type == 'NET_LIST':
             for i in range(0, len(jsonData)):
-                if name == (jsonData[i]['categories'][0]['title']):
-                    Title = jsonData[i]['title']
-                    icon = jsonData[i]['dp_video_poster']
-                    link = {"m3u8": (jsonData[i]['channel_url'])}
+                if name == (jsonData[i]['categoryname']):
+                    Title = jsonData[i]['channelname']
+                    icon = jsonData[i]['channelposter']
+                    link = {"m3u8": (jsonData[i]['website_url'])}
                     add_directory(Title, link, 3, icon, isItFolder=False)
 
     return
