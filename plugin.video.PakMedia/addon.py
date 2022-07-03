@@ -32,7 +32,10 @@ json_path = addonPath + '/resources/json/'
 service_addon = addonPath + '/service.py'
 
 NET_URL = base64.b64decode(
-    'aHR0cHM6Ly9td2FyZS5uYXlhdGVsLmNvbS9qbWNfam95L2pveV9wYWNrYWdlL2xpdmVfYXBpL2xpdmVXZWJzaXRlQVBJLnBocD9mdW5jdGlvbj1nZXRBbGxDaGFubmVscw==')
+    'aHR0cHM6Ly9td2FyZS5uYXlhdGVsLmNvbS9OQVlBX1RWL1dlYi92b2RBUEkucGhwP2Z1bmN0aW9uPXNob3dOYXlhdHZDaGFubmVscw==')
+NET_USER = base64.b64decode('eWFzaXJhc2hmYXF1ZQ==')
+NET_ID = base64.b64decode('TkFZQVRFTF9ORVRXT1JLX1VTRVI=')
+
 NET_ICON = base64.b64decode(
     'aHR0cHM6Ly9uYXlhdGVsLmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wMS9saXZlX2xhdGVzdG9mZmVyX2xvZ28ucG5n')
 
@@ -54,6 +57,7 @@ def add_types():
     add_directory('Daily Vidoes', 'SP_Viral', 2, spicon)
     add_directory('Sports Corner', 'SP_SC', 2, spicon)
     add_directory('NET Live', 'NET_LIVE', 2, NET_ICON)
+    add_directory('NET VOD', 'NET_VOD', 2, NET_ICON)
     add_directory('Refresh Shows', 'refresh_shows', 2, '')
     add_directory('Settings', 'Settings', 99, 'OverlayZIP.png', isItFolder=False)
     return
@@ -86,7 +90,7 @@ def add_enteries(url_type=None):
             xbmc.executebuiltin('RunScript(' + service_addon + ')')
 
         if 'NET' in url_type:
-            add_NETentries(url_type)
+            add_ntlentries(url_type)
     return
 
 
@@ -103,8 +107,17 @@ def add_shows(url_type, shows_json):
     return
 
 
-def add_NETentries(url_type):
-    html = requests.get(NET_URL)
+def add_ntlentries(url_type):
+    headers = {'Accept': 'application/json, text/javascript, */*; q=0.01',
+               'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36',
+               'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+               'Accept-Encoding': 'gzip, deflate, br',
+               'Origin': 'https://nayatv.nayatel.com', 'Referer': 'https://nayatv.nayatel.com/', 'DNT': '1',
+               'Host': 'mware.nayatel.com'}
+
+    user_information = {'userID': NET_USER, 'type': NET_ID, 'network': 'Found'}
+
+    html = requests.post(NET_URL, data=user_information, headers=headers)
     DATA = json.loads(html.content)
     jsonData = DATA["data"]
     jsonData = [x for x in jsonData if x != []]
@@ -125,7 +138,7 @@ def add_NETentries(url_type):
                 if name == (jsonData[i]['categoryname']):
                     Title = jsonData[i]['channelname']
                     icon = jsonData[i]['channelposter']
-                    link = {"m3u8": (jsonData[i]['website_url'])}
+                    link = {"m3u8": jsonData[i]['website_url']}
                     add_directory(Title, link, 3, icon, isItFolder=False)
 
     return
