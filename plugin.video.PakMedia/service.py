@@ -21,9 +21,9 @@ addonPath = selfAddon.getAddonInfo("path")
 json_path = addonPath + '/resources/json/'
 
 ###
-spk_url = [base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9mb3J1bXMvc2lhc2ktdmlkZW9zLjIxLw=='),
-           base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9mb3J1bXMvZGFpbHktdGFsay1zaG93cy4yOS8='),
-           base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9mb3J1bXMvc3BvcnRzLWNvcm5lci4zNy8=')]
+spk_url = [base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9zaWFzaS12aWRlb3MuMjEv'),
+           base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9kYWlseS10YWxrLXNob3dzLjI5Lw=='),
+           base64.b64decode('aHR0cHM6Ly93d3cuc2lhc2F0LnBrL2ZvcnVtcy9zcG9ydHMtY29ybmVyLjM3Lw==')]
 
 p_dm = re.compile("<iframe.*src=.*http.*dailymotion.com.*video[/](.*?)[\"|\'|/?]")
 p_yt = re.compile('<iframe.*?src=\".*?youtube.*?embed\/(.*?)[\"|\?]')

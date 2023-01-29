@@ -9,7 +9,10 @@
   <component name="ChangeListManager">
     <list default="true" id="dabfa14b-13f5-43de-bfa8-87ad120a9061" name="Default" comment="fixed shows loading">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin.video.PakMedia/addon.py" beforeDir="false" afterPath="$PROJECT_DIR$/plugin.video.PakMedia/addon.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/addons.xml" beforeDir="false" afterPath="$PROJECT_DIR$/addons.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/addons.xml.md5" beforeDir="false" afterPath="$PROJECT_DIR$/addons.xml.md5" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin.video.PakMedia/addon.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plugin.video.PakMedia/addon.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin.video.PakMedia/service.py" beforeDir="false" afterPath="$PROJECT_DIR$/plugin.video.PakMedia/service.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,13 +151,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1478633393359</updated>
-    </task>
-    <task id="LOCAL-00016" summary="cricinfo aded">
-      <created>1542471231605</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1542471231605</updated>
     </task>
     <task id="LOCAL-00017" summary="cricinfo aded">
       <created>1542471247014</created>
@@ -492,7 +488,14 @@
       <option name="project" value="LOCAL" />
       <updated>1656687683446</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="fixed shows loading">
+      <created>1656841867637</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1656841867637</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="TodoView">
